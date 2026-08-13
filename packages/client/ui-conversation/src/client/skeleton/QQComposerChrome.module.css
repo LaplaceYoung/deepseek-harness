@@ -58,8 +58,9 @@
 }
 
 .smallIcon {
-  width: 18px;
-  height: 18px;
+  /* Native IMSmallToolbar asset size (16×16) — pixel-sharp, no upscale blur. */
+  width: 16px;
+  height: 16px;
   pointer-events: none;
 }
 

@@ -32,6 +32,24 @@ function qqAvatarSrc(key: string): string {
 /** The standard locale seat, prop-passed from the browser root. */
 type RowTranslate = WorkspaceBrowserProps['t']
 
+/**
+ * QQ2006 right-click menu labels: forced to Chinese under the skin
+ * (QQ 原版语义) regardless of the app locale. Shared row verbs (rename /
+ * fork / archive) get their QQ names; the QQ-only entries (copy id / copy
+ * path) are appended separately at the item sites.
+ */
+const QQ_MENU_LABELS: Record<string, string> = {
+  rename: '重命名',
+  fork: '分叉会话',
+  archive: '归档会话',
+  delete: '删除工作区',
+}
+
+/** Menu-item label seat: QQ skin shows the Chinese row verbs. */
+function rowMenuLabel(id: string, fallback: string, qqSkin: boolean): string {
+  return qqSkin ? (QQ_MENU_LABELS[id] ?? fallback) : fallback
+}
+
 /** Row display title: blank rows show the localized New Session label. */
 function displayTitle(node: SessionNode, t: RowTranslate): string {
   return node.blank ? t('session.new') : node.title
@@ -138,9 +156,9 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
   // the ⋯ button keeps its wrapper measurement when no pointer rect is set.
   const [pointerRect, setPointerRect] = useState<DOMRect | null>(null)
   const workspaceMenuItems = [
-    { id: 'rename', label: t('rename'), icon: <IconEditOutline16 /> },
-    ...(qqSkin ? [{ id: 'copy-path', label: t('menu.copyPath'), icon: <IconLinkOutline16 /> }] : []),
-    { id: 'delete', label: t('delete.workspace'), icon: <IconTrashOutline16 />, danger: true },
+    { id: 'rename', label: rowMenuLabel('rename', t('rename'), qqSkin), icon: <IconEditOutline16 /> },
+    ...(qqSkin ? [{ id: 'copy-path', label: '复制路径', icon: <IconLinkOutline16 /> }] : []),
+    { id: 'delete', label: rowMenuLabel('delete', t('delete.workspace'), qqSkin), icon: <IconTrashOutline16 />, danger: true },
   ]
   const ownRow = (
     <div
@@ -415,11 +433,11 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
   // touches the session log, so it is not styled as destructive and needs no
   // confirmation dialog.
   const sessionMenuItems = [
-    { id: 'rename', label: t('rename'), icon: <IconEditOutline16 /> },
-    { id: 'fork', label: t('menu.fork'), icon: <IconBranchOutline16 /> },
+    { id: 'rename', label: rowMenuLabel('rename', t('rename'), qqSkin), icon: <IconEditOutline16 /> },
+    { id: 'fork', label: rowMenuLabel('fork', t('menu.fork'), qqSkin), icon: <IconBranchOutline16 /> },
     // 20-native glyph in the menu's 16px icon slot (Menu.module.css .itemIcon).
-    { id: 'archive', label: t('menu.archiveSession'), icon: <IconArchiveOutline20 size={16} /> },
-    ...(qqSkin ? [{ id: 'copy-id', label: t('menu.copySessionId'), icon: <IconCopyOutline16 /> }] : []),
+    { id: 'archive', label: rowMenuLabel('archive', t('menu.archiveSession'), qqSkin), icon: <IconArchiveOutline20 size={16} /> },
+    ...(qqSkin ? [{ id: 'copy-id', label: '复制会话 ID', icon: <IconCopyOutline16 /> }] : []),
   ]
   // Figma session cell: pad 8, status slot 16, then a 4px title gap.
   const ownRow = (

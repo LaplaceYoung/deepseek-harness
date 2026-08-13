@@ -23,8 +23,15 @@ export interface QQComposerActions {
   focusComposer: () => void
 }
 
+/** Verbs the window chrome's group bar can serve (群空间 / 企业好友). */
+export interface QQGroupActions {
+  /** Toggle the expandable member list of the current session's group. */
+  toggleMembers: () => void
+}
+
 const chatActions = new Map<SessionId, QQChatActions>()
 const composerActions = new Map<SessionId, QQComposerActions>()
+const groupActions = new Map<SessionId, QQGroupActions>()
 const listeners = new Set<() => void>()
 
 function notify(): void {
@@ -55,6 +62,18 @@ export function registerQqComposerActions(sessionId: SessionId, actions: QQCompo
   }
 }
 
+/** Register the group-bar verbs for one session; returns the disposer. */
+export function registerQqGroupActions(sessionId: SessionId, actions: QQGroupActions): () => void {
+  groupActions.set(sessionId, actions)
+  notify()
+  return () => {
+    if (groupActions.get(sessionId) === actions) {
+      groupActions.delete(sessionId)
+      notify()
+    }
+  }
+}
+
 /** Plain read of the chat-view verbs (event-handler path). */
 export function qqChatActions(sessionId: SessionId | undefined): QQChatActions | undefined {
   return sessionId === undefined ? undefined : chatActions.get(sessionId)
@@ -63,4 +82,9 @@ export function qqChatActions(sessionId: SessionId | undefined): QQChatActions |
 /** Plain read of the composer-bar verbs (event-handler path). */
 export function qqComposerActions(sessionId: SessionId | undefined): QQComposerActions | undefined {
   return sessionId === undefined ? undefined : composerActions.get(sessionId)
+}
+
+/** Plain read of the group-bar verbs (event-handler path). */
+export function qqGroupActions(sessionId: SessionId | undefined): QQGroupActions | undefined {
+  return sessionId === undefined ? undefined : groupActions.get(sessionId)
 }

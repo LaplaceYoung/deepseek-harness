@@ -71,8 +71,9 @@
 }
 
 .bigIcon {
-  width: 28px;
-  height: 28px;
+  /* Native IMBigToolbar asset size (24×24) — pixel-sharp, no upscale blur. */
+  width: 24px;
+  height: 24px;
   pointer-events: none;
 }
 

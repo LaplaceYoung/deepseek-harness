@@ -18,7 +18,7 @@ import type { TranslateNS } from '@deepseek-ai/dsh-client-locale/client'
 import type { createChatStore } from '../stores.ts'
 import type { InputHub } from '../input/hub.ts'
 import { NS } from '../locales.ts'
-import { qqChatActions, qqComposerActions } from './qq-chrome-actions.ts'
+import { qqChatActions, qqComposerActions, qqGroupActions } from './qq-chrome-actions.ts'
 import { qqTip } from './qq-feedback.ts'
 import { cycleQqWinSkin, type QQWinSkin } from './qq-win-skin.ts'
 import { playQqSound, toggleQqSound } from './qq-sound.ts'
@@ -240,7 +240,18 @@ export function createQqChromeActions({
       qqTip(t('qq.detailsClosed'))
     },
     openSubagentCatalog() {
+      // 群空间: the official catalog UI is not reachable programmatically
+      // (the header trigger lives in a hidden title row under the skin and
+      // has no public open API), so the visible equivalent is the session's
+      // group member list. Keep the membership refresh flowing (the group
+      // chrome reads live subagent data) and toggle the member list open.
+      const groupActions = qqGroupActions(sessionId)
+      if (groupActions === undefined) {
+        qqTip(t('qq.catalogEmpty'))
+        return
+      }
       sessions.setSubagentCatalogOpen(sessionId, true)
+      groupActions.toggleMembers()
       playQqSound('global')
       qqTip(t('qq.catalogOpened'))
     },
@@ -259,8 +270,18 @@ export function createQqChromeActions({
         qqTip(t('qq.modelUnavailable'))
         return
       }
+      // The model picker is a /model command contribution; open its filtered
+      // menu through the official slash-trigger path. When the command list
+      // has no model entry (host without ui-model-selection), the filtered
+      // menu auto-closes — reopen it unfiltered so the press always answers
+      // visibly, with an honest tip.
       triggers.toggleSource('command', triggerHit('model'))
       playQqSound('global')
+      window.setTimeout(() => {
+        if (triggers.menu.getSnapshot().open) return
+        triggers.toggleSource('command', triggerHit(''))
+        qqTip(t('qq.modelMenuFallback'))
+      }, 150)
     },
     toggleCommandMenu() {
       const triggers = inputHub.inputTriggers(sessionId)

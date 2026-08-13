@@ -8,11 +8,12 @@
 // classes .qq-skin-title / .qq-skin-head / .qq-skin-btn-* are the global
 // nine-slice kit from ui-skin-qq2006.
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { SessionId, SessionListState } from '@deepseek-ai/dsh-client-runtime/client'
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-ui-slots'
 import type { TranslateNS } from '@deepseek-ai/dsh-client-locale/client'
 import type { QQChromeActions } from '../qq/qq-actions.ts'
+import { registerQqGroupActions } from '../qq/qq-chrome-actions.ts'
 import { NS, type ConversationKey } from '../locales.ts'
 import css from './QQWindowChrome.module.css'
 
@@ -99,6 +100,17 @@ export function QQWindowChrome({ sessionId, useSessions, t, qq }: QQWindowChrome
   const displayTitle = useSessions(s => s.byId[sessionId]?.displayTitle ?? sessionId)
   const online = useMemo(() => members.filter(member => member.running).length, [members])
   const group = members.length > 0
+
+  // 群空间 (big toolbar) / 企业好友 (panel bar) toggle this list through the
+  // shared chrome registry; the effect rides the group's existence so a
+  // session without subagent children has no registered verb (the action
+  // then answers with the honest 无子智能体 tip).
+  useEffect(() => {
+    if (!group) return
+    return registerQqGroupActions(sessionId, {
+      toggleMembers: () => { setMembersOpen(value => !value) },
+    })
+  }, [sessionId, group])
 
   return (
     <div className={css.windowChrome} data-qq-window-chrome>

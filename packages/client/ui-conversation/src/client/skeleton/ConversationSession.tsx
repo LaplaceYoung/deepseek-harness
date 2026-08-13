@@ -24,11 +24,24 @@ interface Breadcrumb {
 
 const DEFAULT_VIEW_ID = 'chat'
 
+/** QQ2006 window chrome: the view tabs are forced to Chinese (QQ 原版语义:
+    对话 / 轨迹) regardless of the app locale. Unknown view ids keep their
+    registered label. */
+const QQ_VIEW_TAB_LABELS: Record<string, string> = {
+  chat: '对话',
+  trajectory: '轨迹',
+}
+
 /** Resolve by id and keep stale persisted selections on the stable Chat fallback. */
 function resolveActiveView(tabs: readonly ViewTab[], selectedId: string | null): ViewTab | undefined {
   const requestedId = selectedId ?? DEFAULT_VIEW_ID
   return tabs.find(view => view.id === requestedId)
     ?? tabs.find(view => view.id === DEFAULT_VIEW_ID)
+}
+
+/** Label seat: the QQ window chrome renders the Chinese view names. */
+function viewTabLabel(view: ViewTab, qqSkin: boolean): string {
+  return qqSkin ? (QQ_VIEW_TAB_LABELS[view.id] ?? view.label) : view.label
 }
 
 function deriveAncestry(list: SessionListState, id: SessionId): readonly Breadcrumb[] {
@@ -132,7 +145,7 @@ export function ConversationSessionHeader({
                   className={clsx(css.tab, viewTab.id === active?.id && css.tabActive)}
                   onClick={() => { actions.setView(viewTab.id) }}
                 >
-                  {viewTab.label}
+                  {viewTabLabel(viewTab, qqSkin)}
                 </button>
               ))}
             </div>

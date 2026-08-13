@@ -573,7 +573,12 @@ export function InputBar({
   // pointer users can queue follow-ups while its current turn is running.
   const primaryStops = running && subagent === null
   const interruptible = running && continuable
-  const primaryLabel = primaryStops ? t('input.stop') : t('input.send')
+  // QQ2006 send label: 发送 (Alt+S) / 发送到群 (Alt+S) / 停止 — the CSS
+  // ::after shows the face text; this is the aria/tooltip seat, forced to
+  // Chinese under the skin regardless of the app locale (QQ2006 semantics).
+  const primaryLabel = primaryStops
+    ? (qqSkin ? t('qq.sendStop') : t('input.stop'))
+    : (qqSkin ? (group ? t('qq.sendGroupLabel') : t('qq.sendLabel')) : t('input.send'))
   // QQ2006 input copy: hero 「想聊点什么？输入消息，Enter 发送」, composer
   // 「请输入消息，Enter 发送」, group chat 「发送到群（N 人）」. Blocked /
   // inert / parent-offline / steer / plan states keep their product copy.
