@@ -1,12 +1,13 @@
 // QQWindowChrome: the classic 2006 chat-window frame rendered by the session
 // header while the QQ2006 skin is active — the 24px title strip with the four
-// title buttons (更换颜色 / 菜单 / 隐藏 / 关闭), the 44px big toolbar (12
-// buttons over the IMBigToolbar* assets), and the group-chat chrome (群公告
-// yellow bar + member bar + online-first member list) for sessions with
-// subagent children. Every button drives a real DSH service through the
-// injected QQChromeActions bundle (see qq/qq-actions.ts); the utility
-// classes .qq-skin-title / .qq-skin-head / .qq-skin-btn-* are the global
-// nine-slice kit from ui-skin-qq2006.
+// title buttons (更换颜色 / 菜单 / 隐藏 / 关闭), the 61px big-toolbar band
+// (12 buttons over the IMBigToolbar* assets; the 44px button row sits on the
+// band's light surface above the dark bottom strip), and the group-chat
+// chrome (群公告 yellow bar + member bar + online-first member list) for
+// sessions with subagent children. Every button drives a real DSH service
+// through the injected QQChromeActions bundle (see qq/qq-actions.ts); the
+// utility classes .qq-skin-title / .qq-skin-head / .qq-skin-btn-* are the
+// global nine-slice kit from ui-skin-qq2006.
 
 import { useEffect, useMemo, useState } from 'react'
 import type { SessionId, SessionListState } from '@deepseek-ai/dsh-client-runtime/client'
@@ -150,7 +151,8 @@ export function QQWindowChrome({ sessionId, useSessions, t, qq }: QQWindowChrome
           </div>
         </div>
       </div>
-      {/* 44px big toolbar (BackgroundTitle2* nine-slice), 12 buttons one line. */}
+      {/* 61px big toolbar (BackgroundTitle2* nine-slice); the 44px button
+          row rides the band's light surface above the dark bottom strip. */}
       <div className="qq-skin-head">
         <div className={css.bigBar} data-qq-big-toolbar>
           {BIG_TOOLBAR.map(entry => (

@@ -14,6 +14,7 @@
  * visual and answer with a tip only.
  */
 import { useState } from 'react'
+import type { CSSProperties } from 'react'
 import { Toast } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { SessionId } from '@deepseek-ai/dsh-client-runtime/client'
 import type { QQPanelActions, WorkspaceBrowserProps } from './contract/slots.ts'
@@ -191,7 +192,7 @@ export function QQMainPanel({ qq, currentSessionId, t }: {
             key={button.key}
             type="button"
             className={css.barButton}
-            style={{ backgroundImage: `url('${button.asset}')` }}
+            style={{ '--qq-bar-icon': `url('${button.asset}')` } as CSSProperties}
             data-qq-bar={button.key}
             aria-label={t(button.labelKey)}
             title={t(button.labelKey)}

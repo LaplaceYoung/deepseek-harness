@@ -517,7 +517,9 @@ body[data-ds-skin='qq2006'] .searchButton svg {
 }
 
 body[data-ds-skin='qq2006'] .searchExpanded .searchButton {
-  background-size: 14px 14px;
+  /* Keep the 16×16 native asset size in the expanded capsule too — the
+     icon is centered in the 28×30 button without any shrink. */
+  background-size: 16px 16px;
 }
 
 body[data-ds-skin='qq2006'] .searchExpanded {

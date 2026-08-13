@@ -91,35 +91,40 @@ body[data-ds-skin='qq2006'] .miniButton:active {
   filter: brightness(0.85);
 }
 
-/* ── panel bar: ten 24×24 buttons on the QQ bar strip ─────────────────── */
+/* ── panel bar: ten 24×24 buttons on the QQ bar strip ───────────────────
+   The strip tile barback2_normal/over is 27×37 — one button cell per tile.
+   Ten cells fill the sidebar: each button renders its own tile (10% of the
+   bar, tile stretched to the cell) with the 24×24 icon centered, so the
+   button geometry, the cell notches and the repeated strip stay aligned at
+   every sidebar width. Hover swaps the cell tile to barback2_over (the QQ
+   per-cell highlight), pressed dims. */
 body[data-ds-skin='qq2006'] .panelBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2px;
-  height: 32px;
-  padding: 2px 6px;
+  justify-content: flex-start;
+  gap: 0;
+  height: 37px;
+  padding: 0;
   box-sizing: border-box;
-  background:
-    url('/qq2006/img/panel-bar/barback2_normal.png') center / 27px 37px repeat-x;
-  border-top: 1px solid rgb(150, 185, 220);
 }
 
 body[data-ds-skin='qq2006'] .barButton {
-  flex: none;
-  width: 24px;
-  height: 24px;
+  flex: 0 0 10%;
+  width: 10%;
+  height: 37px;
   border: none;
   padding: 0;
   background-color: transparent;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 24px 24px;
+  background-size: 24px 24px, 100% 37px;
+  background-image: var(--qq-bar-icon), url('/qq2006/img/panel-bar/barback2_normal.png');
   cursor: pointer;
 }
 
 body[data-ds-skin='qq2006'] .barButton:hover {
-  filter: brightness(1.2) drop-shadow(0 0 2px rgb(90, 140, 200));
+  background-image: var(--qq-bar-icon), url('/qq2006/img/panel-bar/barback2_over.png');
+  filter: brightness(1.05);
 }
 
 body[data-ds-skin='qq2006'] .barButton:active {

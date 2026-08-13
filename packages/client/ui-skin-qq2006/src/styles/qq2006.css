@@ -71,7 +71,10 @@ body[data-ds-skin='qq2006'] .qq-skin-head {
     url('/qq2006/img/BackgroundTitleRight2.png') right top no-repeat,
     url('/qq2006/img/BackgroundTitleCenter2.png') center top repeat-x,
     url('/qq2006/img/BackgroundTitleLeft2.png') left top no-repeat;
-  height: 44px;
+  /* Full natural band height (BackgroundTitle2* are 61px tall); showing the
+     whole tile keeps the toolbar surface AND the dark bottom strip that the
+     original QQ2006 toolbar band carries. */
+  height: 61px;
 }
 
 body[data-ds-skin='qq2006'] .qq-skin-body {
@@ -92,6 +95,15 @@ body[data-ds-skin='qq2006'] .qq-skin-btn-close {
   padding: 0;
   cursor: pointer;
   background-color: transparent;
+}
+/* 菜单 is a 65×24 text button in the original QQ2006 (MenuButton_*.png are
+   65×24 — a green gradient button with the white 菜单 label), not a 16×16
+   icon. Display it at native size; the title strip is 24px tall so it fills
+   the band exactly and sits level with the 16×16 color/min/close buttons. */
+body[data-ds-skin='qq2006'] .qq-skin-btn-menu {
+  width: 65px;
+  height: 24px;
+  background-size: 65px 24px;
 }
 body[data-ds-skin='qq2006'] .qq-skin-btn-menu {
   background-image: url('/qq2006/img/MenuButton_Normal.png');

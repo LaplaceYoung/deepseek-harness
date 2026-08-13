@@ -27,7 +27,7 @@ interface SmallToolbarEntry {
   run: (qq: QQChromeActions) => () => void
 }
 
-/** The eight small-toolbar buttons (IMSmallToolbar* 18×18 assets). */
+/** The eight small-toolbar buttons (IMSmallToolbar* 16×16 assets). */
 const SMALL_TOOLBAR: readonly SmallToolbarEntry[] = [
   { id: 'font', label: 'qq.small.font', icon: '/qq2006/img/im/IMSmallToolbarFont.png', run: q => q.cycleFontSize },
   { id: 'face', label: 'qq.small.face', icon: '/qq2006/img/im/IMSmallToolbarFace.png', run: q => () => q.insertEmoji('😊') },

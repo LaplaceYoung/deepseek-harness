@@ -1,5 +1,6 @@
 /* QQWindowChrome: the QQ2006 window frame — title strip (24px), big toolbar
-   (44px), group announcement/member chrome. The nine-slice band
+   (61px band: 44px toolbar row over the band's dark bottom strip), group
+   announcement/member chrome. The nine-slice band
    backgrounds come from the global .qq-skin-title / .qq-skin-head utilities;
    this module owns only the row layout inside each band, the big-toolbar
    buttons, and the group-chat elements. Every rule is scoped to

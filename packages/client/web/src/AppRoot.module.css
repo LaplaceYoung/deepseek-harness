@@ -127,11 +127,14 @@ body[data-ds-skin='qq2006'] .qqTitleBtns {
   gap: 4px;
 }
 
-/* Head band: 44px kit strip holding the 324×47 login banner (contain). */
+/* Head band: the kit strip is 61px (chat-window toolbar band); the login
+   window pins its own head to 44px so the 324×47 banner keeps its compact
+   original placement (contain never distorts it). */
 body[data-ds-skin='qq2006'] .qqHead {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 44px;
 }
 
 body[data-ds-skin='qq2006'] .qqBanner {

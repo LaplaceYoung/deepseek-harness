@@ -32,7 +32,11 @@
   border-bottom: none;
   border-radius: 6px 6px 0 0;
   background:
-    url('/qq2006/img/im/IMSmallToolbarBackground.png') center top repeat-x,
+    /* IMSmallToolbarBackground.png is a 22×22 tile: light body + a 4px dark
+       bottom border. Stretch it to the strip's full height so the dark edge
+       lands at the strip bottom (natural 22px would leave a gradient gap
+       under it); the 22px repeat width stays native. */
+    url('/qq2006/img/im/IMSmallToolbarBackground.png') center top / 22px 100% repeat-x,
     linear-gradient(to bottom, rgb(240, 248, 254), rgb(222, 238, 250));
 }
 
