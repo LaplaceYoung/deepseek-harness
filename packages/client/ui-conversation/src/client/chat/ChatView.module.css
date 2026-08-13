@@ -191,7 +191,18 @@
   background: var(--dsw-alias-button-floating-hover);
 }
 
-/* ── QQ2006 皮肤：日期条 + 加载更多 + 回到底部 ─────────────────────────── */
+/* ── QQ2006 皮肤：消息区 + 日期条 + 加载更多 + 回到底部 ──────────────────
+   消息区 = 原版白色聊天卡片（.qq-im-chat bg #fff、1px rgb(53,111,175)
+   边框、圆角 4）盖在天空蓝窗口体上；日期条按约定为居中灰字（原版无
+   日期条，取经典聊天客户端的分隔条样式）。 */
+body[data-ds-skin='qq2006'] .column {
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid rgb(53, 111, 175);
+  border-radius: 4px;
+  background: #ffffff;
+}
+
 body[data-ds-skin='qq2006'] .dateBar {
   display: flex;
   justify-content: center;
@@ -201,11 +212,11 @@ body[data-ds-skin='qq2006'] .dateBar {
 }
 
 body[data-ds-skin='qq2006'] .dateBarText {
-  padding: 1px 14px;
-  border: 1px solid rgb(170, 200, 228);
-  border-radius: 10px;
-  background: linear-gradient(to bottom, rgb(238, 247, 254), rgb(214, 234, 250));
-  color: rgb(70, 100, 130);
+  padding: 0 8px;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: rgb(110, 130, 150);
   font-size: 11px;
   line-height: 18px;
 }

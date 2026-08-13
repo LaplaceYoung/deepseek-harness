@@ -145,3 +145,109 @@ body[data-ds-skin='qq2006'] .code {
   font-size: 12px;
   line-height: 20px;
 }
+
+/* ── QQ2006 皮肤：QQ 秀侧栏（原版 .qq-im-side 右栏） ────────────────────
+   结构 = 上半「对方形象」+ show1.gif、中段「个人空间」信息区
+   （#f6f6f6 底 / #0f0657 藏青字 / 红色数字）、下半「我的形象」+
+   show3.gif。侧栏钮参数照搬原版：20px 高、IMSidebarButtonExpand 砖
+   打底（拉伸覆盖整钮）、::before 左 50px IMSidebarButton 图标 +
+   ::after 右 33px IMSidebarMenu 图标，hover 换 Hover 图；show 区
+   cover/center。 */
+body[data-ds-skin='qq2006'] .qqSide {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  padding: 6px;
+  overflow: hidden;
+}
+
+body[data-ds-skin='qq2006'] .qqShowSection {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid rgb(53, 111, 175);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+body[data-ds-skin='qq2006'] .qqSideBtn {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  flex: none;
+  width: 100%;
+  height: 20px;
+  padding: 0 0 0 20px;
+  border: 0;
+  text-align: left;
+  background-color: transparent;
+  background-image: url('/qq2006/img/im/IMSidebarButtonExpand_Normal.png');
+  background-size: 1000px 100%;
+  color: rgb(30, 60, 100);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+body[data-ds-skin='qq2006'] .qqSideBtn::before,
+body[data-ds-skin='qq2006'] .qqSideBtn::after {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  height: 100%;
+  content: '';
+}
+
+body[data-ds-skin='qq2006'] .qqSideBtn::before {
+  left: 0;
+  width: 50px;
+  background-image: url('/qq2006/img/im/IMSidebarButton_Normal.png');
+}
+
+body[data-ds-skin='qq2006'] .qqSideBtn::after {
+  right: 0;
+  width: 33px;
+  background-image: url('/qq2006/img/im/IMSidebarMenu_Normal.png');
+}
+
+body[data-ds-skin='qq2006'] .qqSideBtn:hover::before {
+  background-image: url('/qq2006/img/im/IMSidebarButton_Hover.png');
+}
+
+body[data-ds-skin='qq2006'] .qqSideBtn:hover::after {
+  background-image: url('/qq2006/img/im/IMSidebarMenu_Hover.png');
+}
+
+body[data-ds-skin='qq2006'] .qqShow {
+  flex: 1;
+  min-height: 0;
+  background-size: cover;
+  background-position: 50%;
+}
+
+body[data-ds-skin='qq2006'] .qqZone {
+  flex: none;
+  border: 1px solid rgb(53, 111, 175);
+  border-radius: 4px;
+  background: #f6f6f6;
+  color: #0f0657;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+body[data-ds-skin='qq2006'] .qqZoneRow {
+  padding: 1px 4px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body[data-ds-skin='qq2006'] .qqZoneNum {
+  color: red;
+}

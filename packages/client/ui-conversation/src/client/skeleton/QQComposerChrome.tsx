@@ -7,7 +7,7 @@
 // QQ2006 skin is active, so the default skin keeps its exact composer DOM.
 // All behavior goes through the injected QQChromeActions bundle.
 
-import { memo } from 'react'
+import { Fragment, memo } from 'react'
 import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
 import type { QQChromeActions } from '../qq/qq-actions.ts'
 import type { ConversationKey } from '../locales.ts'
@@ -73,17 +73,19 @@ export const QQSmallToolbar = memo(function QQSmallToolbar({ qq, t }: QQSmallToo
     <div className={css.dockRow} data-qq-small-toolbar>
       <div className={css.toolbar}>
         {SMALL_TOOLBAR.map(entry => (
-          <button
-            key={entry.id}
-            type="button"
-            className={css.smallButton}
-            aria-label={t(entry.label)}
-            title={t(entry.label)}
-            data-qq-tool={entry.id}
-            onClick={entry.run(qq)}
-          >
-            <img src={entry.icon} alt="" className={css.smallIcon} />
-          </button>
+          <Fragment key={entry.id}>
+            {entry.id === 'picture' && <span className={css.separator} aria-hidden />}
+            <button
+              type="button"
+              className={css.smallButton}
+              aria-label={t(entry.label)}
+              title={t(entry.label)}
+              data-qq-tool={entry.id}
+              onClick={entry.run(qq)}
+            >
+              <img src={entry.icon} alt="" className={css.smallIcon} />
+            </button>
+          </Fragment>
         ))}
       </div>
     </div>

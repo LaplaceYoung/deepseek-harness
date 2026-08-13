@@ -23,7 +23,7 @@ import { useQqSkin } from '../qq/qq-skin.ts'
 import { assistantText } from './turn-assistant.ts'
 import { PendingSteeringBubble } from './MessageItem.tsx'
 import { ChatNodeSeat } from './ChatNodeSeat.tsx'
-import { formatMessageClock, formatRunDuration, startOfLocalDay } from './message-chrome.ts'
+import { formatRunDuration, startOfLocalDay } from './message-chrome.ts'
 import css from './ChatView.module.css'
 
 const FOLLOW_THRESHOLD = 24
@@ -165,6 +165,12 @@ function fullDateTime(ms: number): string {
     + `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`
 }
 
+/** `M月D日` label for the QQ2006 date separator (skin-forced Chinese). */
+function monthDayLabel(ms: number): string {
+  const d = new Date(ms)
+  return `${d.getMonth() + 1}月${d.getDate()}日`
+}
+
 /**
  * The QQ2006 date separator row (今天 / 昨天 / M月D日) shown between message
  * groups whose local day changes. Skin-gated by the caller.
@@ -175,7 +181,7 @@ function DateBar({ time, t }: { time: number; t: ChatViewSlotProps['t'] }) {
     ? t('qq.date.today')
     : sameLocalDay(time, now - 86_400_000)
       ? t('qq.date.yesterday')
-      : formatMessageClock(time, t, now).split(' ')[0] ?? t('qq.date.today')
+      : monthDayLabel(time)
   return (
     <div className={css.dateBar} title={fullDateTime(time)} data-qq-date-bar>
       <span className={css.dateBarText}>{label}</span>

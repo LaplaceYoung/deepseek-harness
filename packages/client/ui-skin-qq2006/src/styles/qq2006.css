@@ -36,19 +36,19 @@ body[data-ds-skin='qq2006'] {
   scrollbar-color: var(--dsw-alias-border-l2) var(--dsw-alias-scrollbar-bg-l1);
 }
 body[data-ds-skin='qq2006'] ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 body[data-ds-skin='qq2006'] ::-webkit-scrollbar-track {
   background: var(--dsw-alias-scrollbar-bg-l1);
 }
 body[data-ds-skin='qq2006'] ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to right, var(--dsw-alias-scrollbar-hover-l2), var(--dsw-alias-border-l2));
-  border: 1px solid var(--dsw-alias-border-l2);
-  border-radius: 5px;
+  background: linear-gradient(to right, rgb(178, 205, 232), rgb(140, 178, 216));
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 4px;
 }
 body[data-ds-skin='qq2006'] ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to right, var(--dsw-alias-scrollbar-hover-l1), var(--dsw-alias-border-l2));
+  background: linear-gradient(to right, rgb(150, 190, 230), rgb(120, 165, 215));
 }
 
 /* ── nine-slice window chrome kit ────────────────────────────────────────────

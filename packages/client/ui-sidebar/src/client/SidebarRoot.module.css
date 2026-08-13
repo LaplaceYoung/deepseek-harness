@@ -291,9 +291,23 @@ body[data-ds-skin='qq2006'] .root:not(.collapsed) .newSession {
   display: none;
 }
 
+/* QQ2006 主面板底色：BackgroundC.png 的天空蓝纵向渐变（原版 tile 为
+   rgb(88,179,255)），好友白框浮于其上。 */
+body[data-ds-skin='qq2006'] .root {
+  background: linear-gradient(
+    to bottom,
+    rgb(124, 198, 250) 0%,
+    rgb(96, 184, 252) 40%,
+    rgb(88, 179, 255) 65%,
+    rgb(78, 168, 244) 100%
+  );
+}
+
+/* The logo row collapses so the QQ head band starts at the column top. */
 body[data-ds-skin='qq2006'] .root:not(.collapsed) .logoRow {
   justify-content: flex-end;
-  height: 36px;
-  padding-bottom: 0;
-  margin-bottom: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }

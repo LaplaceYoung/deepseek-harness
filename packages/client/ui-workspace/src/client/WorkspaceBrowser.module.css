@@ -523,7 +523,22 @@ body[data-ds-skin='qq2006'] .searchExpanded .searchButton {
 }
 
 body[data-ds-skin='qq2006'] .searchExpanded {
-  border-color: var(--dsw-alias-brand-primary);
+  /* QQ2006 finder input: light gradient field, 1px navy border, 4px radius
+     (原版 input 边框 #7F9DB9 + 浅色底). */
+  height: 24px;
+  border-color: rgb(127, 157, 185);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, #eef5fc);
+}
+
+body[data-ds-skin='qq2006'] .searchExpanded .searchButton {
+  width: 24px;
+  height: 24px;
+}
+
+body[data-ds-skin='qq2006'] .searchExpanded .searchInput {
+  font-size: 12px;
+  line-height: 24px;
 }
 
 body[data-ds-skin='qq2006'] .searchInput::placeholder {
@@ -531,11 +546,45 @@ body[data-ds-skin='qq2006'] .searchInput::placeholder {
   font-style: italic;
 }
 
-/* The QQ panel bar sits flush under the section header; widen the header
-   for the retro look without touching the default skin. */
-body[data-ds-skin='qq2006'] .sectionHeader {
-  margin-top: 4px;
+/* ── QQ2006 friend box: the section header is the box's tab row and the
+   list its body — one white panel with the deep navy border (原版
+   .qq-friend-box border #2367c3 渲染为 #154692) sitting on the sky-blue
+   panel body. Wide only; the rail keeps its modern icons. ─────────── */
+body[data-ds-skin='qq2006'] .root:not(.rail) .sectionHeader {
+  margin: 4px 4px 0;
+  height: 32px;
+  padding: 0 4px 0 8px;
+  background: #ffffff;
+  border: 1px solid rgb(21, 70, 146);
+  border-bottom: 0;
+  border-radius: 2px 2px 0 0;
 }
+
+body[data-ds-skin='qq2006'] .root:not(.rail) .sectionLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(16, 28, 74);
+}
+
+body[data-ds-skin='qq2006'] .root:not(.rail) .listArea {
+  margin: 0 4px 4px;
+  padding: 1px 0 0;
+  background: #ffffff;
+  border: 1px solid rgb(21, 70, 146);
+  border-top: 0;
+  border-radius: 0 0 2px 2px;
+}
+
+body[data-ds-skin='qq2006'] .root:not(.rail) .listArea .list {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 4px;
+  padding-right: 6px;
+  padding-bottom: 16px;
+}
+
+/* The QQ panel bar sits flush under the section header — the friend box
+   margin already handles the 4px top gap (see the .root:not(.rail) block). */
 
 /* The rail keeps its modern icon: the skin swap targets the wide button only. */
 body[data-ds-skin='qq2006'] .rail .searchButton {

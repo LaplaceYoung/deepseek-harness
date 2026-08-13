@@ -193,6 +193,9 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
       <span className={css.projectText}>
         <span className={css.title}>{label}</span>
       </span>
+      {qqSkin && group.sessionCount > 0 && (
+        <span className={css.groupCount}>({group.onlineCount}/{group.sessionCount})</span>
+      )}
       <span className={css.rowActions}>
         {actions !== undefined && (
           <Menu

@@ -170,6 +170,12 @@ export function QQWindowChrome({ sessionId, useSessions, t, qq }: QQWindowChrome
           ))}
         </div>
       </div>
+      {/* 好友信息条（原版 .qq-im-friend-info：头像 + 昵称 + 状态语）。 */}
+      <div className={css.friendInfo} data-qq-friend-info>
+        <img src={memberAvatar(sessionId)} alt="" className={css.friendAvatar} />
+        <span className={css.friendName}>{displayTitle}</span>
+        <span className={css.friendMotto}>{t('qq.friendMotto')}</span>
+      </div>
       {/* Group chrome: announcement bar + member bar (+ expandable list). */}
       {group && (
         <div className={css.groupChrome} data-qq-group>

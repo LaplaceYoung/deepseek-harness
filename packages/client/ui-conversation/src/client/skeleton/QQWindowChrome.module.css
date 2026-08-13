@@ -34,6 +34,62 @@
   text-shadow: 0 1px 1px rgba(0, 40, 90, 0.6);
 }
 
+/* ── 浅蓝化（父级要求：会话界面禁用深蓝背景） ─────────────────────────
+   原版聊天窗口标题带是 IMBorderTop 浅蓝系、窗口体 #5db7ff 天空蓝；这里
+   用 BackgroundC 采样色 rgb(85,178,253) 家族的浅蓝渐变覆盖 ui-skin 的
+   藏青九宫格。仅作用于会话窗口 chrome（.windowChrome 之内），主面板由
+   ui-workspace 自行决定。 */
+body[data-ds-skin='qq2006'] .windowChrome :global(.qq-skin-title) {
+  background: linear-gradient(to bottom, rgb(150, 212, 255), rgb(85, 178, 253));
+}
+
+body[data-ds-skin='qq2006'] .windowChrome :global(.qq-skin-head) {
+  background: linear-gradient(to bottom, rgb(170, 225, 255), rgb(110, 192, 253));
+}
+
+/* 浅蓝带上的标题文字改原版藏青墨色（原版好友信息条文字
+   rgb(7,30,129)），去掉白字投影。 */
+body[data-ds-skin='qq2006'] .titleText {
+  color: rgb(7, 30, 129);
+  text-shadow: none;
+}
+
+/* 好友信息条（原版 .qq-im-friend-info：白→#b6d5f5 渐变底、
+   #84a6c6 下边线、藏青字、20×20 头像），位于大工具栏与消息区之间。 */
+.friendInfo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 2px 8px;
+  background: linear-gradient(to bottom, #ffffff, #b6d5f5);
+  border-bottom: 1px solid #84a6c6;
+  color: rgb(7, 30, 129);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.friendAvatar {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  object-fit: cover;
+}
+
+.friendName {
+  flex: none;
+  font-weight: 700;
+}
+
+.friendMotto {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .titleButtons {
   display: flex;
   flex: none;

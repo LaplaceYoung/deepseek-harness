@@ -47,6 +47,9 @@ export interface GroupNode {
   label: string
   /** Total visible sessions in the group. */
   sessionCount: number
+  /** Sessions with live activity (running, pending interaction, or running
+   * subagents) — the QQ2006 group row's "在线/总数" numerator. */
+  onlineCount: number
   expanded: boolean
   /** The group contains the selected session (active folder tint; supplied here so the renderer never scans). */
   containsCurrent: boolean
@@ -264,6 +267,10 @@ export function deriveGroups(
       createdAt: g.createdAt,
       label: g.label,
       sessionCount: g.sessions.length,
+      onlineCount: g.sessions.filter(s =>
+        s.running || s.pendingInteraction !== undefined
+        || (descendants.get(s.id)?.runningCount ?? 0) > 0,
+      ).length,
       expanded,
       containsCurrent: g.key === currentGroup,
       sessions: expanded ? g.sessions.map(session => sessionNode(session, descendants)) : [],

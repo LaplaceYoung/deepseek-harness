@@ -357,29 +357,72 @@
 
 /* ═══ QQ2006 skin: friend-group / friend-row look. All skin-scoped. ═══════ */
 
-/* Group title deepens to 藏青 (QQ original group-row hover). */
-body[data-ds-skin='qq2006'] .projectRow:hover .title {
-  color: rgb(28, 62, 110);
-}
-
-/* Group containing the current session: left coral-blue accent bar. */
-body[data-ds-skin='qq2006'] .projectRow[data-active] {
+/* Group row (原版 .qq-friend-group, mengkunsoft index.html:343-355): 24px
+   row, 9×9 select.png arrow at the left, 藏青 bold name (#101c4a), grey
+   "在线/总数" count on the right. The folder/chevron slots are hidden. */
+body[data-ds-skin='qq2006'] .projectRow {
+  height: 24px;
+  padding: 0 8px 0 20px;
+  border-radius: 0;
+  gap: 4px;
   position: relative;
 }
 
-body[data-ds-skin='qq2006'] .projectRow[data-active]::before {
+body[data-ds-skin='qq2006'] .projectRow::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 7px;
-  bottom: 7px;
-  width: 3px;
-  border-radius: 2px;
-  background: var(--dsw-alias-brand-primary);
+  left: 7px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  background: url('/qq2006/img/select.png') center / 9px 9px no-repeat;
+  pointer-events: none;
 }
 
-/* Session rows mount with a QQ fade-in drop (160ms). */
+body[data-ds-skin='qq2006'] .projectRow[aria-expanded='true']::before {
+  transform: rotate(90deg);
+}
+
+body[data-ds-skin='qq2006'] .projectRow .slot {
+  display: none;
+}
+
+body[data-ds-skin='qq2006'] .projectRow .title {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(16, 28, 74);
+  line-height: 24px;
+}
+
+body[data-ds-skin='qq2006'] .projectRow:hover .title {
+  color: rgb(16, 28, 74);
+}
+
+body[data-ds-skin='qq2006'] .groupCount {
+  flex: none;
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(110, 125, 145);
+  line-height: 24px;
+}
+
+/* Group holding the current session: coral-blue left accent (QQ 当前分组). */
+body[data-ds-skin='qq2006'] .projectRow[data-active] {
+  box-shadow: inset 3px 0 0 0 var(--dsw-alias-brand-primary);
+}
+
+/* Friend row (原版 .qq-friend-item, mengkunsoft index.html:357-372): 48px
+   row (4px + 40px avatar + 4px), 40×40 avatar with coral-blue border, name
+   near-black #000400. Hover / selected light up QQ light blue; the current
+   session row deepens one step. */
 body[data-ds-skin='qq2006'] .sessionRow {
+  height: 48px;
+  padding: 0 8px;
+  border-radius: 0;
+  gap: 8px;
+  /* Mount fade-in drop (QQ 展开动画). */
   animation: qqRowIn 160ms var(--ds-ease-in-out);
 }
 
@@ -390,7 +433,35 @@ body[data-ds-skin='qq2006'] .sessionRow {
   }
 }
 
-/* Friend rows hover in QQ light blue; avatar gets the coral-blue border. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-ds-skin='qq2006'] .sessionRow {
+    animation: none;
+  }
+}
+
+body[data-ds-skin='qq2006'] .sessionRow .title {
+  font-size: 12px;
+  color: rgb(0, 4, 0);
+}
+
+body[data-ds-skin='qq2006'] .sessionRow .time {
+  color: rgb(110, 125, 145);
+}
+
+body[data-ds-skin='qq2006'] .qqAvatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
+  border: 1px solid rgb(150, 190, 230);
+  object-fit: cover;
+  margin-right: 0;
+}
+
+body[data-ds-skin='qq2006'] .searchResultHeading .qqAvatar {
+  margin-right: 4px;
+}
+
 body[data-ds-skin='qq2006'] .sessionRow:hover,
 body[data-ds-skin='qq2006'] .sessionRow.selected,
 body[data-ds-skin='qq2006'] .searchResultRow:hover,
@@ -398,27 +469,11 @@ body[data-ds-skin='qq2006'] .searchResultRow.selected {
   background: rgb(222, 238, 252);
 }
 
-body[data-ds-skin='qq2006'] .qqAvatar {
-  flex: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  border: 1px solid var(--dsw-alias-brand-primary);
-  object-fit: cover;
-  margin-right: 2px;
-}
-
-body[data-ds-skin='qq2006'] .searchResultHeading .qqAvatar {
-  margin-right: 4px;
+body[data-ds-skin='qq2006'] .sessionRow.selected {
+  background: rgb(205, 228, 250);
 }
 
 body[data-ds-skin='qq2006'] .sessionRow .slot,
 body[data-ds-skin='qq2006'] .searchResultHeading .slot {
   color: var(--dsw-alias-brand-primary);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body[data-ds-skin='qq2006'] .sessionRow {
-    animation: none;
-  }
 }

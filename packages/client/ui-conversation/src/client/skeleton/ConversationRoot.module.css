@@ -365,14 +365,14 @@
 }
 
 /* ── QQ2006 皮肤：聊天窗口体 ─────────────────────────────────────────────
-   窗口体采用 QQ 九宫格背景（BackgroundL/C/R 三片）叠 win-skin 淡色渐变；
-   --qq-win-* 变量按 data-qq-win-skin 预设定义，供气泡/输入区/面板消费。
-   全部锚定 body[data-ds-skin='qq2006']，默认皮肤零影响。 */
+   窗口体用 BackgroundC 天空蓝砖（采样 rgb(85,178,253)）叠 win-skin 淡色
+   渐变；不再铺设 BackgroundL/R（其首/末列是藏青 #1e3e93 边线，父级要求
+   会话界面无深蓝背景）。--qq-win-* 变量按 data-qq-win-skin 预设定义，
+   供气泡/输入区/面板消费。全部锚定 body[data-ds-skin='qq2006']，默认
+   皮肤零影响。 */
 body[data-ds-skin='qq2006'] .root {
   background:
-    url('/qq2006/img/BackgroundR.png') right top repeat-y,
     url('/qq2006/img/BackgroundC.png') center top repeat,
-    url('/qq2006/img/BackgroundL.png') left top repeat-y,
     var(--qq-win-bg, linear-gradient(to bottom, rgb(224, 240, 252), rgb(208, 230, 248)));
 }
 
