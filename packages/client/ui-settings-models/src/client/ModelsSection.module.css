@@ -673,3 +673,114 @@ select.input {
   font-size: 13px;
   overflow-wrap: anywhere;
 }
+
+/* ═══ QQ2006 skin: models settings — provider cards, buttons, fields and
+   the model catalog take the QQ2006 chrome: coral-blue hairline cards,
+   white→coral gradient primary button with pressed inset, retro field
+   focus (blue ring), and blue selected states. All skin-scoped; the
+   default skin keeps the token-drawn surface. ══════════════════════════ */
+body[data-ds-skin='qq2006'] .title {
+  color: var(--dsw-alias-label-primary-bluish);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .rowCard {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f7fbff, var(--dsw-alias-bg-layer-2));
+}
+
+body[data-ds-skin='qq2006'] .rowName {
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .rowTag {
+  background: var(--dsw-alias-bg-module-platform);
+  border-color: var(--dsw-alias-border-l3);
+}
+
+body[data-ds-skin='qq2006'] .primaryButton {
+  border: 1px solid var(--dsw-alias-border-l4);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, rgb(120, 180, 235), var(--dsw-alias-button-primary-fill));
+}
+
+body[data-ds-skin='qq2006'] .primaryButton:hover:not(:disabled) {
+  background: linear-gradient(to bottom, rgb(140, 195, 245), var(--dsw-alias-button-primary-hover));
+}
+
+body[data-ds-skin='qq2006'] .primaryButton:active:not(:disabled) {
+  background: linear-gradient(to bottom, var(--dsw-alias-interactive-bg-active), rgb(180, 215, 245));
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.3);
+}
+
+body[data-ds-skin='qq2006'] .secondaryButton,
+body[data-ds-skin='qq2006'] .addButton {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-bg-module-platform));
+}
+
+body[data-ds-skin='qq2006'] .secondaryButton:hover:not(:disabled),
+body[data-ds-skin='qq2006'] .addButton:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-interactive-bg-hover));
+}
+
+body[data-ds-skin='qq2006'] .dangerButton {
+  border-radius: 4px;
+  color: var(--dsw-alias-state-error-primary);
+}
+
+body[data-ds-skin='qq2006'] .editor,
+body[data-ds-skin='qq2006'] .addCard,
+body[data-ds-skin='qq2006'] .setupCard {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f4faff, var(--dsw-alias-bg-module-platform));
+}
+
+body[data-ds-skin='qq2006'] .editorHeader .editorTitle {
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .input {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-ds-skin='qq2006'] .input:focus {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 2px var(--dsw-alias-interactive-bg-hover-accent);
+}
+
+body[data-ds-skin='qq2006'] .modelEntry {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-ds-skin='qq2006'] .modelEmpty {
+  border-style: solid;
+  border-color: var(--dsw-alias-border-l3);
+  background: var(--dsw-alias-bg-module-platform);
+}
+
+body[data-ds-skin='qq2006'] .addModelButton {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-bg-module-platform));
+}
+
+body[data-ds-skin='qq2006'] .customizedSummary {
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .error {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+body[data-ds-skin='qq2006'] .candidate:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}

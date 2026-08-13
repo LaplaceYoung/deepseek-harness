@@ -14,3 +14,9 @@
     margin-top: 20px;
   }
 }
+
+/* ═══ QQ2006 skin: DeepSeek onboarding dialog copy — retro body tone on
+   the QQ modal. Skin-scoped only. ══════════════════════════════════════ */
+body[data-ds-skin='qq2006'] .description {
+  color: var(--dsw-alias-label-secondary);
+}

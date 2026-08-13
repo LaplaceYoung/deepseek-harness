@@ -25,3 +25,14 @@
   font: var(--dsw-font-xs-13);
   color: var(--dsw-alias-label-tertiary);
 }
+
+/* ── QQ2006 皮肤：轨迹分组头（Message/Step N）────────────────────────────
+   标题藏青加粗，描述保持浅灰。 */
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .description {
+  color: rgb(120, 140, 160);
+}

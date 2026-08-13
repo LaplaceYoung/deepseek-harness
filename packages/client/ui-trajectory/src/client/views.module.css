@@ -26,3 +26,9 @@
   /* ConversationRoot publishes the floating composer's live height. */
   --dsh-trajectory-bottom-clearance: calc(var(--dsh-composer-height, 152px) + 16px);
 }
+
+/* ── QQ2006 皮肤：轨迹视图宿主面 ─────────────────────────────────────────
+   整面浅蓝底，呼应 QQ 窗口主体。 */
+body[data-ds-skin='qq2006'] .root {
+  background: rgb(233, 243, 252);
+}

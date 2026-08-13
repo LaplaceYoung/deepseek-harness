@@ -271,3 +271,67 @@
 .refresh:hover {
   background: var(--dsw-alias-interactive-bg-hover);
 }
+
+/* ── QQ2006 皮肤：子智能体目录（群空间弹层树）────────────────────────────
+   弹层呈 QQ 菜单面板：白→浅蓝渐变 + 蓝描边 + 藏青标题；
+   行 hover 浅蓝、运行中行珊瑚蓝点；树线/折叠箭头珊瑚蓝。 */
+body[data-ds-skin='qq2006'] .menu {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f4faff, #e3f1ff);
+  box-shadow:
+    2px 2px 0 rgb(150, 190, 230),
+    4px 4px 0 rgba(45, 128, 208, 0.15);
+}
+
+body[data-ds-skin='qq2006'] .row:hover > .clickarea,
+body[data-ds-skin='qq2006'] .row:focus-visible > .clickarea {
+  background: rgb(214, 235, 252);
+}
+
+body[data-ds-skin='qq2006'] .row {
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .label {
+  color: rgb(35, 55, 80);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .summary {
+  color: rgb(120, 140, 160);
+}
+
+body[data-ds-skin='qq2006'] .metrics {
+  color: rgb(90, 110, 135);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .disclosure:hover {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .children::before,
+body[data-ds-skin='qq2006'] .children > .node::before,
+body[data-ds-skin='qq2006'] .children > .node > .row::before {
+  border-color: rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .trigger:hover,
+body[data-ds-skin='qq2006'] .trigger:focus-visible {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .count {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .error {
+  color: rgb(220, 60, 60);
+}
+
+body[data-ds-skin='qq2006'] .refresh:hover {
+  background: rgb(214, 235, 252);
+  color: rgb(45, 128, 208);
+}

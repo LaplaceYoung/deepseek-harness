@@ -79,3 +79,20 @@
     animation: none;
   }
 }
+
+/* ── QQ2006 皮肤：Think 折叠行（浅蓝胶囊） ───────────────────────────── */
+body[data-ds-skin='qq2006'] .root {
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+body[data-ds-skin='qq2006'] .row {
+  border: 1px solid rgb(170, 200, 228);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, #e2f1fc);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(60, 90, 120);
+  font-size: 12px;
+  font-weight: 700;
+}

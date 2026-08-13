@@ -295,9 +295,6 @@
   border: 1px solid var(--dsw-alias-border-l1);
 }
 
-/* Visually hidden run-state label for assistive technology: the StateDot and
-   the running sweep are aria-hidden / colour-only, so the text carries the
-   running/failed/interrupted state to a screen reader. */
 .visuallyHidden {
   position: absolute;
   width: 1px;
@@ -305,4 +302,63 @@
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* ── QQ2006 皮肤：工具调用行（传输条/展开卡片/IN/OUT 卡）─────────────────
+   行标题与文件链接珊瑚蓝，IN/OUT 卡呈 QQ 浅蓝代码面（浅蓝底 + 蓝边），
+   IN/OUT 标签藏青；Inspect 胶囊 QQ 蓝边白底、hover 珊瑚蓝实底；
+   错误摘要保持 QQ 错误红。 */
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .chevron {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .fileLink {
+  color: rgb(45, 128, 208);
+  text-decoration-color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .fileLink:hover {
+  color: rgb(45, 128, 208);
+  text-decoration-color: rgb(252, 184, 51);
+}
+
+body[data-ds-skin='qq2006'] .ioCard {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: rgb(240, 248, 255);
+}
+
+body[data-ds-skin='qq2006'] .ioLabel {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .ioDivider {
+  background: rgb(200, 222, 245);
+}
+
+body[data-ds-skin='qq2006'] .ioText {
+  color: rgb(35, 60, 90);
+}
+
+body[data-ds-skin='qq2006'] .inspectButton {
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 999px;
+  background: rgb(255, 255, 255);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .inspectButton:hover {
+  background: rgb(45, 128, 208);
+  color: #fff;
+}
+
+body[data-ds-skin='qq2006'] .errorSummary,
+body[data-ds-skin='qq2006'] .ioText[data-error] {
+  color: rgb(220, 60, 60);
 }

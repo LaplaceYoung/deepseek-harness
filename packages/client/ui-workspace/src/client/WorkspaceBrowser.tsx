@@ -21,7 +21,9 @@ import type {
 import type { WorkspaceBrowserProps } from './contract/slots.ts'
 import type { SessionNode, SessionOrderBy } from './tree.ts'
 import { deriveFlat, deriveGroups, deriveSearchResults, UNGROUPED_KEY } from './tree.ts'
+import { QQMainPanel } from './QQMainPanel.tsx'
 import { ProjectRowItem, SearchResultItem, SessionNodeItem } from './rows/Rows.tsx'
+import { useQqSkin } from './qq-skin.ts'
 import { FLAT_SESSION_ORDER_KEY } from './stores.ts'
 import { WorkspacePickFlow } from './WorkspacePicker.tsx'
 import css from './WorkspaceBrowser.module.css'
@@ -760,10 +762,15 @@ export function WorkspaceBrowser({
   useDirectoryFlow,
   renderSlot,
   t,
+  qq,
 }: WorkspaceBrowserProps) {
   const workspaces = useWorkspaces(state => state.items)
   const workspacePhase = useWorkspaces(state => state.phase)
   const archivedSessionIds = useWorkspaces(state => state.archivedSessionIds)
+  // Skin flag for the QQ2006 main-panel chrome and the search-box copy; the
+  // default skin renders none of it.
+  const qqSkin = useQqSkin()
+  const currentSessionId = useSessions(s => s.current)
   // Live occupancy of this surface's directory-flow hole (the same source the
   // flow reads): a composition without a picking affordance can add nothing.
   const directoryFlowAvailable = useDirectoryFlow(occupied => occupied)
@@ -974,6 +981,9 @@ export function WorkspaceBrowser({
 
   return (
     <div className={clsx(css.root, !wide && css.rail)}>
+      {wide && qqSkin && (
+        <QQMainPanel qq={qq} currentSessionId={currentSessionId} t={t} />
+      )}
       <div className={css.sectionHeader}>
         {wide && (
           <span className={clsx(css.sectionLabel, css.wide, searchExpanded && css.sectionLabelHidden)}>
@@ -1009,7 +1019,7 @@ export function WorkspaceBrowser({
                 ref={searchInput}
                 className={css.searchInput}
                 type="text"
-                placeholder={t('search.placeholder')}
+                placeholder={qqSkin ? t('qq.search.placeholder') : t('search.placeholder')}
                 maxLength={SEARCH_QUERY_MAX_CODE_UNITS}
                 value={query}
                 tabIndex={searchExpanded ? 0 : -1}

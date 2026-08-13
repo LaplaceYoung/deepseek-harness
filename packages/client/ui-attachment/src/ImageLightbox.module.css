@@ -42,3 +42,20 @@
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
 }
+
+/* ── QQ2006 皮肤：图片灯箱 ───────────────────────────────────────────────
+   预览图 QQ 蓝描边，关闭钮珊瑚蓝实底白字（QQ 关闭手感）。 */
+body[data-ds-skin='qq2006'] .image {
+  border: 2px solid rgb(150, 190, 230);
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .close {
+  border: 1px solid rgb(252, 184, 51);
+  background: rgb(45, 128, 208);
+  color: #fff;
+}
+
+body[data-ds-skin='qq2006'] .close:hover {
+  background: rgb(64, 143, 228);
+}

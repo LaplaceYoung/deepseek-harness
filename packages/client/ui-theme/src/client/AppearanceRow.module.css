@@ -55,3 +55,27 @@
   background: var(--dsw-alias-bg-module-platform);
   border-color: var(--dsw-static-neutral-bluish-400);
 }
+
+/* ═══ QQ2006 skin: appearance row — the registered QQ2006 cube reads as a
+   coral-blue tile, and the selected cube wears the QQ golden ring
+   (double inset ring, same gold pair as the global focus ring).
+   Skin-scoped only; default skin untouched. ════════════════════════════ */
+body[data-ds-skin='qq2006'] .themeCube {
+  border-radius: 6px;
+}
+
+body[data-ds-skin='qq2006'] .themeCube[data-theme='qq2006'] {
+  background: linear-gradient(to bottom, rgb(120, 180, 235), var(--dsw-alias-button-primary-fill));
+  border-color: var(--dsw-alias-border-l3);
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .themeCube[data-theme='qq2006']:hover:not(.selected) {
+  background: linear-gradient(to bottom, rgb(140, 195, 245), var(--dsw-alias-button-primary-hover));
+}
+
+body[data-ds-skin='qq2006'] .selected {
+  border-color: var(--dsw-alias-state-warn-primary);
+  box-shadow: inset 0 0 0 1px #ffe762, inset 0 0 0 2px #fcb833;
+  background: var(--dsw-alias-bg-module-platform);
+}

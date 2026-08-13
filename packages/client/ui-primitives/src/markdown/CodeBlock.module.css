@@ -94,3 +94,9 @@
 .plain {
   color: var(--dsw-alias-label-primary);
 }
+
+/* ═══ QQ2006 skin: retro code card — blue hairline, tight radius. ═════════ */
+body[data-ds-skin='qq2006'] .block {
+  --dsl-code-block-border-radius: 6px;
+  border: 1px solid var(--dsw-alias-border-l2);
+}

@@ -282,3 +282,18 @@
     animation: none;
   }
 }
+
+/* ═══ QQ2006 skin: the main panel's user head + panel bar replace the
+   modern wordmark/New Session chrome in the wide column. The rail keeps
+   its icons (collapsed state is presentation-neutral). All skin-scoped. ═══ */
+body[data-ds-skin='qq2006'] .root:not(.collapsed) .brand,
+body[data-ds-skin='qq2006'] .root:not(.collapsed) .newSession {
+  display: none;
+}
+
+body[data-ds-skin='qq2006'] .root:not(.collapsed) .logoRow {
+  justify-content: flex-end;
+  height: 36px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}

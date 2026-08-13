@@ -106,3 +106,38 @@
   line-height: 22px;
   color: var(--dsw-alias-label-dimmed);
 }
+
+/* ── QQ2006 皮肤：输入触发候选菜单（命令菜单下拉）────────────────────────
+   菜单呈 QQ 面板（浅蓝渐变底 + 蓝描边 + 右下投影），
+   选项行 hover/激活珊瑚蓝底、名称藏青；分组标题浅蓝灰。 */
+body[data-ds-skin='qq2006'] .menu {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f4faff, #e3f1ff);
+  box-shadow:
+    2px 2px 0 rgb(150, 190, 230),
+    4px 4px 0 rgba(45, 128, 208, 0.15);
+}
+
+body[data-ds-skin='qq2006'] .item:hover,
+body[data-ds-skin='qq2006'] .item.active {
+  background: rgb(214, 235, 252);
+}
+
+body[data-ds-skin='qq2006'] .item.active {
+  box-shadow: inset 2px 0 0 rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .itemName {
+  color: rgb(35, 55, 80);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .itemIcon {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .groupTitle {
+  color: rgb(120, 140, 160);
+  font-weight: 500;
+}

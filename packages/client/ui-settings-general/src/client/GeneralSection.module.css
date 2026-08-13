@@ -10,3 +10,11 @@
 .section > :global([data-slot='settings.general.item']) > :last-child {
   border-bottom: none;
 }
+
+/* ═══ QQ2006 skin: the General section column — items sit on the QQ
+   panel's light coral-blue body with a hairline-consistent gap. The shell
+   panel already repaints; this keeps contributed rows on the same rhythm.
+   Skin-scoped only. ════════════════════════════════════════════════════ */
+body[data-ds-skin='qq2006'] .section {
+  gap: 2px;
+}

@@ -354,3 +354,71 @@
     transition: none;
   }
 }
+
+/* ═══ QQ2006 skin: friend-group / friend-row look. All skin-scoped. ═══════ */
+
+/* Group title deepens to 藏青 (QQ original group-row hover). */
+body[data-ds-skin='qq2006'] .projectRow:hover .title {
+  color: rgb(28, 62, 110);
+}
+
+/* Group containing the current session: left coral-blue accent bar. */
+body[data-ds-skin='qq2006'] .projectRow[data-active] {
+  position: relative;
+}
+
+body[data-ds-skin='qq2006'] .projectRow[data-active]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--dsw-alias-brand-primary);
+}
+
+/* Session rows mount with a QQ fade-in drop (160ms). */
+body[data-ds-skin='qq2006'] .sessionRow {
+  animation: qqRowIn 160ms var(--ds-ease-in-out);
+}
+
+@keyframes qqRowIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Friend rows hover in QQ light blue; avatar gets the coral-blue border. */
+body[data-ds-skin='qq2006'] .sessionRow:hover,
+body[data-ds-skin='qq2006'] .sessionRow.selected,
+body[data-ds-skin='qq2006'] .searchResultRow:hover,
+body[data-ds-skin='qq2006'] .searchResultRow.selected {
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .qqAvatar {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--dsw-alias-brand-primary);
+  object-fit: cover;
+  margin-right: 2px;
+}
+
+body[data-ds-skin='qq2006'] .searchResultHeading .qqAvatar {
+  margin-right: 4px;
+}
+
+body[data-ds-skin='qq2006'] .sessionRow .slot,
+body[data-ds-skin='qq2006'] .searchResultHeading .slot {
+  color: var(--dsw-alias-brand-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-ds-skin='qq2006'] .sessionRow {
+    animation: none;
+  }
+}

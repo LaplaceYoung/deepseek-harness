@@ -277,3 +277,38 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ═══ QQ2006 skin: plugin inventory — search field with the QQ blue
+   focus ring, coral hairline cards, retro title tone. Skin-scoped only. */
+body[data-ds-skin='qq2006'] .search input {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-ds-skin='qq2006'] .search input:focus-visible {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 2px var(--dsw-alias-interactive-bg-hover-accent);
+}
+
+body[data-ds-skin='qq2006'] .catalogHeading h3 {
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .card {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f7fbff, var(--dsw-alias-bg-layer-2));
+}
+
+body[data-ds-skin='qq2006'] .card[data-open='true'] {
+  border-color: var(--dsw-alias-border-l4);
+}
+
+body[data-ds-skin='qq2006'] .cardDetails {
+  background: var(--dsw-alias-bg-module-platform);
+}
+
+body[data-ds-skin='qq2006'] .failure {
+  color: var(--dsw-alias-state-error-primary);
+}

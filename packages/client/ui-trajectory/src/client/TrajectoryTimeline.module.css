@@ -325,3 +325,34 @@
     transparent
   );
 }
+
+/* ── QQ2006 皮肤：轨迹时间线（执行回放总览）──────────────────────────────
+   时间线底呈 QQ 浅蓝轨道面，泳道标签藏青；加载更早历史按钮
+   浅蓝渐变底 + 蓝字；选中块保持珊瑚蓝、hover 金环由全局焦点环覆盖。 */
+body[data-ds-skin='qq2006'] .plot {
+  background: linear-gradient(to bottom, #f0f8ff, #dceeff);
+}
+
+body[data-ds-skin='qq2006'] .labels {
+  border-right: 1px solid rgb(150, 190, 230);
+  color: rgb(35, 55, 80);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .earlierHistory {
+  background: linear-gradient(
+    to right,
+    rgb(214, 235, 252) 0,
+    rgb(214, 235, 252) 38%,
+    transparent 100%
+  );
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .turnBoundary {
+  background: rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .empty {
+  color: rgb(120, 140, 160);
+}

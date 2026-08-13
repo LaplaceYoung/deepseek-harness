@@ -8,15 +8,26 @@
 import { useState } from 'react'
 import clsx from 'clsx'
 import {
-  HoverCard, IconArchiveOutline20, IconBranchOutline16, IconEditOutline16,
-  IconEllipsisOutline16, IconFolderClose16, IconFolderOpen16, IconPlusOutline16,
-  IconTrashOutline16, IconTriangleRightFill14, Menu, StateDot,
+  HoverCard, IconArchiveOutline20, IconBranchOutline16, IconCopyOutline16,
+  IconEditOutline16, IconEllipsisOutline16, IconFolderClose16, IconFolderOpen16,
+  IconLinkOutline16, IconPlusOutline16, IconTrashOutline16, IconTriangleRightFill14,
+  Menu, StateDot, writeClipboard,
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { StateDotState } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { WorkspaceBrowserProps } from '../contract/slots.ts'
 import type { GroupNode, SearchResultNode, SessionNode } from '../tree.ts'
 import { relativeTime } from '../tree.ts'
+import { useQqSkin } from '../qq-skin.ts'
 import css from './Rows.module.css'
+
+/** Deterministic QQ2006 avatar for a row key (session id or workspace id). */
+function qqAvatarSrc(key: string): string {
+  let hash = 0
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) | 0
+  }
+  return `/qq2006/img/avatar/${1 + Math.abs(hash) % 117}.png`
+}
 
 /** The standard locale seat, prop-passed from the browser root. */
 type RowTranslate = WorkspaceBrowserProps['t']
@@ -121,9 +132,14 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
   // The ungrouped bucket has no workspace title: its label is dictionary copy.
   const label = row.workspaceId === undefined ? t('group.ungrouped') : row.label
   const active = group.expanded && group.containsCurrent
+  const qqSkin = useQqSkin()
   const [menuOpen, setMenuOpen] = useState(false)
+  // Right-click opens the same menu anchored at the pointer (QQ2006 skin);
+  // the ⋯ button keeps its wrapper measurement when no pointer rect is set.
+  const [pointerRect, setPointerRect] = useState<DOMRect | null>(null)
   const workspaceMenuItems = [
     { id: 'rename', label: t('rename'), icon: <IconEditOutline16 /> },
+    ...(qqSkin ? [{ id: 'copy-path', label: t('menu.copyPath'), icon: <IconLinkOutline16 /> }] : []),
     { id: 'delete', label: t('delete.workspace'), icon: <IconTrashOutline16 />, danger: true },
   ]
   const ownRow = (
@@ -131,7 +147,15 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
       className={clsx(css.projectRow, menuOpen && css.menuOpen)}
       role="treeitem"
       aria-expanded={row.expanded}
+      data-active={group.containsCurrent ? '' : undefined}
       onClick={onToggle}
+      onContextMenu={actions === undefined || !qqSkin
+        ? undefined
+        : (e) => {
+          e.preventDefault()
+          setPointerRect(new DOMRect(e.clientX, e.clientY, 0, 0))
+          setMenuOpen(true)
+        }}
       draggable={drag !== undefined}
       onDragStart={drag === undefined
         ? undefined
@@ -155,17 +179,20 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
         {actions !== undefined && (
           <Menu
             open={menuOpen}
-            onClose={() => { setMenuOpen(false) }}
+            onClose={() => { setMenuOpen(false); setPointerRect(null) }}
             items={workspaceMenuItems}
             onSelect={(id) => {
               setMenuOpen(false)
+              setPointerRect(null)
               // Unknown ids leave before the dispatch: a future menu row must
               // not inherit the destructive branch as an else fallback.
-              /* v8 ignore next -- workspaceMenuItems carries exactly these two rows today. */
-              if (id !== 'rename' && id !== 'delete') return
+              /* v8 ignore next -- workspaceMenuItems carries exactly these rows today. */
+              if (id !== 'rename' && id !== 'delete' && id !== 'copy-path') return
               if (id === 'rename') actions.rename()
-              else actions.delete()
+              else if (id === 'delete') actions.delete()
+              else void writeClipboard(row.cwd ?? '')
             }}
+            {...(pointerRect === null ? {} : { getAnchorRect: () => pointerRect })}
             portal
             closeOnPointerLeave
             anchor={(
@@ -173,7 +200,11 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
                 type="button"
                 className={css.iconButton}
                 aria-label={t('actions.workspace.aria', { name: label })}
-                onClick={(e) => { e.stopPropagation(); setMenuOpen(v => !v) }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setPointerRect(null)
+                  setMenuOpen(v => !v)
+                }}
               >
                 <IconEllipsisOutline16 />
               </button>
@@ -309,6 +340,7 @@ export function SearchResultItem({ result, currentId, onOpen, t }: {
   const selected = result.id === currentId
   const statuses = sessionStatuses(result, t)
   const primaryStatus = statuses[0]
+  const qqSkin = useQqSkin()
   return (
     <button
       type="button"
@@ -318,6 +350,7 @@ export function SearchResultItem({ result, currentId, onOpen, t }: {
       onClick={() => { onOpen(result.id) }}
     >
       <span className={css.searchResultHeading}>
+        {qqSkin && <img className={css.qqAvatar} src={qqAvatarSrc(result.id)} alt="" draggable={false} />}
         <span className={css.slot}>
           {(primaryStatus.state !== 'done' || result.completed) && (
             <SessionStatusDots statuses={statuses} />
@@ -373,7 +406,11 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
   const statuses = sessionStatuses(node, t)
   const primaryStatus = statuses[0]
   const showStatus = primaryStatus.state !== 'done' || row.completed
+  const qqSkin = useQqSkin()
   const [menuOpen, setMenuOpen] = useState(false)
+  // Right-click opens the same menu anchored at the pointer (QQ2006 skin);
+  // the ⋯ button keeps its wrapper measurement when no pointer rect is set.
+  const [pointerRect, setPointerRect] = useState<DOMRect | null>(null)
   // Archive hides the row through the registry-global archive set and never
   // touches the session log, so it is not styled as destructive and needs no
   // confirmation dialog.
@@ -382,6 +419,7 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
     { id: 'fork', label: t('menu.fork'), icon: <IconBranchOutline16 /> },
     // 20-native glyph in the menu's 16px icon slot (Menu.module.css .itemIcon).
     { id: 'archive', label: t('menu.archiveSession'), icon: <IconArchiveOutline20 size={16} /> },
+    ...(qqSkin ? [{ id: 'copy-id', label: t('menu.copySessionId'), icon: <IconCopyOutline16 /> }] : []),
   ]
   // Figma session cell: pad 8, status slot 16, then a 4px title gap.
   const ownRow = (
@@ -394,6 +432,13 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
       role="treeitem"
       aria-selected={selected}
       onClick={() => { onOpen(node.id) }}
+      onContextMenu={row.blank || !qqSkin
+        ? undefined
+        : (e) => {
+          e.preventDefault()
+          setPointerRect(new DOMRect(e.clientX, e.clientY, 0, 0))
+          setMenuOpen(true)
+        }}
       draggable={drag !== undefined}
       onDragStart={drag === undefined
         ? undefined
@@ -419,6 +464,8 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
           drag.drop(rowHalf(e))
         }}
     >
+      {/* QQ2006 skin only: deterministic avatar with the coral-blue border. */}
+      {qqSkin && <img className={css.qqAvatar} src={qqAvatarSrc(node.id)} alt="" draggable={false} />}
       {/* Pending interaction and own or descendant activity outrank the
           finished-but-unviewed reminder, which returns after activity stops
           and is cleared by opening the session. */}
@@ -437,14 +484,17 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
         <span className={css.rowActions}>
           <Menu
             open={menuOpen}
-            onClose={() => { setMenuOpen(false) }}
+            onClose={() => { setMenuOpen(false); setPointerRect(null) }}
             items={sessionMenuItems}
             onSelect={(id) => {
               setMenuOpen(false)
+              setPointerRect(null)
               if (id === 'rename') onRename(node.id, row.title)
               if (id === 'fork') onFork(node.id)
               if (id === 'archive') onArchive(node.id)
+              if (id === 'copy-id') void writeClipboard(node.id)
             }}
+            {...(pointerRect === null ? {} : { getAnchorRect: () => pointerRect })}
             portal
             closeOnPointerLeave
             anchor={(
@@ -452,7 +502,11 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
                 type="button"
                 className={css.iconButton}
                 aria-label={t('actions.session.aria', { name: title })}
-                onClick={(e) => { e.stopPropagation(); setMenuOpen(v => !v) }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setPointerRect(null)
+                  setMenuOpen(v => !v)
+                }}
               >
                 <IconEllipsisOutline16 />
               </button>

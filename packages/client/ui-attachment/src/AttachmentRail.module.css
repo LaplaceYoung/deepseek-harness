@@ -116,3 +116,34 @@
 .arrowRight {
   right: 4px;
 }
+
+/* ── QQ2006 皮肤：附件 rail（草稿缩略图横条）────────────────────────────
+   缩略图卡 QQ 蓝描边 + 浅蓝底；移除钮珊瑚蓝（QQ 关闭语义）；
+   翻页箭头 QQ 浅蓝胶囊。 */
+body[data-ds-skin='qq2006'] .thumbnail {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .thumbnail:hover {
+  border-color: rgb(252, 184, 51);
+}
+
+body[data-ds-skin='qq2006'] .remove {
+  background: rgb(45, 128, 208);
+  border: 1px solid rgb(252, 184, 51);
+  border-radius: 50%;
+}
+
+body[data-ds-skin='qq2006'] .arrow {
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 999px;
+  background: rgb(244, 250, 255);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .arrow:hover {
+  background: rgb(45, 128, 208);
+  color: #fff;
+}

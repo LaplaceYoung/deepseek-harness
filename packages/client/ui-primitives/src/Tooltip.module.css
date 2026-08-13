@@ -47,3 +47,10 @@
     animation: none;
   }
 }
+
+/* ═══ QQ2006 skin: retro tooltip — yellow plate (tooltip-bg token is already
+   QQ yellow) with a gold hairline and tight radius. ═══════════════════════ */
+body[data-ds-skin='qq2006'] .bubble {
+  border: 1px solid var(--dsw-alias-state-warn-primary);
+  border-radius: 4px;
+}

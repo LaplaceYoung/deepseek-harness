@@ -1,0 +1,42 @@
+// Live QQ2006 skin reader: the body[data-ds-skin='qq2006'] attribute the
+// ui-skin-qq2006 plugin mirrors (and boot.tsx restores before the loading
+// page renders). Components subscribe so the window chrome mounts/unmounts
+// the moment the Appearance row flips the skin — no reload.
+//
+// The chat window chrome (title bar, toolbars, date bars, QQ placeholders)
+// is rendered ONLY while this returns true, so the default skin keeps its
+// exact DOM; the CSS patches in this package are additionally scoped to
+// `body[data-ds-skin='qq2006']` ancestors, so both layers are skin-gated.
+
+import { useSyncExternalStore } from 'react'
+
+const SKIN = 'qq2006'
+
+/** Synchronous attribute read (event handlers, layout effects). */
+export function isQqSkin(): boolean {
+  return document.body.getAttribute('data-ds-skin') === SKIN
+}
+
+const listeners = new Set<() => void>()
+let observer: MutationObserver | null = null
+
+/** Arm the body-attribute observer once (idempotent). */
+function ensure(): void {
+  if (observer !== null) return
+  observer = new MutationObserver(() => {
+    for (const listener of listeners) listener()
+  })
+  observer.observe(document.body, { attributes: true, attributeFilter: ['data-ds-skin'] })
+}
+
+function subscribe(listener: () => void): () => void {
+  ensure()
+  listeners.add(listener)
+  return () => { listeners.delete(listener) }
+}
+
+/** Live skin flag; re-renders the consumer when the skin attribute flips. */
+export function useQqSkin(): boolean {
+  ensure()
+  return useSyncExternalStore(subscribe, isQqSkin)
+}

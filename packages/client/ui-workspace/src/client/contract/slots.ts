@@ -135,6 +135,41 @@ export type WorkspaceBrowserInjected = DirectoryPickingInjected & {
   insertSessionBefore: (workspaceId: WorkspaceId, sessionId: SessionId, beforeSessionId?: SessionId) => Promise<void>
   /** Adopt a picked host directory as a real Workspace before targeting a Session. */
   createWorkspace: (input: { path: string }) => Promise<WorkspaceView>
+  /**
+   * QQ2006 main-panel verb bundle (user head mini buttons + panel bar),
+   * bound to official services by the apply wiring. Absent (or a no-op
+   * member) in tests: the panel itself is skin-gated, so the default skin
+   * never invokes these.
+   */
+  qq: QQPanelActions
+}
+
+/**
+ * The QQ2006 main-panel verbs: every button maps to the closest official
+ * DSH service (model-selector popup via the slash trigger, command palette,
+ * details panel, sidebar fold, new session, subagent catalog, composer
+ * focus). Buttons without an official equivalent keep their QQ visual and
+ * answer with a feedback tip only — the panel component owns that fallback.
+ */
+export interface QQPanelActions {
+  /** 邮箱 / 无线乐园 / 手机短信: start a new session. */
+  newSession: () => void
+  /** 安全中心: fold/unfold the sidebar panel. */
+  toggleSidebar: () => void
+  /** QQ空间 / 3D秀: open the right details panel. */
+  openDetails: () => void
+  /** QQ音乐: open the model-selector popup (slash trigger query "model"). */
+  openModelMenu: (sessionId: SessionId) => void
+  /** 消息管理器 / 自定义面板: open the command palette (slash menu). */
+  toggleCommandMenu: (sessionId: SessionId) => void
+  /** 企业好友: open the current session's subagent catalog. */
+  openSubagentCatalog: (sessionId: SessionId) => void
+  /** 短信: focus the composer draft (official `[data-input-scroll]` hook). */
+  focusComposer: () => void
+  /** 传文件: scroll the latest tool-call row into view. */
+  locateLatestToolCall: () => void
+  /** 语音: toggle the new-message alert sound (shared `dsh.qq.sound`). */
+  toggleNewMessageSound: () => boolean
 }
 
 /** Full browser props: shell owner share + viewing store + injected actions + the locale seat. */

@@ -224,3 +224,51 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ═══ QQ2006 skin: settings panel — the modal reads as a QQ window: light
+   coral-blue body, blue hairline border, retro title, coral-blue active nav
+   cell, and the classic red close button. Skin-scoped only; the default
+   skin keeps the token-drawn surface. ═══════════════════════════════════ */
+body[data-ds-skin='qq2006'] .panel {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f4faff, var(--dsw-alias-bg-layer-2));
+  box-shadow: var(--dsw-shadow-lv3);
+}
+
+body[data-ds-skin='qq2006'] .nav {
+  background: linear-gradient(to bottom, #eef6fe, #dcebfa);
+  border-right: 1px solid var(--dsw-alias-border-l2);
+}
+
+body[data-ds-skin='qq2006'] .navTitle {
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .navCell {
+  border-radius: 6px;
+}
+
+body[data-ds-skin='qq2006'] .navCell:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+body[data-ds-skin='qq2006'] .navCell.active {
+  background: linear-gradient(to bottom, rgb(80, 150, 220), var(--dsw-alias-brand-primary));
+  color: var(--dsw-alias-label-primary-foreground);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .navCell.active .navIcon {
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .close {
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .close:hover {
+  background: var(--dsw-alias-interactive-bg-hover-danger);
+  color: var(--dsw-alias-state-error-primary);
+}

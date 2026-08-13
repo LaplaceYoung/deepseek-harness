@@ -121,3 +121,31 @@
     padding: 8px 12px 10px;
   }
 }
+
+/* ── QQ2006 皮肤：计划审批确认卡（权限确认）──────────────────────────────
+   卡片呈 QQ 九宫格弹窗（浅蓝渐变底 + 蓝描边 + 金边细节），
+   顶部横幅用黄色公告条（浅黄渐变 + 金边 + 蓝点），按钮组沿用 QQ 手感。 */
+body[data-ds-skin='qq2006'] .card {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f8fcff, #e4f1ff);
+  box-shadow:
+    2px 2px 0 rgb(150, 190, 230),
+    4px 4px 0 rgba(45, 128, 208, 0.15);
+}
+
+body[data-ds-skin='qq2006'] .strip {
+  background: linear-gradient(to bottom, #fffbe8, #fff3c9);
+  border-bottom: 1px solid rgb(252, 184, 51);
+  color: rgb(140, 90, 20);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .dot {
+  background: rgb(45, 128, 208);
+  box-shadow: 0 0 0 1px rgb(252, 184, 51);
+}
+
+body[data-ds-skin='qq2006'] .feedback {
+  color: rgb(220, 60, 60);
+}

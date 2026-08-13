@@ -52,3 +52,18 @@
   color: var(--dsw-alias-label-tertiary);
   white-space: pre-wrap;
 }
+
+/* ── QQ2006 皮肤：拖放遮罩（传文件语义）──────────────────────────────────
+   遮罩呈 QQ 浅蓝毛玻璃，标题藏青加粗、说明浅蓝灰。 */
+body[data-ds-skin='qq2006'] .mask {
+  background-color: rgba(222, 238, 252, 0.72);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .desc {
+  color: rgb(90, 110, 135);
+}

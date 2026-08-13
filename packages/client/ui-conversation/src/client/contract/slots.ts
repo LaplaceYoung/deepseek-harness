@@ -17,6 +17,7 @@ import type { ComposerBlock } from '../input/blocks.ts'
 import type {
   ComposerKeyboard, DraftAttachmentId, EditSelection, InputActions, InputNotice, InputState,
 } from '../input/contract.ts'
+import type { QQChromeActions } from '../qq/qq-actions.ts'
 import type { createChatStore } from '../stores.ts'
 import type { ComposerSubmitGesture, InputSubmitMode } from './composer-submission.ts'
 import type { ChatNode, ChatNodeKind } from './chat-nodes.ts'
@@ -448,6 +449,13 @@ export interface ConversationSessionHeaderInjected {
   }
   /** Select a real Session through the runtime navigation owner. */
   open: (sessionId: SessionId) => void
+  /**
+   * QQ2006 window-chrome verb bundle (title bar + toolbars), provided by
+   * this package's apply. Optional so test harnesses that render the header
+   * directly without the plugin wiring still type-check; the chrome is only
+   * rendered when the bundle AND the skin are both present.
+   */
+  qqActions?: QQChromeActions | undefined
 }
 
 /**

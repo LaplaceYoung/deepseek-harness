@@ -136,3 +136,56 @@
   color: var(--dsw-alias-label-tertiary);
   white-space: nowrap;
 }
+
+/* ── QQ2006 皮肤：轨迹单元格（时间线/表格里的单步行）────────────────────
+   单元格浅蓝卡片 + 蓝描边，选中态 QQ 金环；序号与时间藏青灰；
+   标签徽章沿用各语义色（蓝=用户/助手、黄=工具）。 */
+body[data-ds-skin='qq2006'] .root {
+  border: 1px solid rgb(170, 205, 240);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #f4faff, #e0efff);
+}
+
+body[data-ds-skin='qq2006'] .selected {
+  border-color: transparent;
+  box-shadow: inset 0 0 0 2px #fcb833, 0 0 0 1px rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .index {
+  color: rgb(120, 140, 160);
+}
+
+body[data-ds-skin='qq2006'] .tag {
+  border-radius: 3px;
+  border: 1px solid transparent;
+}
+
+body[data-ds-skin='qq2006'] .tagSystem {
+  color: rgb(90, 110, 135);
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .tagUser,
+body[data-ds-skin='qq2006'] .tagMessage {
+  color: rgb(45, 128, 208);
+  background: rgb(205, 230, 250);
+  border-color: rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .tagContext {
+  color: rgb(70, 130, 100);
+  background: rgb(222, 244, 230);
+}
+
+body[data-ds-skin='qq2006'] .tagTool,
+body[data-ds-skin='qq2006'] .tagSubtool {
+  color: rgb(140, 90, 20);
+  background: rgb(248, 230, 190);
+  border-color: rgb(252, 184, 51);
+}
+
+body[data-ds-skin='qq2006'] .metric,
+body[data-ds-skin='qq2006'] .time {
+  color: rgb(120, 140, 160);
+  font-variant-numeric: tabular-nums;
+}

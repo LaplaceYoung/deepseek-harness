@@ -36,3 +36,13 @@
 .input::placeholder {
   color: var(--dsw-alias-label-dimmed);
 }
+
+/* ═══ QQ2006 skin: flat field with the QQ blue focus ring. ════════════════ */
+body[data-ds-skin='qq2006'] .wrap {
+  border-radius: 3px;
+}
+
+body[data-ds-skin='qq2006'] .wrap:focus-within {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 1px var(--dsw-alias-brand-primary);
+}

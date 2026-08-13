@@ -240,3 +240,32 @@
   left: -10px;
   width: 10px;
 }
+
+/* ═══ QQ2006 skin: retro dropdown / context menu — white card, blue
+   hairline, tight radius; selected row gets the QQ solid-blue fill with
+   white icon + check (QQ 蓝底选中). Skin-scoped only. ════════════════════ */
+body[data-ds-skin='qq2006'] .list,
+body[data-ds-skin='qq2006'] .submenu {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 4px;
+  background: var(--dsw-alias-bg-mask-1);
+}
+
+body[data-ds-skin='qq2006'] .item:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+body[data-ds-skin='qq2006'] .selected,
+body[data-ds-skin='qq2006'] .selected:hover:not(:disabled) {
+  background: var(--dsw-alias-brand-primary);
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .selected .itemIcon,
+body[data-ds-skin='qq2006'] .selected .check {
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .separator {
+  background: var(--dsw-alias-border-l2);
+}

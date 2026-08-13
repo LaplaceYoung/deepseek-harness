@@ -44,3 +44,25 @@
   line-height: 20px;
   color: var(--dsw-alias-label-tertiary);
 }
+
+/* ── QQ2006 皮肤：工具调用详情（详情面板里的输出体）──────────────────────
+   代码/结果块呈 QQ 浅蓝代码面（浅蓝底 + 蓝描边 + 藏青字），
+   运行中提示与恢复定位文字浅灰蓝。 */
+body[data-ds-skin='qq2006'] .description {
+  color: rgb(35, 60, 90);
+}
+
+body[data-ds-skin='qq2006'] .code {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: rgb(240, 248, 255);
+  color: rgb(35, 55, 80);
+}
+
+body[data-ds-skin='qq2006'] .recovery {
+  color: rgb(120, 140, 160);
+}
+
+body[data-ds-skin='qq2006'] .empty {
+  color: rgb(120, 140, 160);
+}

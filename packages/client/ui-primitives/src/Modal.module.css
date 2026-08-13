@@ -101,3 +101,21 @@
   gap: 8px;
   padding: 0 24px;
 }
+
+/* ═══ QQ2006 skin: retro dialog — white card, blue hairline, tight radius,
+   close hover picks the coral brand blue. Skin-scoped only. ══════════════ */
+body[data-ds-skin='qq2006'] .dialog {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  background: var(--dsw-alias-bg-mask-1);
+  box-shadow: 0 6px 20px rgb(20 60 110 / 0.25);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .close:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-brand-primary);
+}

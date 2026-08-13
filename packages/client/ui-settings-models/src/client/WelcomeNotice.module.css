@@ -34,3 +34,28 @@
     width: 100%;
   }
 }
+
+/* ═══ QQ2006 skin: welcome notice — retro copy tone, red error seat and a
+   coral-blue continue button on the QQ modal. Skin-scoped only. ═════════ */
+body[data-ds-skin='qq2006'] .copy {
+  color: var(--dsw-alias-label-secondary);
+}
+
+body[data-ds-skin='qq2006'] .error {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+body[data-ds-skin='qq2006'] .primary {
+  border: 1px solid var(--dsw-alias-border-l4);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, rgb(120, 180, 235), var(--dsw-alias-button-primary-fill));
+}
+
+body[data-ds-skin='qq2006'] .primary:hover:not(:disabled) {
+  background: linear-gradient(to bottom, rgb(140, 195, 245), var(--dsw-alias-button-primary-hover));
+}
+
+body[data-ds-skin='qq2006'] .primary:active:not(:disabled) {
+  background: linear-gradient(to bottom, var(--dsw-alias-interactive-bg-active), rgb(180, 215, 245));
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.3);
+}

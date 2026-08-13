@@ -237,3 +237,52 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ── QQ2006 皮肤：Bash 工具行（传输条/终端卡）────────────────────────────
+   行标题藏青，终端卡与 IN/OUT 卡浅蓝代码面 + 蓝边，Inspect 胶囊
+   QQ 蓝边白底、hover 珊瑚蓝实底；错误红保持。 */
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .chevron {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .terminal,
+body[data-ds-skin='qq2006'] .ioCard {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: rgb(240, 248, 255);
+}
+
+body[data-ds-skin='qq2006'] .ioLabel {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .ioDivider {
+  background: rgb(200, 222, 245);
+}
+
+body[data-ds-skin='qq2006'] .ioText {
+  color: rgb(35, 60, 90);
+}
+
+body[data-ds-skin='qq2006'] .inspectButton {
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 999px;
+  background: rgb(255, 255, 255);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .inspectButton:hover {
+  background: rgb(45, 128, 208);
+  color: #fff;
+}
+
+body[data-ds-skin='qq2006'] .errorSummary,
+body[data-ds-skin='qq2006'] .ioText[data-error] {
+  color: rgb(220, 60, 60);
+}

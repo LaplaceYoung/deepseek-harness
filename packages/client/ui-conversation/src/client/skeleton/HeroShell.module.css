@@ -205,3 +205,17 @@
   line-height: 18px;
   color: var(--dsw-alias-state-error-primary);
 }
+
+/* ── QQ2006 皮肤：空白会话 Hero（QQ 蓝色标题） ───────────────────────── */
+body[data-ds-skin='qq2006'] .headlineText {
+  color: rgb(30, 60, 90);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+body[data-ds-skin='qq2006'] .workspace {
+  border: 1px solid rgb(150, 196, 232);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, #e2f1fc);
+  color: rgb(40, 70, 100);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}

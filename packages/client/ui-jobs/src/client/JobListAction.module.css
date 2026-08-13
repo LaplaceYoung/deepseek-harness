@@ -123,3 +123,50 @@
 .duration {
   font-variant-numeric: tabular-nums;
 }
+
+/* ── QQ2006 皮肤：后台任务列表（消息管理器弹层）──────────────────────────
+   弹层呈 QQ 菜单面板（浅蓝渐变底 + 蓝描边），行 hover 浅蓝；
+   类型徽章珊瑚蓝底白字；live 行藏青、settled 行浅灰；运行点沿用
+   全局 QQ 状态点。 */
+body[data-ds-skin='qq2006'] .trigger:hover,
+body[data-ds-skin='qq2006'] .trigger:focus-visible {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .count {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .menu {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f4faff, #e3f1ff);
+  box-shadow:
+    2px 2px 0 rgb(150, 190, 230),
+    4px 4px 0 rgba(45, 128, 208, 0.15);
+}
+
+body[data-ds-skin='qq2006'] .row:hover {
+  background: rgb(214, 235, 252);
+}
+
+body[data-ds-skin='qq2006'] .kind {
+  border-radius: 3px;
+  background: rgb(45, 128, 208);
+  color: #fff;
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .row {
+  color: rgb(35, 55, 80);
+}
+
+body[data-ds-skin='qq2006'] .rowSettled {
+  color: rgb(120, 140, 160);
+}
+
+body[data-ds-skin='qq2006'] .status,
+body[data-ds-skin='qq2006'] .duration {
+  color: rgb(90, 110, 135);
+}

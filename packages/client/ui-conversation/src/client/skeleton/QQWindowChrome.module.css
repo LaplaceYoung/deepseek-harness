@@ -1,0 +1,208 @@
+/* QQWindowChrome: the QQ2006 window frame — title strip (24px), big toolbar
+   (44px), group announcement/member chrome. The nine-slice band
+   backgrounds come from the global .qq-skin-title / .qq-skin-head utilities;
+   this module owns only the row layout inside each band, the big-toolbar
+   buttons, and the group-chat elements. Every rule is scoped to
+   `body[data-ds-skin='qq2006']` — default skin renders none of this DOM
+   anyway (the component is skin-gated in the header), so the scope is the
+   belt-and-suspenders layer. */
+
+.windowChrome {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+  padding: 0 4px 0 10px;
+}
+
+.titleText {
+  min-width: 0;
+  overflow: hidden;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px rgba(0, 40, 90, 0.6);
+}
+
+.titleButtons {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Big toolbar: 12 buttons in one compact line (the e2e layout contract). */
+.bigBar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 44px;
+  padding: 0 8px;
+}
+
+.bigButton {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bigButton:hover {
+  border-color: rgb(45, 128, 208);
+  background: linear-gradient(to bottom, rgb(235, 246, 255), rgb(190, 222, 250));
+}
+
+.bigButton:active {
+  box-shadow: inset 0 1px 3px rgba(20, 60, 110, 0.4);
+}
+
+.bigIcon {
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+
+/* Group chrome: 群公告 yellow strip + member bar. */
+.groupChrome {
+  flex: none;
+  border-bottom: 1px solid rgb(190, 214, 234);
+  background: linear-gradient(to bottom, rgb(236, 245, 252), rgb(224, 238, 250));
+}
+
+.announceBar {
+  padding: 3px 12px;
+  border-top: 1px solid rgb(240, 220, 130);
+  border-bottom: 1px solid rgb(214, 169, 45);
+  background: linear-gradient(to bottom, rgb(255, 252, 228), rgb(255, 243, 178));
+  color: rgb(110, 84, 10);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.announcePrefix {
+  margin-right: 6px;
+  font-weight: 700;
+  color: rgb(160, 110, 10);
+}
+
+.memberBar {
+  position: relative;
+  padding: 4px 12px;
+}
+
+.memberToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.memberAvatars {
+  display: inline-flex;
+  align-items: center;
+}
+
+.memberAvatar {
+  width: 24px;
+  height: 24px;
+  margin-right: -8px;
+  border: 1px solid rgb(45, 128, 208);
+  border-radius: 4px;
+  background: #fff;
+  object-fit: cover;
+}
+
+.memberCount {
+  color: rgb(35, 55, 80);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.memberChevron {
+  color: rgb(90, 120, 150);
+  font-size: 9px;
+}
+
+.memberList {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 12px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(30, 70, 120, 0.28);
+}
+
+.memberRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.memberRow:hover {
+  background: rgb(232, 242, 252);
+}
+
+.memberListAvatar {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgb(45, 128, 208);
+  border-radius: 4px;
+  background: #fff;
+  object-fit: cover;
+}
+
+.memberName {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: rgb(35, 55, 80);
+  font-size: 12px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memberStateOn {
+  flex: none;
+  color: rgb(60, 140, 80);
+  font-size: 11px;
+}
+
+.memberStateOff {
+  flex: none;
+  color: rgb(150, 160, 172);
+  font-size: 11px;
+}

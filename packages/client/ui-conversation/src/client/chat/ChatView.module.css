@@ -190,3 +190,40 @@
 .toBottom:hover {
   background: var(--dsw-alias-button-floating-hover);
 }
+
+/* ── QQ2006 皮肤：日期条 + 加载更多 + 回到底部 ─────────────────────────── */
+body[data-ds-skin='qq2006'] .dateBar {
+  display: flex;
+  justify-content: center;
+  flex: none;
+  margin: 2px 0;
+  padding: 2px 0;
+}
+
+body[data-ds-skin='qq2006'] .dateBarText {
+  padding: 1px 14px;
+  border: 1px solid rgb(170, 200, 228);
+  border-radius: 10px;
+  background: linear-gradient(to bottom, rgb(238, 247, 254), rgb(214, 234, 250));
+  color: rgb(70, 100, 130);
+  font-size: 11px;
+  line-height: 18px;
+}
+
+body[data-ds-skin='qq2006'] .older button {
+  border: 1px solid rgb(140, 180, 220);
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #ffffff, #cfe8fc);
+  color: rgb(40, 70, 100);
+}
+
+body[data-ds-skin='qq2006'] .toBottom {
+  border-color: rgb(140, 180, 220);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #ffffff, #cfe8fc);
+  color: rgb(40, 70, 100);
+}
+
+body[data-ds-skin='qq2006'] .toBottom:hover {
+  background: linear-gradient(to bottom, #ffffff, #a8d4f4);
+}

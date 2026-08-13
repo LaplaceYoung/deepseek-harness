@@ -504,3 +504,42 @@
     transition: none;
   }
 }
+
+/* ═══ QQ2006 skin: main-panel chrome. All skin-scoped. ═══════════════════ */
+
+/* Search capsule becomes the QQ finder: original icon + italic placeholder. */
+body[data-ds-skin='qq2006'] .searchButton {
+  background: url('/qq2006/img/SearchButton.png') center / 16px 16px no-repeat;
+}
+
+body[data-ds-skin='qq2006'] .searchButton svg {
+  display: none;
+}
+
+body[data-ds-skin='qq2006'] .searchExpanded .searchButton {
+  background-size: 14px 14px;
+}
+
+body[data-ds-skin='qq2006'] .searchExpanded {
+  border-color: var(--dsw-alias-brand-primary);
+}
+
+body[data-ds-skin='qq2006'] .searchInput::placeholder {
+  color: rgb(150, 160, 175);
+  font-style: italic;
+}
+
+/* The QQ panel bar sits flush under the section header; widen the header
+   for the retro look without touching the default skin. */
+body[data-ds-skin='qq2006'] .sectionHeader {
+  margin-top: 4px;
+}
+
+/* The rail keeps its modern icon: the skin swap targets the wide button only. */
+body[data-ds-skin='qq2006'] .rail .searchButton {
+  background: none;
+}
+
+body[data-ds-skin='qq2006'] .rail .searchButton svg {
+  display: inline;
+}

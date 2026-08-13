@@ -252,3 +252,51 @@
     padding-left: 12px;
   }
 }
+
+/* ── QQ2006 皮肤：工作流运行面板（传输条/成员状态树）────────────────────
+   运行头部呈 QQ 浅蓝传输条（白→浅蓝渐变 + 蓝描边），标题藏青；
+   成员行 hover 浅蓝，可导航成员名珊瑚蓝下划线；状态字藏青。 */
+body[data-ds-skin='qq2006'] .runHeader {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, #d8ecff);
+}
+
+body[data-ds-skin='qq2006'] .runTitle,
+body[data-ds-skin='qq2006'] .phaseTitle {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .runSummary {
+  color: rgb(90, 110, 135);
+}
+
+body[data-ds-skin='qq2006'] .statusTail,
+body[data-ds-skin='qq2006'] .phaseStatus {
+  color: rgb(35, 60, 90);
+}
+
+body[data-ds-skin='qq2006'] .phaseHeader:hover {
+  background: rgb(222, 238, 252);
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .memberRow:hover,
+body[data-ds-skin='qq2006'] .memberButton:hover {
+  background: rgb(222, 238, 252);
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .memberButton .memberLabel {
+  color: rgb(45, 128, 208);
+  text-decoration-color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .phaseCount {
+  color: rgb(120, 140, 160);
+}
+
+body[data-ds-skin='qq2006'] .empty {
+  color: rgb(120, 140, 160);
+}

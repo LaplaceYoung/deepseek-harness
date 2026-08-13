@@ -7,3 +7,8 @@
 .actions {
   margin-left: -6px;
 }
+
+/* ── QQ2006 皮肤：轮尾操作行 ─────────────────────────────────────────── */
+body[data-ds-skin='qq2006'] .actions {
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}

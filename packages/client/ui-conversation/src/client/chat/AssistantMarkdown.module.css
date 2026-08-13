@@ -34,3 +34,22 @@
   /* Optical align with 28px icon hit targets that pad 6px past the glyph. */
   margin-left: -6px;
 }
+
+/* ── QQ2006 皮肤：对方（助手）白底气泡 ─────────────────────────────────
+   助手叙述整段进白气泡（经典蓝预设；换肤预设为对应淡色），左下角收 QQ
+   尾巴；Think 折叠行 / 代码块仍留在气泡内部。 */
+body[data-ds-skin='qq2006'] .root {
+  max-width: min(640px, 92%);
+  padding: 6px 10px;
+  border: 1px solid rgb(196, 214, 232);
+  border-radius: 3px 8px 8px 8px;
+  background: var(--qq-win-bubble-other, #ffffff);
+  box-shadow: 0 1px 2px rgba(40, 70, 110, 0.10);
+  color: rgb(35, 55, 80);
+  font-size: var(--qq-msg-font-size, 13px);
+  line-height: 22px;
+}
+
+body[data-ds-skin='qq2006'] .body {
+  gap: 8px;
+}

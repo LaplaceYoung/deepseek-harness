@@ -259,3 +259,90 @@
   flex: 0 0 auto;
   color: var(--dsw-alias-label-tertiary);
 }
+
+/* ═══ QQ2006 skin: model selector popup — the two-level menu card goes
+   retro (coral hairline, QQ light body), the trigger chip gets a QQ
+   outline, group titles read as QQ group headers, and the selected model
+   row takes the QQ solid-blue fill with white copy + check. Skin-scoped. */
+body[data-ds-skin='qq2006'] .trigger {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-bg-module-platform));
+}
+
+body[data-ds-skin='qq2006'] .trigger:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-interactive-bg-hover));
+}
+
+body[data-ds-skin='qq2006'] .trigger:focus-visible {
+  box-shadow: 0 0 0 2px var(--dsw-alias-interactive-bg-hover-accent);
+}
+
+body[data-ds-skin='qq2006'] .menu {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f7fbff, var(--dsw-alias-bg-layer-2));
+  box-shadow: var(--dsw-shadow-lv3);
+}
+
+body[data-ds-skin='qq2006'] .groupTitle {
+  background: var(--dsw-alias-bg-module-platform);
+  color: var(--dsw-alias-label-primary-bluish);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .option {
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .option:hover:not(:disabled),
+body[data-ds-skin='qq2006'] .option:focus-visible {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+body[data-ds-skin='qq2006'] .selected,
+body[data-ds-skin='qq2006'] .selected:hover:not(:disabled),
+body[data-ds-skin='qq2006'] .selected:focus-visible {
+  background: linear-gradient(to bottom, rgb(80, 150, 220), var(--dsw-alias-brand-primary));
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .selected .modelName,
+body[data-ds-skin='qq2006'] .selected .description,
+body[data-ds-skin='qq2006'] .selected .check {
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .status,
+body[data-ds-skin='qq2006'] .empty {
+  color: var(--dsw-alias-label-tertiary);
+}
+
+body[data-ds-skin='qq2006'] .error {
+  border-radius: 4px;
+  background: var(--dsw-alias-state-error-secondary);
+  color: var(--dsw-alias-state-error-primary);
+}
+
+body[data-ds-skin='qq2006'] .warning {
+  border-radius: 4px;
+  background: var(--dsw-alias-state-warn-secondary);
+  color: var(--dsw-alias-state-warn-label);
+}
+
+body[data-ds-skin='qq2006'] .retry {
+  color: var(--dsw-alias-brand-primary);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .cell {
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .cell:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+body[data-ds-skin='qq2006'] .cellLabel {
+  color: var(--dsw-alias-label-primary-bluish);
+}

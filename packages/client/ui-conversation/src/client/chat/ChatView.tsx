@@ -12,13 +12,18 @@
 // ChatNodeSeat subscribes to one Node key, so Assistant deltas and Tool
 // lifecycle updates replace only their own row without remounting it.
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ConversationTimelineSnapshot } from '@deepseek-ai/dsh-client-runtime/client'
 import { IconChevronDownOutline14 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { ChatViewSlotProps } from '../contract/slots.ts'
+import type { AssistantChatData } from '../contract/chat-nodes.ts'
+import { registerQqChatActions } from '../qq/qq-chrome-actions.ts'
+import { playQqSound } from '../qq/qq-sound.ts'
+import { useQqSkin } from '../qq/qq-skin.ts'
+import { assistantText } from './turn-assistant.ts'
 import { PendingSteeringBubble } from './MessageItem.tsx'
 import { ChatNodeSeat } from './ChatNodeSeat.tsx'
-import { formatRunDuration } from './message-chrome.ts'
+import { formatMessageClock, formatRunDuration, startOfLocalDay } from './message-chrome.ts'
 import css from './ChatView.module.css'
 
 const FOLLOW_THRESHOLD = 24
@@ -139,6 +144,45 @@ function TurnStatus({ startTime, t }: {
   )
 }
 
+/** Node timestamp for date-bar grouping (assistant/user/tail nodes carry one). */
+function nodeTimeOf(node: { data: unknown } | undefined): number | undefined {
+  const data = node?.data as { time?: unknown } | undefined
+  return typeof data?.time === 'number' ? data.time : undefined
+}
+
+function sameLocalDay(left: number, right: number): boolean {
+  return startOfLocalDay(left) === startOfLocalDay(right)
+}
+
+function pad2(value: number): string {
+  return String(value).padStart(2, '0')
+}
+
+/** Full `YYYY-MM-DD HH:MM:SS` string for the date-bar hover title. */
+function fullDateTime(ms: number): string {
+  const d = new Date(ms)
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())} `
+    + `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`
+}
+
+/**
+ * The QQ2006 date separator row (今天 / 昨天 / M月D日) shown between message
+ * groups whose local day changes. Skin-gated by the caller.
+ */
+function DateBar({ time, t }: { time: number; t: ChatViewSlotProps['t'] }) {
+  const now = Date.now()
+  const label = sameLocalDay(time, now)
+    ? t('qq.date.today')
+    : sameLocalDay(time, now - 86_400_000)
+      ? t('qq.date.yesterday')
+      : formatMessageClock(time, t, now).split(' ')[0] ?? t('qq.date.today')
+  return (
+    <div className={css.dateBar} title={fullDateTime(time)} data-qq-date-bar>
+      <span className={css.dateBarText}>{label}</span>
+    </div>
+  )
+}
+
 /**
  * The chat view slot entry: pure component over the composed props; each
  * ordered business Node crosses the keyed renderer seat.
@@ -165,6 +209,37 @@ export function ChatView({
     [inbox],
   )
   const runningTurnStart = useMemo(() => runningTurnStartTime(timeline), [timeline])
+
+  // QQ2006 skin: date separators + the chrome verbs the composer toolbars
+  // delegate to (聊天记录/H, ↓, 截图/✂, 🎤). Registered while the skin is
+  // active; the registrations ride refs so a growing order never churns them.
+  const qqSkin = useQqSkin()
+  const orderRef = useRef(order)
+  orderRef.current = order
+  const nodeStoreRef = useRef(nodeStore)
+  nodeStoreRef.current = nodeStore
+  useEffect(() => {
+    if (!qqSkin) return
+    return registerQqChatActions(sessionId, {
+      loadOlder: () => { loadOlder() },
+      scrollToBottom: () => {
+        const local = listRef.current
+        if (local !== null) toBottom(scrollerOf(local))
+      },
+      lastReplyText: () => {
+        const rows = orderRef.current
+        const nodes = nodeStoreRef.current
+        for (let index = rows.length - 1; index >= 0; index -= 1) {
+          const node = nodes.get(rows[index] ?? '')
+          if (node?.kind !== 'assistant-step') continue
+          const data = node.data as AssistantChatData | undefined
+          if (data?.status !== 'settled') continue
+          return assistantText(data.blocks)
+        }
+        return ''
+      },
+    })
+  }, [qqSkin, sessionId, loadOlder])
 
   const listRef = useRef<HTMLDivElement | null>(null)
   const columnRef = useRef<HTMLDivElement | null>(null)
@@ -253,6 +328,13 @@ export function ChatView({
     const appendedUser = lastKey !== lastKeyRef.current && lastNode?.kind === 'user'
     const appendedSteering = lastSteeringId !== null && lastSteeringId !== lastSteeringIdRef.current
     const tipMoved = followSigRef.current !== followSig
+    // QQ2006 sounds: send click when our own message lands, new-message
+    // alert when an assistant row first appears (msg respects the alert
+    // toggle; both only under the active skin).
+    if (qqSkin) {
+      if (appendedUser) playQqSound('global')
+      else if (lastKey !== lastKeyRef.current && lastNode?.kind === 'assistant-step') playQqSound('msg')
+    }
     lastKeyRef.current = lastKey
     lastSteeringIdRef.current = lastSteeringId
     followSigRef.current = followSig
@@ -379,22 +461,33 @@ export function ChatView({
               </button>
             </div>
           )}
-          {order.map(nodeKey => (
-            <ChatNodeSeat
-              key={nodeKey}
-              nodeKey={nodeKey}
-              useSession={useSession}
-              selectedCallId={selectedCallId}
-              cwd={cwd}
-              openFile={openFile}
-              inspectCall={inspectCall}
-              forkAt={forkAt}
-              loadImage={loadImage}
-              fileMentions={fileMentions}
-              renderSlot={renderSlot}
-              t={t}
-            />
-          ))}
+          {order.map((nodeKey, index) => {
+            const node = nodeStore.get(nodeKey)
+            const prevKey = index > 0 ? order[index - 1] : undefined
+            const prevNode = prevKey === undefined ? undefined : nodeStore.get(prevKey)
+            const time = nodeTimeOf(node)
+            const prevTime = nodeTimeOf(prevNode)
+            const showDate = qqSkin && time !== undefined
+              && (prevTime === undefined || !sameLocalDay(prevTime, time))
+            return (
+              <Fragment key={nodeKey}>
+                {showDate && <DateBar time={time} t={t} />}
+                <ChatNodeSeat
+                  nodeKey={nodeKey}
+                  useSession={useSession}
+                  selectedCallId={selectedCallId}
+                  cwd={cwd}
+                  openFile={openFile}
+                  inspectCall={inspectCall}
+                  forkAt={forkAt}
+                  loadImage={loadImage}
+                  fileMentions={fileMentions}
+                  renderSlot={renderSlot}
+                  t={t}
+                />
+              </Fragment>
+            )
+          })}
           {/* No pending placeholders: questions (ui-user-questions) and approvals
               (ApprovalPanel) both take over the composer, so a flow card would
               double-render the same wait. */}

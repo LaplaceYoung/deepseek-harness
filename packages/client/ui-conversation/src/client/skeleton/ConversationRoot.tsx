@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import type { WorkspaceId } from '@deepseek-ai/dsh-client-runtime/client'
 import type { ConversationSlotProps, InputZone } from '../contract/slots.ts'
 import { HeroGlow, HeroShell, WorkspaceChip, workspaceLabel } from './EmptyHero.tsx'
+import { useQqWinSkin } from '../qq/qq-win-skin.ts'
 import css from './ConversationRoot.module.css'
 
 /** Full props composed from the slot contract. */
@@ -167,6 +168,10 @@ export function ConversationRoot({
   )
 
   const phase = settling ? 'settling' : hero ? 'hero' : 'active'
+  // QQ2006 window-skin preset (titlebar 更换颜色); consumed as --qq-win-*
+  // custom properties by the skin-scoped bubble/panel/input patches. The
+  // attribute is inert outside `body[data-ds-skin='qq2006']` CSS.
+  const winSkin = useQqWinSkin()
   const composer = renderSlotChain(
     'conversation.composer',
     { interactions: pending, session },
@@ -184,7 +189,7 @@ export function ConversationRoot({
   )
 
   return (
-    <div className={css.root} data-phase={phase}>
+    <div className={css.root} data-phase={phase} data-qq-win-skin={winSkin}>
       {renderSlot('conversation.session.header', {})}
       <div className={css.scrollBody} data-conversation-scroll="">
         {renderSlot('conversation.session', {})}

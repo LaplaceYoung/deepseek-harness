@@ -5,3 +5,9 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+/* ═══ QQ2006 skin: settings trigger label — retro weight so the sidebar
+   foot trigger reads like a QQ menu entry. Skin-scoped only. ═══════════ */
+body[data-ds-skin='qq2006'] .triggerLabel {
+  font-weight: 500;
+}

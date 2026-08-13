@@ -67,3 +67,15 @@
   overflow: hidden;
   border-radius: 16px;
 }
+
+/* ── QQ2006 皮肤：消息图片框 ─────────────────────────────────────────────
+   图片卡 QQ 蓝描边 + 浅蓝底，加载/错误文案保持语义色。 */
+body[data-ds-skin='qq2006'] .frame {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .loading {
+  color: rgb(90, 110, 135);
+}

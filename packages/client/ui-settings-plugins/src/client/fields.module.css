@@ -111,3 +111,22 @@
   line-height: 1.5;
   color: var(--dsw-alias-label-tertiary);
 }
+
+/* ═══ QQ2006 skin: plugin config fields — retro input with the QQ blue
+   focus ring, amber override badge. Skin-scoped only. ══════════════════ */
+body[data-ds-skin='qq2006'] .input {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-ds-skin='qq2006'] .input:focus-visible {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 2px var(--dsw-alias-interactive-bg-hover-accent);
+}
+
+body[data-ds-skin='qq2006'] .badge {
+  background: var(--dsw-alias-state-warn-secondary);
+  border: 1px solid var(--dsw-alias-state-warn-primary);
+  color: var(--dsw-alias-state-warn-label);
+}

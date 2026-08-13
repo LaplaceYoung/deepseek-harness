@@ -125,3 +125,71 @@
   opacity: 0.4;
   cursor: default;
 }
+
+/* ── QQ2006 皮肤：目标条（输入区上方的目标指示 dock）────────────────────
+   目标条呈现为 QQ 浅蓝卡片：白→浅蓝渐变 + 蓝描边 + 珊瑚蓝目标图标，
+   藏青标签；图标按钮 hover 浅蓝、按下内阴影；编辑输入框浅蓝底蓝边。 */
+body[data-ds-skin='qq2006'] .bar {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 8px;
+  background: linear-gradient(to bottom, #ffffff, #d8ecff);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body[data-ds-skin='qq2006'] .goalGlyph {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .label {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .objective {
+  color: rgb(35, 60, 90);
+}
+
+body[data-ds-skin='qq2006'] .iconBtn:hover {
+  background: rgb(222, 238, 252);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .iconBtn:active:not(:disabled) {
+  background: rgb(200, 226, 248);
+  box-shadow: inset 0 1px 2px rgba(0, 40, 80, 0.2);
+}
+
+body[data-ds-skin='qq2006'] .objectiveInput {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 3px;
+  background: rgb(244, 250, 255);
+}
+
+body[data-ds-skin='qq2006'] .objectiveInput:focus {
+  outline: 1px solid #ffe762;
+  outline-offset: 1px;
+  border-color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .error {
+  color: rgb(220, 60, 60);
+}
+
+/* 阶段语义走 QQ 状态点色：暂停=离线灰、受阻=错误红（条色 + 图标）。 */
+body[data-ds-skin='qq2006'] .bar[data-goal-phase='paused'] {
+  border-color: rgb(170, 180, 192);
+  background: linear-gradient(to bottom, #ffffff, #e8ecf2);
+}
+
+body[data-ds-skin='qq2006'] .bar[data-goal-phase='paused'] .goalGlyph {
+  color: rgb(170, 180, 192);
+}
+
+body[data-ds-skin='qq2006'] .bar[data-goal-phase='blocked'] {
+  border-color: rgb(220, 60, 60);
+  background: linear-gradient(to bottom, #fff6f6, #fde3e3);
+}
+
+body[data-ds-skin='qq2006'] .bar[data-goal-phase='blocked'] .goalGlyph {
+  color: rgb(220, 60, 60);
+}

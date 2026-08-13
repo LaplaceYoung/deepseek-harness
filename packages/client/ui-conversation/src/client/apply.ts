@@ -34,7 +34,9 @@ import { todoDockEntry } from './skeleton/TodoPanel.tsx'
 import { queueDockEntry } from './queue/QueueDock.tsx'
 import { ConversationRoot } from './skeleton/ConversationRoot.tsx'
 import { ConversationSession, ConversationSessionHeader } from './skeleton/ConversationSession.tsx'
+import { QQBottomRow, QQSmallToolbar, type QQComposerChromeInjected } from './skeleton/QQComposerChrome.tsx'
 import { DetailsPanel } from './skeleton/DetailsPanel.tsx'
+import { createQqChromeActions } from './qq/qq-actions.ts'
 import { en, NS, zh, type ConversationKey } from './locales.ts'
 import { registerConversationNodes } from './conversation-nodes/register.ts'
 import { registerChatNodeRenderers } from './chat/register-node-renderers.ts'
@@ -262,9 +264,12 @@ export function apply(ctx: Context): void {
       'conversation.session.header.utilities': { kind: 'list', scope: 'session' },
     },
     store: chatStore,
-    inject: (): ConversationSessionHeaderInjected => ({
+    inject: (sessionId: SessionId, actions: BoundActions<typeof chatStore>): ConversationSessionHeaderInjected => ({
       views,
       open: (id) => { sessions.open(id) },
+      // The QQ2006 window chrome verb bundle (title bar + toolbars). Only
+      // rendered when the skin is active; the header component gates on it.
+      qqActions: createQqChromeActions({ ctx, inputHub, chatActions: actions, sessionId, t }),
     }),
   }, ConversationSessionHeader)
 
@@ -427,6 +432,30 @@ export function apply(ctx: Context): void {
 
   // Session stats stick with the composer (composer.dock = stats-line family).
   slots.register({ name: 'conversation.composer.dock', id: 'stats', order: 0, locale: NS }, StatsLine)
+
+  // QQ2006 composer chrome (skin-gated; renders nothing in the default skin):
+  // the small toolbar above the input card and the bottom button row under
+  // it. Both share the chat store so the chrome can switch views.
+  slots.register({
+    name: 'conversation.input.dock',
+    id: 'qq-toolbar',
+    order: 30,
+    locale: NS,
+    store: chatStore,
+    inject: (sessionId: SessionId, actions: BoundActions<typeof chatStore>): QQComposerChromeInjected => ({
+      qq: createQqChromeActions({ ctx, inputHub, chatActions: actions, sessionId, t }),
+    }),
+  }, QQSmallToolbar)
+  slots.register({
+    name: 'conversation.composer.dock',
+    id: 'qq-bottom',
+    order: 10,
+    locale: NS,
+    store: chatStore,
+    inject: (sessionId: SessionId, actions: BoundActions<typeof chatStore>): QQComposerChromeInjected => ({
+      qq: createQqChromeActions({ ctx, inputHub, chatActions: actions, sessionId, t }),
+    }),
+  }, QQBottomRow)
 
   // Class-plugin mount (packages/AGENTS.md service form): the service
   // registers itself as `conversation` and lives on its own child fiber.

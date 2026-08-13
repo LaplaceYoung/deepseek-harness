@@ -92,3 +92,56 @@
 .code[data-error] {
   color: var(--dsw-alias-state-error-primary);
 }
+
+/* ── QQ2006 皮肤：详情面板（右侧工具调用详情） ──────────────────────────
+   面板头用 QQ 浅蓝渐变 + 蓝边，标题 12px 复古字体；空态为蓝色状态胶囊
+   （浅蓝底 + 蓝边 + 藏青字，旧设计约定）。 */
+body[data-ds-skin='qq2006'] .root {
+  border-left: 1px solid rgb(140, 180, 220);
+  background: linear-gradient(to bottom, rgb(236, 245, 252), rgb(224, 238, 250));
+}
+
+body[data-ds-skin='qq2006'] .header {
+  border-bottom: 1px solid rgb(150, 196, 232);
+  background: linear-gradient(to bottom, #ffffff, #d8eefc);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(30, 60, 90);
+}
+
+body[data-ds-skin='qq2006'] .close {
+  border: 1px solid rgb(170, 200, 228);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff, #d2ecff);
+  color: rgb(40, 70, 100);
+}
+
+body[data-ds-skin='qq2006'] .close:hover {
+  background: linear-gradient(to bottom, #ffffff, #a8d4f4);
+}
+
+body[data-ds-skin='qq2006'] .empty {
+  padding: 10px 12px;
+  border: 1px solid rgb(150, 196, 232);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #eaf5fd, #d4eafc);
+  color: rgb(50, 80, 110);
+  font-size: 12px;
+}
+
+body[data-ds-skin='qq2006'] .sectionLabel {
+  color: rgb(70, 100, 130);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+body[data-ds-skin='qq2006'] .code {
+  border: 1px solid rgb(150, 196, 232);
+  border-radius: 4px;
+  background: #f4f9fe;
+  font-size: 12px;
+  line-height: 20px;
+}

@@ -263,3 +263,13 @@
   text-decoration: underline var(--dsw-alias-state-business-primary);
   text-underline-offset: 3px;
 }
+
+/* ═══ QQ2006 skin: blockquote = classic yellow quote bar (gold edge +
+   light-yellow gradient, echoing the group-announcement strip). ══════════ */
+body[data-ds-skin='qq2006'] .markdown blockquote {
+  margin: 12px 0 0;
+  padding: 6px 10px;
+  border-left: 3px solid var(--dsw-alias-state-warn-primary);
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(to bottom, var(--dsw-alias-state-warn-secondary), rgb(255, 244, 210));
+}

@@ -23,3 +23,14 @@
   color: var(--dsw-alias-separator-primary);
   margin: 0 10px; /* carries the former flex gap */
 }
+
+/* ── QQ2006 皮肤：统计条（QQ 状态栏风格浅蓝胶囊） ────────────────────── */
+body[data-ds-skin='qq2006'] .root {
+  padding: 2px calc(var(--dsh-composer-side-clearance) + 16px) 0px;
+  color: rgb(90, 120, 150);
+  font-size: 11px;
+}
+
+body[data-ds-skin='qq2006'] .sep {
+  color: rgb(170, 195, 220);
+}

@@ -1,0 +1,27 @@
+/* QQTip host + tip: the transient feedback bubble appended under document.body
+   by qq/qq-feedback.ts. Only created from skin-gated UI actions; the classes
+   are applied directly (hashed), so no skin-scope ancestor is needed. */
+
+.host {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  z-index: 1000;
+  transform: translateX(-50%);
+  pointer-events: none;
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+.tip {
+  max-width: 480px;
+  padding: 6px 14px;
+  border: 1px solid rgb(214, 169, 45);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, rgb(255, 252, 224), rgb(255, 244, 180));
+  box-shadow: 0 2px 6px rgba(120, 90, 20, 0.25);
+  color: rgb(90, 70, 10);
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+  white-space: nowrap;
+}

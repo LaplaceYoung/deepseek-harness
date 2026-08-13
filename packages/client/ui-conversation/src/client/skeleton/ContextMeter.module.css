@@ -145,3 +145,34 @@
   font-variant-numeric: tabular-nums;
   color: var(--dsw-alias-label-primary);
 }
+
+/* ── QQ2006 皮肤：上下文仪表（QQ 蓝色状态胶囊） ──────────────────────── */
+body[data-ds-skin='qq2006'] .trigger {
+  border: 1px solid rgb(150, 196, 232);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff, #d2ecff);
+  color: rgb(40, 70, 100);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+body[data-ds-skin='qq2006'] .panel {
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(30, 70, 120, 0.28);
+}
+
+body[data-ds-skin='qq2006'] .headline {
+  color: rgb(30, 60, 90);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+body[data-ds-skin='qq2006'] .track {
+  border: 1px solid rgb(170, 200, 228);
+  background: #eaf3fc;
+}
+
+body[data-ds-skin='qq2006'] .fill {
+  background: linear-gradient(to bottom, #6db8f0, #2d80d0);
+}

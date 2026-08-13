@@ -83,3 +83,22 @@
   font-size: 13px;
   color: var(--dsw-alias-label-tertiary);
 }
+
+/* ═══ QQ2006 skin: plugins section — heading in the retro blue, coral
+   active-tab underline (QQ tab feel). Skin-scoped only. ═════════════════ */
+body[data-ds-skin='qq2006'] .heading {
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .tabs {
+  border-bottom-color: var(--dsw-alias-border-l3);
+}
+
+body[data-ds-skin='qq2006'] .tab[data-active='true'] {
+  color: var(--dsw-alias-brand-primary);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .tab[data-active='true']::after {
+  background: var(--dsw-alias-brand-primary);
+}

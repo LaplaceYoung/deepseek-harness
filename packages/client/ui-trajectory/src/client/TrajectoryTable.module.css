@@ -1797,3 +1797,117 @@
     box-shadow: -12px 0 32px rgba(0, 0, 0, 0.14);
   }
 }
+
+/* ── QQ2006 皮肤：轨迹表格（账本 + 详情面板）─────────────────────────────
+   表头呈 QQ 面板头（浅蓝渐变 + 蓝底边），选中行浅蓝、金边序号轨；
+   Turn 标签珊瑚蓝；详情面板浅蓝卡片底，详情页签激活珊瑚蓝下划线、
+   hover 浅蓝；关闭钮 hover 浅蓝。 */
+body[data-ds-skin='qq2006'] .split {
+  background: rgb(233, 243, 252);
+}
+
+body[data-ds-skin='qq2006'] .table {
+  background: rgb(240, 247, 253);
+}
+
+body[data-ds-skin='qq2006'] .table th {
+  background: linear-gradient(to bottom, #ffffff, #d8ecff);
+  border-bottom: 1px solid rgb(150, 190, 230);
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .table tbody tr[data-selected='true'] {
+  background: rgb(214, 235, 252);
+}
+
+body[data-ds-skin='qq2006'] .table tbody tr[data-selected='true'] .selectionRail {
+  background: rgb(252, 184, 51);
+}
+
+body[data-ds-skin='qq2006'] .table tbody tr:not([data-collapsed-summary]):not([data-virtual-spacer]):not([data-history-load]):not([data-selected='true']):hover {
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .turnRail {
+  background: rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .turnLabelActive {
+  color: rgb(45, 128, 208);
+  background: rgb(214, 235, 252);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .kindTag {
+  border-radius: 3px;
+  border-color: transparent;
+}
+
+body[data-ds-skin='qq2006'] .user {
+  color: rgb(45, 128, 208);
+  background: rgb(205, 230, 250);
+  border-color: rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .assistantVioletBright {
+  color: rgb(45, 128, 208);
+  background: rgb(205, 230, 250);
+  border-color: rgb(150, 190, 230);
+}
+
+body[data-ds-skin='qq2006'] .systemNeutral,
+body[data-ds-skin='qq2006'] .compacted {
+  color: rgb(90, 110, 135);
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .toolAmber,
+body[data-ds-skin='qq2006'] .subtoolAmber {
+  color: rgb(140, 90, 20);
+  background: rgb(248, 230, 190);
+  border-color: rgb(252, 184, 51);
+}
+
+body[data-ds-skin='qq2006'] .details {
+  background: rgb(240, 247, 253);
+}
+
+body[data-ds-skin='qq2006'] .detailsHeader {
+  background: linear-gradient(to bottom, #ffffff, #d8ecff);
+}
+
+body[data-ds-skin='qq2006'] .detailsTitle {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .requestDetailsDot {
+  background: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .close:hover {
+  background: rgb(214, 235, 252);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .detailTabActive {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .detailTabActive::after {
+  background: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .detailTab:hover {
+  background: rgb(222, 238, 252);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .overviewHeading {
+  color: rgb(35, 55, 80);
+}
+
+body[data-ds-skin='qq2006'] .noPayload {
+  color: rgb(120, 140, 160);
+}

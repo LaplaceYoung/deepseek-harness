@@ -212,3 +212,39 @@
   height: 12px;
   cursor: pointer;
 }
+
+/* ── QQ2006 皮肤：轨迹工具栏（时间线/折叠/搜索）──────────────────────────
+   工具栏底浅蓝，激活折叠钮与开关轨道珊瑚蓝；搜索框浅蓝底蓝边、
+   聚焦金环；悬停钮浅蓝。 */
+body[data-ds-skin='qq2006'] .root {
+  background: linear-gradient(to bottom, #f4faff, #e3f1ff);
+}
+
+body[data-ds-skin='qq2006'] .toggle[aria-pressed='true'],
+body[data-ds-skin='qq2006'] .action[aria-pressed='true'] {
+  color: rgb(45, 128, 208);
+  background: rgb(222, 238, 252);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .toggle:hover,
+body[data-ds-skin='qq2006'] .action:hover {
+  background: rgb(214, 235, 252);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .controlTrack[data-on='true'] {
+  background: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .search {
+  background: rgb(244, 250, 255);
+  border-radius: 3px;
+}
+
+body[data-ds-skin='qq2006'] .search:focus-within {
+  border-color: rgb(45, 128, 208);
+  outline: 1px solid #ffe762;
+  outline-offset: 1px;
+  background: #ffffff;
+}

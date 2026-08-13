@@ -144,3 +144,40 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ── QQ2006 皮肤：任务面板（QQ 浅蓝卡片） ────────────────────────────── */
+body[data-ds-skin='qq2006'] .root {
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+body[data-ds-skin='qq2006'] .header {
+  border: 1px solid rgb(150, 196, 232);
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(to bottom, #ffffff, #cfe8fc);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(30, 60, 90);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+body[data-ds-skin='qq2006'] .item {
+  border: 1px solid rgb(170, 200, 228);
+  border-bottom-width: 0;
+  background: linear-gradient(to bottom, #ffffff, #eef7fe);
+}
+
+body[data-ds-skin='qq2006'] .list .item:last-child {
+  border-bottom-width: 1px;
+  border-radius: 0 0 4px 4px;
+}
+
+body[data-ds-skin='qq2006'] .glyph,
+body[data-ds-skin='qq2006'] .glyphProgress {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .glyphCompleted {
+  color: rgb(60, 140, 80);
+}

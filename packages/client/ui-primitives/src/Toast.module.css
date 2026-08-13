@@ -68,3 +68,17 @@
     animation: dsh-toast-fade 1000ms ease 3000ms forwards;
   }
 }
+
+/* ═══ QQ2006 skin: classic QQTip — yellow card, gold hairline, dark text
+   (the toast-bg token is already the QQ yellow under this skin). ═════════ */
+body[data-ds-skin='qq2006'] .toast {
+  border: 1px solid var(--dsw-alias-state-warn-primary);
+  border-radius: 4px;
+  background: var(--dsw-alias-toast-bg);
+  color: var(--dsw-alias-label-primary);
+  box-shadow: 0 4px 12px rgb(120 90 20 / 0.25);
+}
+
+body[data-ds-skin='qq2006'] .icon {
+  color: var(--dsw-alias-state-warn-primary);
+}

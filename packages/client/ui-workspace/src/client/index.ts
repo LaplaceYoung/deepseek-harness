@@ -12,7 +12,11 @@ import type { HostObservable } from '@deepseek-ai/dsh-client-ui-slots'
 import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@deepseek-ai/dsh-client-locale/client'
-import type { WorkspaceBrowserInjected, WorkspacePickerInjected } from './contract/slots.ts'
+// The QQ2006 panel drives optional cross-plugin services (ctx.layout from
+// ui-layout, ctx.inputTriggers from ui-input-trigger) through the cordis
+// string-keyed `ctx.get` face — no value or type imports, so ui-workspace
+// stays dependency-light and absent services degrade to tip-only feedback.
+import type { QQPanelActions, WorkspaceBrowserInjected, WorkspacePickerInjected } from './contract/slots.ts'
 import { createWorkspaceViewStore } from './stores.ts'
 import { WorkspaceBrowser } from './WorkspaceBrowser.tsx'
 import { WorkspacePicker } from './WorkspacePicker.tsx'
@@ -20,7 +24,7 @@ import { en, zh, type WorkspaceKey } from './locales.ts'
 
 export type {
   DirectoryFlowOwnerProps, DirectoryFlowSlotName, DirectoryPickingHooks, DirectoryPickingInjected,
-  WorkspaceBrowserInjected, WorkspaceBrowserProps, WorkspacePickerInjected, WorkspacePickerProps,
+  QQPanelActions, WorkspaceBrowserInjected, WorkspaceBrowserProps, WorkspacePickerInjected, WorkspacePickerProps,
 } from './contract/slots.ts'
 export type { WorkspaceKey } from './locales.ts'
 
@@ -67,7 +71,71 @@ export function apply(ctx: ClientContext): void {
   })
   const browserFlowSource = flowSource('sidebar.workspaces.directoryFlow')
   const pickerFlowSource = flowSource('conversation.hero.workspace.directoryFlow')
+  // QQ2006 main-panel verbs bound to official services, read lazily so an
+  // absent service (tests, minimal compositions) degrades to tip-only.
+  // Structural faces of the optional services (ui-layout / ui-input-trigger):
+  // string-keyed ctx.get keeps them dependency-free.
+  type LayoutFace = { toggleSidebar(): void; openDetails(): void }
+  type InputTriggersFace = {
+    sessionOf(actx: object): { toggleSource(source: string, hit: unknown): void }
+  }
+  const qqPanel = (): QQPanelActions => {
+    const layout = ctx.get('layout') as LayoutFace | undefined
+    const inputTriggers = ctx.get('inputTriggers') as InputTriggersFace | undefined
+    const slashHit = (query: string): unknown => ({
+      trigger: '/',
+      query,
+      position: 'leading',
+      span: { start: 0, end: 0, draftRev: 0 },
+    })
+    return {
+      newSession: () => { ctx.workspaces.startSession() },
+      toggleSidebar: () => { layout?.toggleSidebar() },
+      openDetails: () => { layout?.openDetails() },
+      openModelMenu: (sessionId) => {
+        const scope = ctx.sessions.scope(sessionId)
+        if (scope === undefined || inputTriggers === undefined) return
+        inputTriggers.sessionOf(scope).toggleSource('command', slashHit('model'))
+      },
+      toggleCommandMenu: (sessionId) => {
+        const scope = ctx.sessions.scope(sessionId)
+        if (scope === undefined || inputTriggers === undefined) return
+        inputTriggers.sessionOf(scope).toggleSource('command', slashHit(''))
+      },
+      openSubagentCatalog: (sessionId) => { ctx.sessions.setSubagentCatalogOpen(sessionId, true) },
+      focusComposer: () => {
+        // Official composer hook (same `[data-input-scroll]` contract the
+        // conversation InputBar exposes): fall back to focusing the textarea.
+        document.querySelector<HTMLTextAreaElement>('[data-input-scroll] textarea')?.focus({ preventScroll: true })
+      },
+      locateLatestToolCall: () => {
+        document.querySelector<HTMLElement>(
+          '[data-chat-flow] [data-chat-flow-kind="tool-call"]:last-of-type',
+        )?.scrollIntoView({ block: 'nearest' })
+      },
+      toggleNewMessageSound: () => {
+        // Shared with ui-conversation's QQ sound module (dsh.qq.sound): flip
+        // the same localStorage contract and play the alert when enabled.
+        const next = localStorage.getItem('dsh.qq.sound') !== '0'
+        const enabled = !next
+        try {
+          localStorage.setItem('dsh.qq.sound', enabled ? '1' : '0')
+        } catch {
+          // Private mode: the toggle still applies for this session.
+        }
+        if (enabled) {
+          try {
+            void new Audio('/qq2006/sound/msg.mp3').play().catch(() => {})
+          } catch {
+            // Audio constructor can throw in restricted environments.
+          }
+        }
+        return enabled
+      },
+    }
+  }
   const browserInjected = (): WorkspaceBrowserInjected => ({
+    qq: qqPanel(),
     // Explicit group actions keep their target; unscoped New Session inherits
     // the current Session Workspace before the recent-Workspace fallback.
     startSession: (workspaceId) => { ctx.workspaces.startSession(workspaceId) },

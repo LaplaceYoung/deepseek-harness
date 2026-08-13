@@ -7,6 +7,8 @@ import type {
   ConversationSessionHeaderSlotProps, ConversationSessionSlotProps,
 } from '../contract/slots.ts'
 import type { ViewTab } from '../contract/views.ts'
+import { useQqSkin } from '../qq/qq-skin.ts'
+import { QQWindowChrome } from './QQWindowChrome.tsx'
 import css from './ConversationRoot.module.css'
 
 /** Full props composed from the strict session body contract. */
@@ -60,8 +62,8 @@ function equalBreadcrumbs(left: readonly Breadcrumb[], right: readonly Breadcrum
  */
 export function ConversationSessionHeader({
   sessionId, useSession, useSessions, useStore, actions,
-  renderSlot, views, open, t,
-}: ConversationSessionHeaderProps) {
+  renderSlot, views, open, t, qqActions,
+}: ConversationSessionHeaderSlotProps) {
   useSyncExternalStore(views.subscribe, views.version)
   const tabs = views.list()
   const selectedId = useStore(s => s.view)
@@ -69,7 +71,11 @@ export function ConversationSessionHeader({
   const ancestry = useSessions(s => deriveAncestry(s, sessionId), equalBreadcrumbs)
   const composerPhase = useSession(s => s.composerPhase)
   const blank = useSession(s => s.blank)
-  const hideChrome = blank && composerPhase === 'blank'
+  // The QQ2006 skin restores the full window chrome even for blank sessions
+  // (title bar + big toolbar are resident frame, QQ semantics); the default
+  // skin keeps hiding the blank-session header.
+  const qqSkin = useQqSkin()
+  const hideChrome = blank && composerPhase === 'blank' && !qqSkin
 
   return (
     <header
@@ -78,6 +84,14 @@ export function ConversationSessionHeader({
     >
       {!hideChrome && (
         <>
+          {qqSkin && qqActions !== undefined && (
+            <QQWindowChrome
+              sessionId={sessionId}
+              useSessions={useSessions}
+              t={t}
+              qq={qqActions}
+            />
+          )}
           <div className={css.titleRow}>
             <div className={css.titleCluster}>
               <nav className={css.crumbs} aria-label={t('session.hierarchy')}>

@@ -103,3 +103,44 @@
   inset: 0 auto auto 0;
   width: max-content;
 }
+
+/* ── QQ2006 皮肤：产物文件（文件徽章 + 打开）──────────────────────────────
+   文件徽章改为 QQ 浅蓝渐变胶囊 + 蓝描边，hover 升为金边蓝字；
+   标签与溢出计数用 QQ 藏青/浅蓝层次。全部作用域在皮肤属性下。 */
+body[data-ds-skin='qq2006'] .file {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff, #cfe8ff);
+  color: rgb(40, 80, 130);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body[data-ds-skin='qq2006'] .file:hover {
+  border-color: rgb(252, 184, 51);
+  color: rgb(45, 128, 208);
+  text-decoration: none;
+  background: linear-gradient(to bottom, #ffffff, #b9e1ff);
+}
+
+body[data-ds-skin='qq2006'] .file:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px #ffe762, inset 0 0 0 2px #fcb833;
+}
+
+body[data-ds-skin='qq2006'] .label {
+  color: rgb(35, 55, 80);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .more {
+  color: rgb(120, 140, 160);
+}
+
+body[data-ds-skin='qq2006'] .showFolder {
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .showFolder:hover {
+  color: rgb(45, 128, 208);
+  text-decoration: underline;
+}

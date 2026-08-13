@@ -29,6 +29,8 @@ import type { DraftDecorations } from '../input/decorations.ts'
 import {
   attachmentErrorText, attachmentRailLabels, dropOverlayLabels, imageSizeText, lightboxLabels,
 } from '../image-labels.ts'
+import { registerQqComposerActions } from '../qq/qq-chrome-actions.ts'
+import { isQqSkin, useQqSkin } from '../qq/qq-skin.ts'
 import { ContextMeter } from './ContextMeter.tsx'
 import { PermissionSelect } from './PermissionSelect.tsx'
 import css from './InputBar.module.css'
@@ -44,7 +46,7 @@ interface ComposerRailItem extends AttachmentRailItem {
 export type InputBarProps = ComposerBarProps
 
 export function InputBar({
-  useSession, useInput, inputActions, keyboard, addImages, removeImage, draftImages,
+  useSession, useSessions, useInput, inputActions, keyboard, addImages, removeImage, draftImages,
   resolveSubmitMode, toggleCommandMenu, stop, command, t,
   renderSlot, useNotices, useLexicon, useMenuLauncher,
   useProjection, sessionId, variant, disabled: inert = false, blocked,
@@ -75,6 +77,13 @@ export function InputBar({
   const empty = draft.trim() === '' && attachments.length === 0
   const [preview, setPreview] = useState<ComposerAttachment | null>(null)
   const [dragActive, setDragActive] = useState(false)
+  // QQ2006 skin: live flag (placeholders / Alt+S / send label) and the
+  // group-chat member count for the 发送到群 label and placeholder.
+  const qqSkin = useQqSkin()
+  const groupCount = useSessions(list => sessionId === undefined
+    ? 0
+    : Object.values(list.byId).filter(member => member.parentId === sessionId).length)
+  const group = groupCount > 0
   // Transient error banner (image-intake rejections and prompt failures): the
   // seq keys the Toast so an identical repeated message restarts the
   // hold-then-fade cycle instead of silently reusing the faded one.
@@ -219,6 +228,15 @@ export function InputBar({
     revealSelectionFocus(el)
   }, [locked, sessionId])
 
+  // QQ2006 chrome focus verb (短信/邀请): registered while the machine is
+  // live so the window chrome can focus the draft textarea.
+  useEffect(() => {
+    if (sessionId === undefined || !live) return
+    return registerQqComposerActions(sessionId, {
+      focusComposer: () => { inputRef.current?.focus({ preventScroll: true }) },
+    })
+  }, [sessionId, live])
+
   // A persisted draft arrives AFTER the unlock effect: ConversationSession
   // adopts it in its own mount effect, and a parent's mount effect runs after
   // its children's. Reveal when the draft becomes non-empty so a restored long
@@ -308,6 +326,18 @@ export function InputBar({
     if (e.key === ' ') {
       if (composing) return
       if (keyboard.space()) e.preventDefault() // claim token already carries the trailing separator
+      return
+    }
+    // QQ2006 send shortcut: Alt+S ≡ Enter (label "(S)" on the send button).
+    // Skin-gated — the default skin keeps its exact key behavior. The IME
+    // composition guard matches Enter (a composing Alt+S picks a candidate).
+    if (isQqSkin() && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey
+      && (e.key === 's' || e.key === 'S')) {
+      if (composing) return
+      e.preventDefault()
+      if (e.repeat) return
+      if (locked || machineBusy) return
+      keyboard.submit(resolveSubmitMode(running, 'enter', subagent === null))
       return
     }
     if (e.key !== 'Enter') return
@@ -544,6 +574,15 @@ export function InputBar({
   const primaryStops = running && subagent === null
   const interruptible = running && continuable
   const primaryLabel = primaryStops ? t('input.stop') : t('input.send')
+  // QQ2006 input copy: hero 「想聊点什么？输入消息，Enter 发送」, composer
+  // 「请输入消息，Enter 发送」, group chat 「发送到群（N 人）」. Blocked /
+  // inert / parent-offline / steer / plan states keep their product copy.
+  const qqPlaceholder = !qqSkin || blocked !== undefined || inert || parentOffline
+    || canSteerQueue || planActive
+    ? undefined
+    : group
+      ? t('qq.placeholder.group', { n: groupCount })
+      : variant === 'hero' ? t('qq.placeholder.hero') : t('qq.placeholder.default')
   const onPrimary = (): void => {
     if (primaryStops) {
       stop?.()
@@ -706,7 +745,7 @@ export function InputBar({
               aria-haspopup={workspaceTrigger ? 'menu' : undefined}
               aria-expanded={workspaceTrigger ? workspacePickerOpen : undefined}
               data-phase={input?.phase ?? 'inert'}
-              placeholder={placeholder ?? (parentOffline
+              placeholder={qqPlaceholder ?? placeholder ?? (parentOffline
                 ? t('placeholder.parentOffline')
                 : disabled
                   ? t('placeholder.unavailable')
@@ -762,6 +801,7 @@ export function InputBar({
                   className={css.primary}
                   aria-label={t('input.stop')}
                   disabled={stop === undefined}
+                  data-qq-send="stop"
                   onMouseDown={keepFocus}
                   onClick={stop}
                 >
@@ -777,6 +817,8 @@ export function InputBar({
                 className={css.primary}
                 aria-label={primaryLabel}
                 disabled={primaryStops ? stop === undefined : empty || disabled || machineBusy}
+                data-qq-send={primaryStops ? 'stop' : 'send'}
+                data-qq-group={group || undefined}
                 onMouseDown={keepFocus}
                 onClick={onPrimary}
               >

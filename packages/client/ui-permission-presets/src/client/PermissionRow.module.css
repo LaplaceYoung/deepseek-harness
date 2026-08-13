@@ -58,3 +58,36 @@
 .chevron {
   flex: none;
 }
+
+/* ── QQ2006 皮肤：权限确认（默认权限选择器）──────────────────────────────
+   选择器改为 QQ 渐变按钮手感（白→浅蓝渐变 + 蓝描边 + 藏青字），
+   hover 加深、按下内阴影；标题藏青加粗。 */
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(35, 55, 80);
+  font-weight: 500;
+}
+
+body[data-ds-skin='qq2006'] .selector {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #00558e;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff, #9fd4ff);
+  color: rgb(20, 40, 70);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body[data-ds-skin='qq2006'] .selector:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #ffffff, #b9e1ff);
+}
+
+body[data-ds-skin='qq2006'] .selector:active:not(:disabled) {
+  background: linear-gradient(to bottom, #97c5ec, #d2f8fd);
+  box-shadow: inset 0 1px 2px rgba(0, 40, 80, 0.3);
+}
+
+body[data-ds-skin='qq2006'] .selector:focus-visible {
+  outline: 1px solid #ffe762;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 1px #ffe762, inset 0 0 0 2px #fcb833;
+}

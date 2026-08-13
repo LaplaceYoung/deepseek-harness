@@ -30,3 +30,14 @@
     padding: 24px;
   }
 }
+
+/* ═══ QQ2006 skin: onboarding modal — coral hairline dialog and retro
+   title tone inside the QQ body. Skin-scoped only. ═════════════════════ */
+body[data-ds-skin='qq2006'] .dialog {
+  border: 1px solid var(--dsw-alias-border-l3);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  color: var(--dsw-alias-label-primary-bluish);
+  font-weight: 600;
+}

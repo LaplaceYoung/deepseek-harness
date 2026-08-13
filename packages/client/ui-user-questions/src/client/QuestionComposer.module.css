@@ -405,3 +405,84 @@
     transition: none;
   }
 }
+
+/* ── QQ2006 皮肤：问答面板（权限确认问题卡）──────────────────────────────
+   卡片呈 QQ 九宫格弹窗（浅蓝渐变底 + 蓝描边），选项序号徽章改珊瑚蓝
+   实底白字（QQ 数字徽章），多选框勾选态珊瑚蓝；选中/hover 行浅蓝；
+   「推荐」徽章用 QQ 黄；输入框浅蓝底蓝边、焦点金环。 */
+body[data-ds-skin='qq2006'] .card {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f8fcff, #e4f1ff);
+  box-shadow:
+    2px 2px 0 rgb(150, 190, 230),
+    4px 4px 0 rgba(45, 128, 208, 0.15);
+}
+
+body[data-ds-skin='qq2006'] .title {
+  color: rgb(35, 55, 80);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .number {
+  border-radius: 3px;
+  background: rgb(45, 128, 208);
+  color: #fff;
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .checkboxChecked::before {
+  border-color: rgb(45, 128, 208);
+  background: rgb(45, 128, 208);
+  border-radius: 2px;
+}
+
+body[data-ds-skin='qq2006'] .option:hover:not(:disabled),
+body[data-ds-skin='qq2006'] .optionSelected,
+body[data-ds-skin='qq2006'] .customRow:hover,
+body[data-ds-skin='qq2006'] .customRow:focus-within,
+body[data-ds-skin='qq2006'] .customRowActive {
+  background: rgb(222, 238, 252);
+}
+
+body[data-ds-skin='qq2006'] .optionSelected {
+  border-color: rgb(120, 165, 215);
+}
+
+body[data-ds-skin='qq2006'] .customRow:focus-within,
+body[data-ds-skin='qq2006'] .customRowActive {
+  border-color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .badge {
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #fffbe8, #ffe9a8);
+  color: rgb(140, 90, 20);
+  font-weight: 600;
+}
+
+body[data-ds-skin='qq2006'] .customTextarea {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 3px;
+  background: rgb(244, 250, 255);
+}
+
+body[data-ds-skin='qq2006'] .customTextarea:focus {
+  outline: 1px solid #ffe762;
+  outline-offset: 1px;
+  border-color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .iconButton:hover:not(:disabled) {
+  background: rgb(222, 238, 252);
+  color: rgb(45, 128, 208);
+}
+
+body[data-ds-skin='qq2006'] .feedback {
+  color: rgb(220, 60, 60);
+}
+
+body[data-ds-skin='qq2006'] .progress {
+  color: rgb(35, 55, 80);
+  font-variant-numeric: tabular-nums;
+}

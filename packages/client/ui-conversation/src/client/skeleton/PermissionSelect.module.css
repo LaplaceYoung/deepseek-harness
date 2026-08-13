@@ -74,3 +74,13 @@
 .chevronOpen {
   transform: rotate(180deg);
 }
+
+/* ── QQ2006 皮肤：访问模式下拉（QQ 胶囊） ────────────────────────────── */
+body[data-ds-skin='qq2006'] .trigger {
+  border: 1px solid rgb(150, 196, 232);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff, #d2ecff);
+  color: rgb(40, 70, 100);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+  font-size: 12px;
+}

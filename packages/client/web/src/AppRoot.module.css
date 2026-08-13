@@ -64,3 +64,185 @@
   line-height: 18px;
   color: var(--dsw-alias-label-secondary, #61666b);
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   QQ2006 login window — zero-pollution contract.
+   Every window piece is `display:none` by default: the default boot card
+   renders exactly as before (loading page stays a centered grid). Only the
+   `body[data-ds-skin='qq2006']` scope below turns the pieces on. The band
+   backgrounds come from the global skin kit (.qq-skin-title / .qq-skin-head
+   / .qq-skin-body) in ui-skin-qq2006's stylesheet; these rules only place
+   and size the window and its form. ══════════════════════════════════════ */
+
+.qqWindow,
+.qqTitle,
+.qqTitleText,
+.qqTitleBtns,
+.qqHead,
+.qqBanner,
+.qqBody,
+.qqForm,
+.qqField,
+.qqCheckRow,
+.qqCheck,
+.qqLoginBtn {
+  display: none;
+}
+
+/* ── QQ2006 login window (skin scope only) ──────────────────────────────── */
+body[data-ds-skin='qq2006'] .boot {
+  background: url('/qq2006/img/bg.jpeg') center / cover no-repeat;
+}
+
+body[data-ds-skin='qq2006'] .qqWindow {
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2, #78a5d7);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+}
+
+/* Title band: 24px three-slice strip from the skin kit; white title text. */
+body[data-ds-skin='qq2006'] .qqTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 6px 0 12px;
+}
+
+body[data-ds-skin='qq2006'] .qqTitleText {
+  display: block;
+  color: #fff;
+  font-size: 12px;
+  line-height: 24px;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.35);
+}
+
+body[data-ds-skin='qq2006'] .qqTitleBtns {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Head band: 44px kit strip holding the 324×47 login banner (contain). */
+body[data-ds-skin='qq2006'] .qqHead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body[data-ds-skin='qq2006'] .qqBanner {
+  display: block;
+  width: 324px;
+  height: 44px;
+  background: url('/qq2006/img/login_banner.png') center / contain no-repeat;
+}
+
+/* Body band: form surface on the three-slice body background. */
+body[data-ds-skin='qq2006'] .qqBody {
+  display: block;
+  padding: 14px 16px 16px;
+}
+
+body[data-ds-skin='qq2006'] .qqForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body[data-ds-skin='qq2006'] .qqField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body[data-ds-skin='qq2006'] .qqFieldLabel {
+  display: block;
+  flex: none;
+  width: 56px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-primary, #233750);
+}
+
+body[data-ds-skin='qq2006'] .qqInput {
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  padding: 0 6px;
+  border: 1px solid var(--dsw-alias-border-l2, #78a5d7);
+  border-radius: 3px;
+  outline: none;
+  background: #fff;
+  font-size: 12px;
+  color: var(--dsw-alias-label-primary, #233750);
+}
+
+body[data-ds-skin='qq2006'] .qqInput:focus {
+  border-color: var(--dsw-alias-brand-primary, #2d80d0);
+  box-shadow: 0 0 0 1px var(--dsw-alias-brand-primary, #2d80d0);
+}
+
+body[data-ds-skin='qq2006'] .qqInput::placeholder {
+  color: var(--dsw-alias-label-tertiary, #8294a8);
+}
+
+body[data-ds-skin='qq2006'] .qqCheckRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 64px;
+}
+
+body[data-ds-skin='qq2006'] .qqCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-primary, #233750);
+  cursor: pointer;
+}
+
+body[data-ds-skin='qq2006'] .qqCheck input {
+  margin: 0;
+  accent-color: var(--dsw-alias-brand-primary, #2d80d0);
+}
+
+/* Login button: kit .qq-btn gradient + sizing; disabled = QQ 0.5 alpha. */
+body[data-ds-skin='qq2006'] .qqLoginBtn {
+  display: block;
+  width: 100%;
+  height: 26px;
+  margin-top: 6px;
+}
+
+body[data-ds-skin='qq2006'] .qqLoginBtn:disabled {
+  opacity: 0.5;
+}
+
+/* Connecting: pressed look — reverse gradient + inset shadow (button sinks). */
+body[data-ds-skin='qq2006'] .qqConnecting {
+  background: linear-gradient(to bottom, #97c5ec, #d2f8fd);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.25);
+}
+
+/* The default boot card content is replaced by the window under skin. */
+body[data-ds-skin='qq2006'] .wordmark,
+body[data-ds-skin='qq2006'] .spinner,
+body[data-ds-skin='qq2006'] .hint {
+  display: none;
+}
+
+/* Failure report: red panel beneath the window (QQ system-message look). */
+body[data-ds-skin='qq2006'] .failed {
+  max-width: 330px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--dsw-alias-state-error-primary, #dc3c3c);
+  border-radius: 4px;
+  background: var(--dsw-alias-state-error-secondary, #fae0e0);
+}

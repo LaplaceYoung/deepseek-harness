@@ -155,3 +155,53 @@
   outline: 2px solid var(--dsw-alias-brand-primary);
   outline-offset: 1px;
 }
+
+/* ═══ QQ2006 skin: plugin cards — coral hairline card, blue name, QQ
+   gradient save button and red discard, pending chip in the QQ amber
+   notice tone. Skin-scoped only. ═══════════════════════════════════════ */
+body[data-ds-skin='qq2006'] .card {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f7fbff, var(--dsw-alias-bg-layer-2));
+}
+
+body[data-ds-skin='qq2006'] .cardOpen {
+  border-color: var(--dsw-alias-border-l4);
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-bg-layer-2));
+}
+
+body[data-ds-skin='qq2006'] .name {
+  color: var(--dsw-alias-label-primary-bluish);
+}
+
+body[data-ds-skin='qq2006'] .pending {
+  background: var(--dsw-alias-state-warn-secondary);
+  border: 1px solid var(--dsw-alias-state-warn-primary);
+  color: var(--dsw-alias-state-warn-label);
+}
+
+body[data-ds-skin='qq2006'] .save {
+  border: 1px solid var(--dsw-alias-border-l4);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, rgb(120, 180, 235), var(--dsw-alias-button-primary-fill));
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .save:hover:not(:disabled) {
+  background: linear-gradient(to bottom, rgb(140, 195, 245), var(--dsw-alias-button-primary-hover));
+}
+
+body[data-ds-skin='qq2006'] .save:active:not(:disabled) {
+  background: linear-gradient(to bottom, var(--dsw-alias-interactive-bg-active), rgb(180, 215, 245));
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.3);
+}
+
+body[data-ds-skin='qq2006'] .discard {
+  border-color: var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-bg-module-platform));
+}
+
+body[data-ds-skin='qq2006'] .failed {
+  color: var(--dsw-alias-state-error-primary);
+}

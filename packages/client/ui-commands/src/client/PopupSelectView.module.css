@@ -116,3 +116,62 @@
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
 }
+
+/* ═══ QQ2006 skin: command palette (popupSelect card) — the whole card
+   goes retro: coral hairline card on the QQ light body, search field with
+   the QQ blue focus ring, QQ solid-blue selected row with white copy and
+   check, red error strip, tertiary status/detail. Skin-scoped only. ═════ */
+body[data-ds-skin='qq2006'] .card {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f7fbff, var(--dsw-alias-bg-layer-2));
+  box-shadow: var(--dsw-shadow-lv3);
+}
+
+body[data-ds-skin='qq2006'] .search {
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+body[data-ds-skin='qq2006'] .search:focus-within {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 2px var(--dsw-alias-interactive-bg-hover-accent);
+}
+
+body[data-ds-skin='qq2006'] .row {
+  border-radius: 4px;
+}
+
+body[data-ds-skin='qq2006'] .rowActive,
+body[data-ds-skin='qq2006'] .rowActive:hover {
+  background: linear-gradient(to bottom, rgb(80, 150, 220), var(--dsw-alias-brand-primary));
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .rowActive .label,
+body[data-ds-skin='qq2006'] .rowActive .detail,
+body[data-ds-skin='qq2006'] .rowActive .check {
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+body[data-ds-skin='qq2006'] .detail {
+  color: var(--dsw-alias-label-tertiary);
+}
+
+body[data-ds-skin='qq2006'] .status {
+  color: var(--dsw-alias-label-tertiary);
+}
+
+body[data-ds-skin='qq2006'] .error {
+  border-radius: 4px;
+  background: var(--dsw-alias-state-error-secondary);
+  color: var(--dsw-alias-state-error-primary);
+}
+
+body[data-ds-skin='qq2006'] .retry {
+  border-color: var(--dsw-alias-border-l3);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, var(--dsw-alias-bg-module-platform));
+  color: var(--dsw-alias-label-primary);
+}

@@ -18,3 +18,16 @@
   color: var(--dsw-alias-label-primary);
   font-weight: 510;
 }
+
+/* ── QQ2006 皮肤：子智能体只读提示条 ─────────────────────────────────────
+   只读原因提示呈 QQ 浅蓝信息条（浅蓝底 + 蓝描边），标题藏青加粗。 */
+body[data-ds-skin='qq2006'] .frame {
+  border: 1px solid rgb(150, 190, 230);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #f0f8ff, #dceeff);
+  color: rgb(90, 110, 135);
+}
+
+body[data-ds-skin='qq2006'] .frame strong {
+  color: rgb(35, 55, 80);
+}

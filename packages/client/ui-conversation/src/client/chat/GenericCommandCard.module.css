@@ -84,3 +84,71 @@
     animation: none;
   }
 }
+
+/* ── QQ2006 皮肤：工具/命令卡片（传输条 + 错误条） ─────────────────────
+   running = QQ 蓝色传输条（动画扫光 + 蓝边）；error = 红条；
+   ok = 浅蓝胶囊；展开 body 白底蓝框。 */
+body[data-ds-skin='qq2006'] .root {
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+}
+
+body[data-ds-skin='qq2006'] .root[data-state='running'] .row {
+  border: 1px solid rgb(150, 196, 232);
+  background: linear-gradient(to bottom, #ffffff, #cfe8fc);
+}
+
+body[data-ds-skin='qq2006'] .root[data-state='running'] .summary {
+  background: linear-gradient(
+    90deg,
+    rgb(45, 128, 208) 0%,
+    rgb(45, 128, 208) 40%,
+    rgb(140, 200, 240) 50%,
+    rgb(45, 128, 208) 60%,
+    rgb(45, 128, 208) 100%
+  );
+  background-position: 100% 0;
+  background-size: 240% 100%;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: qq-transfer-sweep 1.6s linear infinite;
+}
+
+body[data-ds-skin='qq2006'] .root[data-state='error'] .row {
+  border: 1px solid rgb(214, 120, 110);
+  background: linear-gradient(to bottom, #fff0ee, #ffdcd8);
+}
+
+body[data-ds-skin='qq2006'] .root[data-state='ok'] .row {
+  border: 1px solid rgb(170, 200, 228);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #ffffff, #e2f1fc);
+}
+
+body[data-ds-skin='qq2006'] .summary[data-error] {
+  color: rgb(180, 60, 50);
+}
+
+body[data-ds-skin='qq2006'] .body {
+  border: 1px solid rgb(170, 200, 228);
+  border-radius: 0 0 4px 4px;
+  background: #f4f9fe;
+  color: rgb(40, 70, 100);
+  font-size: 12px;
+}
+
+@keyframes qq-transfer-sweep {
+  to {
+    background-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-ds-skin='qq2006'] .root[data-state='running'] .summary {
+    background: none;
+    color: rgb(45, 128, 208);
+    -webkit-text-fill-color: rgb(45, 128, 208);
+    animation: none;
+  }
+}

@@ -79,6 +79,19 @@ function mount(overrides: Partial<WorkspaceBrowserProps> = {}) {
     insertWorkspaceBefore: vi.fn(async () => {}),
     insertSessionBefore: vi.fn(async () => {}),
     createWorkspace: vi.fn(async () => workspace('created', [])),
+    // QQ2006 main-panel verbs: the panel is skin-gated, so tests never
+    // invoke these — a stub keeps the required injected member honest.
+    qq: {
+      newSession: vi.fn(),
+      toggleSidebar: vi.fn(),
+      openDetails: vi.fn(),
+      openModelMenu: vi.fn(),
+      toggleCommandMenu: vi.fn(),
+      openSubagentCatalog: vi.fn(),
+      focusComposer: vi.fn(),
+      locateLatestToolCall: vi.fn(),
+      toggleNewMessageSound: vi.fn(() => false),
+    },
     useDirectoryFlow: bindSnapshotSelector({ getSnapshot: () => true, subscribe: () => () => {} }),
     renderSlot: ((_name: string, owner: { open: boolean }) => (owner.open ? <div data-testid="directory-flow" /> : null)) as never,
     t,

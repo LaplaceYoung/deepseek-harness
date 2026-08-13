@@ -1,0 +1,125 @@
+/* QQ2006 main-panel chrome (user head + panel bar). The component mounts
+   only while the skin is live (useQqSkin gate), so the default skin keeps
+   its exact DOM; every rule here is additionally anchored to
+   `body[data-ds-skin='qq2006']` per the skin contract. */
+
+body[data-ds-skin='qq2006'] .panel {
+  flex: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── user head: avatar / identity / six 16×16 top buttons ─────────────── */
+body[data-ds-skin='qq2006'] .userHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px 6px;
+}
+
+body[data-ds-skin='qq2006'] .avatar {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid rgb(120, 165, 215);
+  object-fit: cover;
+}
+
+body[data-ds-skin='qq2006'] .headIdentity {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+body[data-ds-skin='qq2006'] .nickname {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+}
+
+body[data-ds-skin='qq2006'] .statusLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+body[data-ds-skin='qq2006'] .statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(70, 160, 100);
+  border: 1px solid rgb(90, 140, 200);
+}
+
+body[data-ds-skin='qq2006'] .miniButtons {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Original 16×16 top-level buttons: normal / hover glow / pressed inset. */
+body[data-ds-skin='qq2006'] .miniButton {
+  width: 16px;
+  height: 16px;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  cursor: pointer;
+}
+
+body[data-ds-skin='qq2006'] .miniButton:hover {
+  filter: brightness(1.15) drop-shadow(0 0 1px rgb(90, 140, 200));
+}
+
+body[data-ds-skin='qq2006'] .miniButton:active {
+  filter: brightness(0.85);
+}
+
+/* ── panel bar: ten 24×24 buttons on the QQ bar strip ─────────────────── */
+body[data-ds-skin='qq2006'] .panelBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  height: 32px;
+  padding: 2px 6px;
+  box-sizing: border-box;
+  background:
+    url('/qq2006/img/panel-bar/barback2_normal.png') center / 27px 37px repeat-x;
+  border-top: 1px solid rgb(150, 185, 220);
+}
+
+body[data-ds-skin='qq2006'] .barButton {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  cursor: pointer;
+}
+
+body[data-ds-skin='qq2006'] .barButton:hover {
+  filter: brightness(1.2) drop-shadow(0 0 2px rgb(90, 140, 200));
+}
+
+body[data-ds-skin='qq2006'] .barButton:active {
+  filter: brightness(0.85);
+}
