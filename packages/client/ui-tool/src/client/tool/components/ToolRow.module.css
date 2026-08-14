@@ -308,10 +308,15 @@
    行标题与文件链接珊瑚蓝，IN/OUT 卡呈 QQ 浅蓝代码面（浅蓝底 + 蓝边），
    IN/OUT 标签藏青；Inspect 胶囊 QQ 蓝边白底、hover 珊瑚蓝实底；
    错误摘要保持 QQ 错误红。 */
-body[data-ds-skin='qq2006'] .title {
-  color: rgb(35, 55, 80);
-  font-weight: 600;
+body[data-ds-skin='qq2006'] .row {
+  font-size: 12px;
 }
+
+ body[data-ds-skin='qq2006'] .title {
+   color: rgb(35, 55, 80);
+   font-weight: 600;
+ }
+
 
 body[data-ds-skin='qq2006'] .chevron {
   color: rgb(45, 128, 208);

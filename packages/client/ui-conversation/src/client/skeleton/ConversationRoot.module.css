@@ -443,8 +443,8 @@ body[data-ds-skin='qq2006'] .root {
   font-size: var(--qq-msg-font-size, 12px);
 }
 
-/* 皮肤表的 --qq-msg-font-size 中档是 13px；会话窗口子树把中档默认压回
-   原版 12px（A 字体激活时皮肤表的值照常生效：小=12、大=15）。 */
+/* 皮肤表的 --qq-msg-font-size 中档是 13px；会话窗口子树默认采用 13px（比
+   原版 12px 稍大、更易读；A 字体激活时皮肤表的值照常生效：小=12、大=15）。 */
 body[data-ds-skin='qq2006']:not([data-qq-font]) .root {
-  --qq-msg-font-size: 12px;
+  --qq-msg-font-size: 13px;
 }
