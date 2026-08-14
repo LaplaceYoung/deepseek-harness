@@ -9,6 +9,8 @@ import type { ConversationSlotProps, InputZone } from '../contract/slots.ts'
 import { HeroGlow, HeroShell, WorkspaceChip, workspaceLabel } from './EmptyHero.tsx'
 import { useQqSkin } from '../qq/qq-skin.ts'
 import { useQqWinSkin } from '../qq/qq-win-skin.ts'
+import { qqTip } from '../qq/qq-feedback.ts'
+import { playQqSound } from '../qq/qq-sound.ts'
 import css from './ConversationRoot.module.css'
 
 /** Full props composed from the slot contract. */
@@ -208,6 +210,29 @@ export function ConversationRoot({
     <div className={css.root} data-phase={phase} data-qq-win-skin={winSkin}>
       {renderSlot('conversation.session.header', {})}
       <div className={css.scrollBody} data-conversation-scroll="">
+        {/* QQ2006: 侧栏收起后浮于聊天区右缘的展开小钮。DOM 仅在皮肤下渲染
+            （useQqSkin 门控）；可见性由皮肤 CSS 决定——仅当布局框架收起
+            details 列（[data-details-collapsed]）且会话处于 active 相位时
+            显示，默认皮肤/详情展开/无会话（hero）一律隐藏。sticky 让它在
+            消息滚动时钉在滚动口顶部右缘。 */}
+        {qqSkin && (
+          <button
+            type="button"
+            className={css.detailsReopen}
+            data-details-reopen=""
+            aria-label={t('qq.side.expand')}
+            title={t('qq.side.expand')}
+            onClick={() => {
+              playQqSound('global')
+              qqTip(t('qq.side.expanded'))
+              openDetails()
+            }}
+          >
+            <svg viewBox="0 0 16 16" width="10" height="10" aria-hidden>
+              <path d="M13 3l-10 5 10 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        )}
         {renderSlot('conversation.session', {})}
         {composerSeat}
       </div>

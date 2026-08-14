@@ -251,3 +251,35 @@ body[data-ds-skin='qq2006'] .qqZoneRow {
 body[data-ds-skin='qq2006'] .qqZoneNum {
   color: red;
 }
+
+/* 顶部收缩行（原版 QQ2006 客户端语义：面板顶右一枚小箭头钮收起右侧栏）：
+   右对齐 50×20 QQ 条钮，IMSidebarButtonExpand 三态砖打底（Normal/Hover/
+   Down），» 箭头藏青描边，随钮切换三态。 */
+body[data-ds-skin='qq2006'] .qqSideCollapse {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+}
+
+body[data-ds-skin='qq2006'] .qqSideCollapseBtn {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 50px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  background-image: url('/qq2006/img/im/IMSidebarButtonExpand_Normal.png');
+  background-size: 100% 100%;
+  color: rgb(30, 60, 100);
+  cursor: pointer;
+}
+
+body[data-ds-skin='qq2006'] .qqSideCollapseBtn:hover {
+  background-image: url('/qq2006/img/im/IMSidebarButtonExpand_Hover.png');
+}
+
+body[data-ds-skin='qq2006'] .qqSideCollapseBtn:active {
+  background-image: url('/qq2006/img/im/IMSidebarButtonExpand_Down.png');
+}

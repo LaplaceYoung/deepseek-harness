@@ -448,3 +448,44 @@ body[data-ds-skin='qq2006'] .root {
 body[data-ds-skin='qq2006']:not([data-qq-font]) .root {
   --qq-msg-font-size: 13px;
 }
+
+/* ── QQ2006 皮肤：侧栏展开小钮 ─────────────────────────────────────────
+   侧栏收起后浮于聊天区右缘（原版 QQ2006 面板边界箭头钮语义）：sticky 钉在
+   滚动口顶缘右端，消息滚动时不离开视口。可见性三条件全中才显示——皮肤激活、
+   布局框架收起 details 列（[data-details-collapsed] 在框架元素上，本钮是
+   其子孙）、会话处于 active 相位；默认皮肤/详情展开/无会话（hero）一律
+   display:none（基类兜底）。负下边距抵消自身高度，不挤压消息区。按钮沿用
+   本包 QQ 风格：白→浅蓝渐变 + 藏青描边，hover 加深、active 凹陷。 */
+.detailsReopen {
+  position: sticky;
+  top: 8px;
+  align-self: flex-end;
+  z-index: 8;
+  flex: none;
+  margin-right: 4px;
+  display: none;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  margin-bottom: -22px;
+  padding: 3px;
+  place-items: center;
+  border: 1px solid rgb(120, 165, 215);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff, #cfe9fb);
+  color: rgb(30, 60, 100);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(30, 70, 120, 0.25);
+}
+
+body[data-ds-skin='qq2006'] [data-details-collapsed] .root[data-phase='active'] .detailsReopen {
+  display: grid;
+}
+
+body[data-ds-skin='qq2006'] .detailsReopen:hover {
+  background: linear-gradient(to bottom, #ffffff, #a8d4f4);
+}
+
+body[data-ds-skin='qq2006'] .detailsReopen:active {
+  background: linear-gradient(to bottom, #d2ecff, #9cc4ea);
+}

@@ -208,3 +208,99 @@ describe('render branch tails', () => {
     })
   })
 })
+
+describe('QQ2006 皮肤：QQ 秀侧栏收缩', () => {
+  /** Shared seats for the skin DetailsPanel render (QQ 秀 sidebar branch). */
+  function renderSkinSidebar(closeDetails: () => void = vi.fn()) {
+    const snap = snapshotBase()
+    const chat = createChatStore().create()
+    const emptyList = createSnapshotStore<SessionListState>(
+      { ids: [], byId: {}, current: undefined, phase: 'ready', subagentsByParent: {}, jobsBySession: {}, currentAddress: undefined })
+    const emptyWorkspaces = createSnapshotStore<WorkspaceListState>({
+      items: [], archivedSessionIds: [], state: 'idle', phase: 'ready', error: null,
+      baselinesReady: true, recentWorkspaceId: undefined,
+    })
+    document.body.setAttribute('data-ds-skin', 'qq2006')
+    const view = render(
+      <DetailsPanel
+        SessionProvider={SessionProviderStub}
+        renderSlot={renderToolDetailsProbe()}
+        sessionId={SID}
+        useSession={bindSnapshotSelector({ getSnapshot: () => snap, subscribe: () => () => {} })}
+        useSessions={bindSnapshotSelector(emptyList)}
+        useWorkspaces={bindSnapshotSelector(emptyWorkspaces)}
+        useProjection={(() => undefined)}
+        useInput={(() => { throw new Error('unused') })}
+        inputActions={{
+          setDraft: () => {},
+          addImages: () => true,
+          removeImage: () => {},
+          pruneImages: () => {},
+          submit: () => {},
+        }}
+        useStore={bindSnapshotSelector(chat)}
+        actions={chat.actions}
+        closeDetails={closeDetails}
+        t={t}
+      />,
+    )
+    return { view, closeDetails }
+  }
+
+  it('default skin renders no QQ 秀 sidebar and no collapse control', () => {
+    document.body.removeAttribute('data-ds-skin')
+    const snap = snapshotBase()
+    const chat = createChatStore().create()
+    const emptyList = createSnapshotStore<SessionListState>(
+      { ids: [], byId: {}, current: undefined, phase: 'ready', subagentsByParent: {}, jobsBySession: {}, currentAddress: undefined })
+    const emptyWorkspaces = createSnapshotStore<WorkspaceListState>({
+      items: [], archivedSessionIds: [], state: 'idle', phase: 'ready', error: null,
+      baselinesReady: true, recentWorkspaceId: undefined,
+    })
+    const view = render(
+      <DetailsPanel
+        SessionProvider={SessionProviderStub}
+        renderSlot={renderToolDetailsProbe()}
+        sessionId={SID}
+        useSession={bindSnapshotSelector({ getSnapshot: () => snap, subscribe: () => () => {} })}
+        useSessions={bindSnapshotSelector(emptyList)}
+        useWorkspaces={bindSnapshotSelector(emptyWorkspaces)}
+        useProjection={(() => undefined)}
+        useInput={(() => { throw new Error('unused') })}
+        inputActions={{
+          setDraft: () => {},
+          addImages: () => true,
+          removeImage: () => {},
+          pruneImages: () => {},
+          submit: () => {},
+        }}
+        useStore={bindSnapshotSelector(chat)}
+        actions={chat.actions}
+        closeDetails={vi.fn()}
+        t={t}
+      />,
+    )
+    expect(view.container.querySelector('[data-qq-show-side]')).toBeNull()
+    // The default details panel keeps its own chrome (close button, no QQ 秀).
+    expect(view.getByRole('button', { name: '关闭详情' })).toBeTruthy()
+  })
+
+  it('skin: sidebar top collapse button closes details and answers with a QQTip', () => {
+    const closeDetails = vi.fn()
+    const { view } = renderSkinSidebar(closeDetails)
+    const side = view.container.querySelector('[data-qq-show-side]')
+    expect(side).not.toBeNull()
+    // The collapse control is the first row of the sidebar.
+    const btn = side?.querySelector<HTMLButtonElement>('button[aria-label="收起侧栏"]')
+    expect(btn).not.toBeNull()
+    btn?.click()
+    expect(closeDetails).toHaveBeenCalledTimes(1)
+    const tip = document.querySelector('[data-qq-tip]')
+    expect(tip?.textContent).toBe('已收起侧栏')
+    // Leave the harness clean: drop the tip host and the skin attribute.
+    document.querySelectorAll('[data-qq-tip]').forEach(node => node.remove())
+    const host = document.body.lastElementChild
+    if (host !== null && (host.className ?? '').includes('_host')) host.remove()
+    document.body.removeAttribute('data-ds-skin')
+  })
+})

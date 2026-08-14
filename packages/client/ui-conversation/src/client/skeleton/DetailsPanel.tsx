@@ -12,7 +12,9 @@ import { shallowEqual } from '@deepseek-ai/dsh-client-runtime/client'
 import type { ConversationSnapshot, RunningToolCall, ToolCallBlock, ToolResultNode } from '@deepseek-ai/dsh-client-runtime/client'
 import type { DetailsSlotProps } from '../contract/slots.ts'
 import { findToolCall } from '../chat/tool-node-reader.ts'
+import { qqTip } from '../qq/qq-feedback.ts'
 import { useQqSkin } from '../qq/qq-skin.ts'
+import { playQqSound } from '../qq/qq-sound.ts'
 import css from './DetailsPanel.module.css'
 
 /** Full props composed by reference from the contract (automatic shares & injected share). */
@@ -46,18 +48,38 @@ function qqShowStatsOf(s: ConversationSnapshot): QqShowStats {
 }
 
 /**
- * QQ2006 聊天窗口右侧 QQ 秀栏（原版 .qq-im-side）：上半「对方形象」
- * 钮 + show1.gif 展示区、中段「个人空间」信息区（#f6f6f6 底、藏青字、
- * 红色数字）、下半「我的形象」+ show3.gif。侧栏钮 hover 换 Hover 图。
- * @param props - session stats, friend display title, locale seat.
+ * QQ2006 聊天窗口右侧 QQ 秀栏（原版 .qq-im-side）：顶部收缩行 + 上半
+ * 「对方形象」钮 + show1.gif 展示区、中段「个人空间」信息区（#f6f6f6 底、
+ * 藏青字、红色数字）、下半「我的形象」+ show3.gif。侧栏钮 hover 换 Hover 图。
+ * 收缩行按 QQ2006 客户端语义：面板顶部一枚小箭头钮，点击收起右侧栏
+ * （closeDetails）+ QQTip 反馈 + 全局点击音。
+ * @param props - session stats, friend display title, locale seat, close verb.
  * @returns the QQ 秀 sidebar.
  */
-function QqShowSidebar({ stats, t }: {
+function QqShowSidebar({ stats, t, closeDetails }: {
   stats: QqShowStats
   t: DetailsPanelProps['t']
+  closeDetails: () => void
 }) {
   return (
     <div className={css.qqSide} data-qq-show-side>
+      <div className={css.qqSideCollapse}>
+        <button
+          type="button"
+          className={css.qqSideCollapseBtn}
+          aria-label={t('qq.side.collapse')}
+          title={t('qq.side.collapse')}
+          onClick={() => {
+            playQqSound('global')
+            qqTip(t('qq.side.collapsed'))
+            closeDetails()
+          }}
+        >
+          <svg viewBox="0 0 16 16" width="10" height="10" aria-hidden>
+            <path d="M3 3l10 5-10 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
       <section className={css.qqShowSection}>
         <button type="button" className={css.qqSideBtn}>{t('qq.side.theirAvatar')}</button>
         <div
@@ -156,7 +178,7 @@ export function DetailsPanel({ useSession, useSessions, sessionId, useStore, ren
   if (qqSkin) {
     return (
       <div className={css.root}>
-        <QqShowSidebar stats={qqStats} t={t} />
+        <QqShowSidebar stats={qqStats} t={t} closeDetails={closeDetails} />
       </div>
     )
   }
