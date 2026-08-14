@@ -365,40 +365,36 @@
 }
 
 /* ── QQ2006 皮肤：聊天窗口体 ─────────────────────────────────────────────
-   窗口体用 BackgroundC 天空蓝砖（采样 rgb(85,178,253)）叠 win-skin 淡色
-   渐变；不再铺设 BackgroundL/R（其首/末列是藏青 #1e3e93 边线，父级要求
+   窗口体 = 原版 BackgroundC 天空蓝砖纯色平铺（采样 rgb(85,178,253)），
+   无渐变层；不再铺设 BackgroundL/R（其首/末列是藏青 #1e3e93 边线，
    会话界面无深蓝背景）。--qq-win-* 变量按 data-qq-win-skin 预设定义，
    供气泡/输入区/面板消费。全部锚定 body[data-ds-skin='qq2006']，默认
    皮肤零影响。 */
 body[data-ds-skin='qq2006'] .root {
-  background:
-    url('/qq2006/img/BackgroundC.png') center top repeat,
-    var(--qq-win-bg, linear-gradient(to bottom, rgb(224, 240, 252), rgb(208, 230, 248)));
+  background-color: rgb(85, 178, 253);
+  background-image: url('/qq2006/img/BackgroundC.png');
+  background-repeat: repeat;
 }
 
 body[data-ds-skin='qq2006'] .root[data-qq-win-skin='classic'] {
-  --qq-win-bg: linear-gradient(to bottom, rgb(224, 240, 252), rgb(208, 230, 248));
   --qq-win-bubble-self: linear-gradient(to bottom, #ffffff, #d2ecff);
   --qq-win-bubble-other: #ffffff;
   --qq-win-accent: rgb(45, 128, 208);
 }
 
 body[data-ds-skin='qq2006'] .root[data-qq-win-skin='pink'] {
-  --qq-win-bg: linear-gradient(to bottom, rgb(252, 232, 240), rgb(248, 216, 232));
   --qq-win-bubble-self: linear-gradient(to bottom, #ffffff, #ffe0ef);
   --qq-win-bubble-other: #fff5fa;
   --qq-win-accent: rgb(216, 96, 148);
 }
 
 body[data-ds-skin='qq2006'] .root[data-qq-win-skin='mint'] {
-  --qq-win-bg: linear-gradient(to bottom, rgb(224, 248, 240), rgb(206, 240, 228));
   --qq-win-bubble-self: linear-gradient(to bottom, #ffffff, #d2f5e4);
   --qq-win-bubble-other: #f2fcf8;
   --qq-win-accent: rgb(58, 168, 122);
 }
 
 body[data-ds-skin='qq2006'] .root[data-qq-win-skin='violet'] {
-  --qq-win-bg: linear-gradient(to bottom, rgb(238, 232, 250), rgb(226, 216, 246));
   --qq-win-bubble-self: linear-gradient(to bottom, #ffffff, #e2d8fa);
   --qq-win-bubble-other: #f8f5fe;
   --qq-win-accent: rgb(138, 96, 216);
@@ -442,7 +438,13 @@ body[data-ds-skin='qq2006'] .scrollBody {
   scrollbar-gutter: auto;
 }
 
-/* 消息字号循环（A 字体）作用于窗口体文本。 */
+/* 消息字号循环（A 字体）作用于窗口体文本；中档默认对齐原版 12px。 */
 body[data-ds-skin='qq2006'] .root {
-  font-size: var(--qq-msg-font-size, 13px);
+  font-size: var(--qq-msg-font-size, 12px);
+}
+
+/* 皮肤表的 --qq-msg-font-size 中档是 13px；会话窗口子树把中档默认压回
+   原版 12px（A 字体激活时皮肤表的值照常生效：小=12、大=15）。 */
+body[data-ds-skin='qq2006']:not([data-qq-font]) .root {
+  --qq-msg-font-size: 12px;
 }

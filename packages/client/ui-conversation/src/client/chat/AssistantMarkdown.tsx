@@ -17,6 +17,8 @@ import type { MarkdownFileMentions } from '@deepseek-ai/dsh-client-ui-primitives
 import { ImageGallery, type ImageLoader } from '@deepseek-ai/dsh-client-ui-attachment'
 import type { ChatViewSlotProps } from '../contract/slots.ts'
 import { messageImageLabels } from '../image-labels.ts'
+import { useQqSkin } from '../qq/qq-skin.ts'
+import { qqClockTime, qqFullDateTime } from '../qq/qq-time.ts'
 import { ReasoningRow } from './ReasoningRow.tsx'
 import css from './AssistantMarkdown.module.css'
 
@@ -29,15 +31,21 @@ export interface AssistantMarkdownProps {
   loadImage?: ImageLoader
   /** Resolved prose file mentions for this Assistant's closing turn. */
   mentions?: MarkdownFileMentions | undefined
+  /** Message time for the QQ2006 list meta line (absent mid-turn narration). */
+  time?: number | undefined
+  /** Conversation display title — the QQ2006 sender name on assistant rows. */
+  otherName?: string | undefined
   /** The owning view's locale seat, passed down as a plain prop. */
   t: ChatViewSlotProps['t']
 }
 
 /** Reasoning block as the Think variant summary row (figma 39:28304). */
 export const AssistantMarkdown = memo(function AssistantMarkdown({
-  blocks, streaming, interrupted, loadImage, mentions, t,
+  blocks, streaming, interrupted, loadImage, mentions, time, otherName, t,
 }: AssistantMarkdownProps) {
   const imageLoader = loadImage ?? (() => Promise.reject(new Error(t('image.serviceUnavailable'))))
+  // QQ2006: the assistant row is the list-style "other" side (no bubble).
+  const qqSkin = useQqSkin()
   // Stable per locale revision (t identity changes on switch): a fresh object
   // per render would rebuild MarkdownText's component table every chunk.
   const codeLabels = useMemo(() => ({ copyLabel: t('copy'), copiedLabel: t('copied') }), [t])
@@ -99,12 +107,29 @@ export const AssistantMarkdown = memo(function AssistantMarkdown({
         )
     }
   }
+  const body = (
+    <div className={css.body}>
+      {rendered}
+      {interrupted && <span className={css.stopped}>{t('message.stopped')}</span>}
+    </div>
+  )
+  // QQ2006: original list-style message row (原版 .qq-im-chat-msg-list li)
+  // — sender line (昵称 + HH:MM:SS) above the text; markdown / code blocks
+  // keep rendering inside the plain text line.
+  if (qqSkin) {
+    return (
+      <div className={css.qqMsgRow} data-qq-msg-row data-streaming={streaming || undefined}>
+        <p className={css.qqMsgMeta} title={time === undefined ? undefined : qqFullDateTime(time)}>
+          <span>{otherName ?? ''}</span>
+          {time !== undefined && <span className={css.qqMsgTime}>{qqClockTime(time)}</span>}
+        </p>
+        <div className={css.qqMsgText}>{body}</div>
+      </div>
+    )
+  }
   return (
     <div className={css.root} data-streaming={streaming || undefined}>
-      <div className={css.body}>
-        {rendered}
-        {interrupted && <span className={css.stopped}>{t('message.stopped')}</span>}
-      </div>
+      {body}
     </div>
   )
 })

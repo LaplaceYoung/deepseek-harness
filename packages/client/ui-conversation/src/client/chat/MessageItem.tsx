@@ -15,6 +15,7 @@ import { ImageGallery, type ImageLoader } from '@deepseek-ai/dsh-client-ui-attac
 import { messageImageLabels } from '../image-labels.ts'
 import { isQqSkin, useQqSkin } from '../qq/qq-skin.ts'
 import { qqTip } from '../qq/qq-feedback.ts'
+import { qqClockTime, qqFullDateTime } from '../qq/qq-time.ts'
 import { CompactionItem } from './CompactionItem.tsx'
 import { ContextInjectionRow } from './ContextInjectionRow.tsx'
 import { MessageIconActions } from './MessageIconActions.tsx'
@@ -181,7 +182,7 @@ function projectUserText(text: string): ReactNode {
 
 /** Right-aligned bubble shared by user and steering rows. */
 function UserStyleBubble({
-  content, imageLoader, actions, pending = false, sessionId, t,
+  content, imageLoader, actions, pending = false, sessionId, time, t,
 }: {
   content: readonly unknown[]
   imageLoader: ImageLoader
@@ -191,6 +192,8 @@ function UserStyleBubble({
   pending?: boolean
   /** The owning session (drives the QQ hover row's quote inserter). */
   sessionId?: SessionId | undefined
+  /** Message time for the QQ2006 list meta line (pending steering has none). */
+  time?: number | undefined
   t: ChatViewSlotProps['t']
 }): ReactNode {
   const { text, images, rest } = contentParts(content)
@@ -207,6 +210,35 @@ function UserStyleBubble({
     void writeClipboard(text).then((ok) => {
       qqTip(ok ? t('qq.msg.copied') : t('qq.copyFailed'))
     })
+  }
+  // QQ2006: original list-style message (原版 .qq-im-chat-msg-list li) —
+  // a sender line (昵称 + HH:MM:SS) above a plain text line, no bubble.
+  if (qqSkin) {
+    return (
+      <div
+        className={css.qqMsgRow}
+        data-qq-msg-row
+        data-self
+        data-pending-steering={pending || undefined}
+        data-time-hover-root
+        data-qq-msg-hover-root
+      >
+        <p className={css.qqMsgMeta} title={time === undefined ? undefined : qqFullDateTime(time)}>
+          <span>{t('qq.msg.me')}</span>
+          {time !== undefined && <span className={css.qqMsgTime}>{qqClockTime(time)}</span>}
+        </p>
+        {images.length > 0 && (
+          <ImageGallery images={images} load={imageLoader} align="start" labels={messageImageLabels(t)} />
+        )}
+        {showBubble && (
+          <div className={css.qqMsgText} onContextMenu={onContextMenu}>
+            {projectUserText(text)}
+            {rest.map((block, i) => <JsonBlock key={i} label={t('message.extraBlock')} payload={block} truncatedLabel={truncated} />)}
+          </div>
+        )}
+        {text !== '' && <QqMessageActions text={text} sessionId={sessionId} t={t} />}
+      </div>
+    )
   }
   return (
     <div
@@ -271,6 +303,7 @@ export const UserMessageNodeView = memo(function UserMessageNodeView({
       content={data.content}
       imageLoader={loadImage}
       sessionId={sessionId}
+      time={data.time}
       t={t}
       actions={text => (
         <MessageIconActions

@@ -34,25 +34,12 @@
   text-shadow: 0 1px 1px rgba(0, 40, 90, 0.6);
 }
 
-/* ── 浅蓝化（父级要求：会话界面禁用深蓝背景） ─────────────────────────
-   原版聊天窗口标题带是 IMBorderTop 浅蓝系、窗口体 #5db7ff 天空蓝；这里
-   用 BackgroundC 采样色 rgb(85,178,253) 家族的浅蓝渐变覆盖 ui-skin 的
-   藏青九宫格。仅作用于会话窗口 chrome（.windowChrome 之内），主面板由
-   ui-workspace 自行决定。 */
-body[data-ds-skin='qq2006'] .windowChrome :global(.qq-skin-title) {
-  background: linear-gradient(to bottom, rgb(150, 212, 255), rgb(85, 178, 253));
-}
-
-body[data-ds-skin='qq2006'] .windowChrome :global(.qq-skin-head) {
-  background: linear-gradient(to bottom, rgb(170, 225, 255), rgb(110, 192, 253));
-}
-
-/* 浅蓝带上的标题文字改原版藏青墨色（原版好友信息条文字
-   rgb(7,30,129)），去掉白字投影。 */
-body[data-ds-skin='qq2006'] .titleText {
-  color: rgb(7, 30, 129);
-  text-shadow: none;
-}
+/* ── 原版九宫格砖（无渐变） ─────────────────────────────────────────────
+   标题带 / 头部带直接用原版图片砖：ui-skin-qq2006 的全局
+   .qq-skin-title（BackgroundTitle{Left,Center,Right}.png，24px）与
+   .qq-skin-head（BackgroundTitle2{Left,Center,Right}.png，61px），
+   本模块不再用渐变覆盖（原版标题带即藏青→天蓝渐变砖，忠实还原）。
+   好友信息条仍是原版白→#b6d5f5 渐变（用户仅要求窗口大背景无渐变）。 */
 
 /* 好友信息条（原版 .qq-im-friend-info：白→#b6d5f5 渐变底、
    #84a6c6 下边线、藏青字、20×20 头像），位于大工具栏与消息区之间。 */

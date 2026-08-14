@@ -283,26 +283,48 @@
   vertical-align: baseline;
 }
 
-/* ── QQ2006 皮肤：消息气泡 ──────────────────────────────────────────────
-   自己（右侧）气泡 = QQ 原版淡蓝渐变（经典蓝预设；其他换肤预设为对应
-   淡色渐变，变量在 ConversationRoot 上按 data-qq-win-skin 定义）；圆角
-   右上角收成 QQ 尾巴。对方（左侧）白底气泡见 AssistantMarkdown 补丁。 */
-body[data-ds-skin='qq2006'] .userRow {
-  gap: 4px;
+/* ── QQ2006 皮肤：消息列表式（原版 .qq-im-chat-msg-list li）────────────
+   每条消息两行：发送者行（昵称 + HH:MM:SS 时间）+ 文本行，无气泡。
+   昵称色按原版：对方 #210f95（深蓝紫）、自己 #2d794b（绿）；时间
+   span 12px 灰、padding-left 8px；文本 #000、padding-left 15px、
+   line-height 1.4。消息字体宋体 SimSun 12px（A 字体循环经
+   --qq-msg-font-size 缩放）。 */
+body[data-ds-skin='qq2006'] .qqMsgRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  font-family: SimSun, '宋体', serif;
+  font-size: var(--qq-msg-font-size, 12px);
+  line-height: 1.4;
+  color: #000;
 }
 
-body[data-ds-skin='qq2006'] .bubble {
-  background: var(--qq-win-bubble-self, linear-gradient(to bottom, #ffffff, #d2ecff));
-  border: 1px solid rgb(150, 196, 232);
-  border-radius: 8px 3px 8px 8px;
-  padding: 6px 10px;
-  color: rgb(35, 55, 80);
-  font-size: var(--qq-msg-font-size, 13px);
-  line-height: 22px;
-  box-shadow: 0 1px 2px rgba(40, 90, 140, 0.12);
+body[data-ds-skin='qq2006'] .qqMsgMeta {
+  display: flex;
+  align-items: baseline;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #210f95;
 }
 
-/* 引用 chip（用户气泡内 @/ 引用）QQ 蓝底。 */
+body[data-ds-skin='qq2006'] .qqMsgRow[data-self] .qqMsgMeta {
+  color: #2d794b;
+}
+
+body[data-ds-skin='qq2006'] .qqMsgTime {
+  padding-left: 8px;
+  color: rgb(140, 140, 140);
+}
+
+body[data-ds-skin='qq2006'] .qqMsgText {
+  margin: 0;
+  padding-left: 15px;
+  overflow-wrap: anywhere;
+}
+
+/* 引用 chip（用户消息内 @/ 引用）QQ 蓝底。 */
 body[data-ds-skin='qq2006'] .refChip {
   background: rgba(45, 128, 208, 0.18);
   color: rgb(35, 55, 80);

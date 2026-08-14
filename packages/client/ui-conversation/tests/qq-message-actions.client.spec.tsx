@@ -116,6 +116,24 @@ describe('QQ2006 message action row', () => {
     expect(buttons.map(button => button.textContent)).toEqual(['复制', '引用', '转发'])
   })
 
+  it('skin: user message renders the QQ list row (昵称 + HH:MM:SS + 文本行), no bubble', () => {
+    document.body.setAttribute('data-ds-skin', 'qq2006')
+    const view = render(<UserMessageNodeView {...userProps()} />)
+    const row = view.container.querySelector('[data-qq-msg-row]') as HTMLElement
+    expect(row).not.toBeNull()
+    expect(row.getAttribute('data-self')).not.toBeNull()
+    const meta = row.querySelector('[class*="qqMsgMeta"]') as HTMLElement
+    expect(meta).not.toBeNull()
+    // 昵称（自己 = 我）+ 时间 span HH:MM:SS；完整日期挂在 title 上。
+    expect(meta.textContent).toContain('我')
+    expect(meta.textContent).toMatch(/\d{2}:\d{2}:\d{2}/)
+    expect(meta.getAttribute('title')).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)
+    const text = row.querySelector('[class*="qqMsgText"]') as HTMLElement
+    expect(text.textContent).toBe('hello bubble')
+    // 原版列表式：皮肤行内不再出现气泡。
+    expect(row.querySelector('[class*="bubble"]')).toBeNull()
+  })
+
   it('skin: 复制 writes the full text and answers with a QQTip', async () => {
     document.body.setAttribute('data-ds-skin', 'qq2006')
     const writeText = stubClipboard()
@@ -162,13 +180,14 @@ describe('QQ2006 message action row', () => {
     expect(writeText).toHaveBeenCalledWith('> hello bubble')
   })
 
-  it('skin: right-click on the user bubble copies the full text; default skin keeps the native menu', async () => {
+  it('skin: right-click on the user message copies the full text; default skin keeps the native menu', async () => {
     const writeText = stubClipboard()
     document.body.setAttribute('data-ds-skin', 'qq2006')
     const view = render(<UserMessageNodeView {...userProps()} />)
-    const bubble = view.container.querySelector('[class*="bubble"]') as HTMLElement
+    const row = view.container.querySelector('[data-qq-msg-row]') as HTMLElement
+    const text = row.querySelector('[class*="qqMsgText"]') as HTMLElement
     // fireEvent returns false when the handler prevented the native menu.
-    const prevented = fireEvent.contextMenu(bubble)
+    const prevented = fireEvent.contextMenu(text)
     await vi.advanceTimersByTimeAsync(0)
     expect(prevented).toBe(false)
     expect(writeText).toHaveBeenCalledWith('hello bubble')
