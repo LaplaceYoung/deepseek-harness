@@ -232,6 +232,8 @@ export function apply(ctx: Context): void {
         }
         sessions.open(nextId)
       },
+      // 右侧详情栏（QQ 秀栏）开关交给布局；皮肤侧只调用不读状态。
+      openDetails: () => { layout.openDetails() },
     }),
   }, ConversationRoot)
 

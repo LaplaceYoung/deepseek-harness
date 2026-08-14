@@ -21,6 +21,12 @@ export interface QQChatActions {
 export interface QQComposerActions {
   /** Focus the draft textarea (短信 / 邀请). */
   focusComposer: () => void
+  /**
+   * Append a `> text` quote block to the draft and focus the composer
+   * (消息操作行「引用」). The inserter is registered by the composer bar,
+   * so the verb is session-scoped with the live machine.
+   */
+  quote: (text: string) => void
 }
 
 /** Verbs the window chrome's group bar can serve (群空间 / 企业好友). */

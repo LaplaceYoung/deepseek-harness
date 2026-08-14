@@ -501,7 +501,7 @@ export function ChatView({
               wait, tool execution, streaming) so it never flickers per step. */}
           {running && <TurnStatus startTime={runningTurnStart} t={t} />}
           {pendingSteering.map(item => (
-            <PendingSteeringBubble key={item.id} content={item.content} loadImage={loadImage} t={t} />
+            <PendingSteeringBubble key={item.id} content={item.content} loadImage={loadImage} sessionId={sessionId} t={t} />
           ))}
         </div>
         {!atBottom && (

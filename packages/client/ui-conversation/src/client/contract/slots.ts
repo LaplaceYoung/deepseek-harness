@@ -423,6 +423,12 @@ export interface ConversationInjected {
    * the root renders as the inert composer's placeholder.
    */
   hooks: { composerBlock: ObservableSnapshot<ComposerBlock | undefined> }
+  /**
+   * Open the details panel (layout orchestration). The QQ2006 skin calls it
+   * once per app session so the right QQ-show column defaults expanded; the
+   * default skin never invokes it.
+   */
+  openDetails: () => void
 }
 
 /** Business callbacks injected into the strict Session body seat. */

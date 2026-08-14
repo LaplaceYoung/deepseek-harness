@@ -14,7 +14,10 @@ let timer: ReturnType<typeof setTimeout> | undefined
  * @param text - tip copy.
  */
 export function qqTip(text: string): void {
-  if (host === null) {
+  // A host removed from the document (test teardown, a reflowing layout that
+  // clears body children) must not keep swallowing tips through the stale
+  // reference — recreate it when detached.
+  if (host === null || !host.isConnected) {
     host = document.createElement('div')
     host.className = tipCss.host ?? ''
     document.body.appendChild(host)
@@ -22,6 +25,7 @@ export function qqTip(text: string): void {
   const tip = document.createElement('div')
   tip.className = tipCss.tip ?? ''
   tip.textContent = text
+  tip.setAttribute('data-qq-tip', '')
   host.replaceChildren(tip)
   window.clearTimeout(timer)
   timer = window.setTimeout(() => {

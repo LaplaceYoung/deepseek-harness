@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import type { WorkspaceId } from '@deepseek-ai/dsh-client-runtime/client'
 import type { ConversationSlotProps, InputZone } from '../contract/slots.ts'
 import { HeroGlow, HeroShell, WorkspaceChip, workspaceLabel } from './EmptyHero.tsx'
+import { useQqSkin } from '../qq/qq-skin.ts'
 import { useQqWinSkin } from '../qq/qq-win-skin.ts'
 import css from './ConversationRoot.module.css'
 
@@ -15,7 +16,7 @@ export type ConversationRootProps = ConversationSlotProps
 
 export function ConversationRoot({
   sessionId, useSession, useSessions, useWorkspaces, useInput, useComposerBlock,
-  renderSlot, renderSlotChain, selectWorkspace, t,
+  renderSlot, renderSlotChain, selectWorkspace, openDetails, t,
 }: ConversationRootProps) {
   const openState = useSession(s => s.openState)
   const composerPhase = useSession(s => s.composerPhase)
@@ -172,6 +173,21 @@ export function ConversationRoot({
   // custom properties by the skin-scoped bubble/panel/input patches. The
   // attribute is inert outside `body[data-ds-skin='qq2006']` CSS.
   const winSkin = useQqWinSkin()
+
+  // QQ2006: the right QQ-show column (details slot) defaults OPEN once per
+  // app session while the skin is active. The resident mount outlives session
+  // and view switches, so the one-time marker doubles as the "a manual close
+  // is never overridden" guard — closeDetails leaves the marker set and every
+  // later re-render (skin toggle included) skips the auto-open. Opening with
+  // no current session is harmless: the frame keeps the details track at 0
+  // until a non-blank session is current (AppFrame gates on detailsSession).
+  const qqSkin = useQqSkin()
+  const qqDetailsAutoOpened = useRef(false)
+  useEffect(() => {
+    if (!qqSkin || qqDetailsAutoOpened.current) return
+    qqDetailsAutoOpened.current = true
+    openDetails()
+  }, [qqSkin, openDetails])
   const composer = renderSlotChain(
     'conversation.composer',
     { interactions: pending, session },

@@ -228,14 +228,21 @@ export function InputBar({
     revealSelectionFocus(el)
   }, [locked, sessionId])
 
-  // QQ2006 chrome focus verb (短信/邀请): registered while the machine is
-  // live so the window chrome can focus the draft textarea.
+  // QQ2006 chrome focus verb (短信/邀请) + the message-row 引用 inserter:
+  // registered while the machine is live so the window chrome can focus the
+  // draft textarea and the hover action row can append a `> text` quote block
+  // through the machine (never the raw textarea).
   useEffect(() => {
     if (sessionId === undefined || !live) return
     return registerQqComposerActions(sessionId, {
       focusComposer: () => { inputRef.current?.focus({ preventScroll: true }) },
+      quote: (text) => {
+        const draft = keyboard.snapshot.draft
+        keyboard.setDraft(draft === '' ? `> ${text}` : `${draft}\n> ${text}`)
+        inputRef.current?.focus({ preventScroll: true })
+      },
     })
-  }, [sessionId, live])
+  }, [sessionId, live, keyboard])
 
   // A persisted draft arrives AFTER the unlock effect: ConversationSession
   // adopts it in its own mount effect, and a parent's mount effect runs after

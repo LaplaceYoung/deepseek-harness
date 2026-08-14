@@ -268,6 +268,13 @@ export const zh = {
   'qq.side.albumSuffix': '张/',
   'qq.side.favoriteSuffix': '个',
   'qq.side.commentsLabel': '评论',
+  'qq.msg.copy': '复制',
+  'qq.msg.quote': '引用',
+  'qq.msg.forward': '转发',
+  'qq.msg.quoteDone': '✓',
+  'qq.msg.copied': '已复制消息全文',
+  'qq.msg.forwarded': '已转发消息（引用格式）',
+  'qq.msg.quoteUnavailable': '输入框尚未就绪',
 } satisfies Record<string, string>
 
 /** The conversation namespace key union. */
@@ -536,4 +543,11 @@ export const en = {
   'qq.side.albumSuffix': '张/',
   'qq.side.favoriteSuffix': '个',
   'qq.side.commentsLabel': '评论',
+  'qq.msg.copy': '复制',
+  'qq.msg.quote': '引用',
+  'qq.msg.forward': '转发',
+  'qq.msg.quoteDone': '✓',
+  'qq.msg.copied': '已复制消息全文',
+  'qq.msg.forwarded': '已转发消息（引用格式）',
+  'qq.msg.quoteUnavailable': '输入框尚未就绪',
 } satisfies Record<ConversationKey, string>

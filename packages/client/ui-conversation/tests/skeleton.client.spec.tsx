@@ -125,6 +125,7 @@ function mount(
   const inputActions = wiring.actions
   const stop = vi.fn()
   const open = vi.fn()
+  const openDetails = vi.fn()
   const slotCalls: string[] = []
   const viewTabs = options.viewTabs ?? [
     { id: 'chat', label: 'Chat' },
@@ -247,11 +248,13 @@ function mount(
     renderSlot,
     renderSlotChain,
     selectWorkspace: retargetWorkspace,
+    openDetails: openDetails,
     t,
   }
   const view = render(<ConversationRoot {...props} />)
   return {
     view, chat, sink, retargetWorkspace, session, slotCalls, seatOwners, open,
+    openDetails,
     pickerOwner: () => pickerOwner,
     rerender: () => { view.rerender(<ConversationRoot {...props} />) },
   }
@@ -494,5 +497,34 @@ describe('ConversationRoot resident composer', () => {
     }))
     expect(b.view.getByRole('alert').textContent).toContain('Message send failed (offline)')
     expect(b.view.queryByRole('button', { name: 'Retry' })).toBeNull()
+  })
+})
+
+describe('QQ2006 right QQ-show column auto-expand', () => {
+  it('opens the details panel once while the skin is active and never re-opens after', () => {
+    document.body.setAttribute('data-ds-skin', 'qq2006')
+    try {
+      const b = mount(conversationSnapshot())
+      // Skin active at mount → the right column auto-opens exactly once.
+      expect(b.openDetails).toHaveBeenCalledTimes(1)
+      // A later render (session/skin source churn) does not re-open.
+      b.rerender()
+      expect(b.openDetails).toHaveBeenCalledTimes(1)
+      // Toggling the skin off and on again still respects the one-time marker.
+      document.body.removeAttribute('data-ds-skin')
+      b.rerender()
+      document.body.setAttribute('data-ds-skin', 'qq2006')
+      b.rerender()
+      expect(b.openDetails).toHaveBeenCalledTimes(1)
+    } finally {
+      document.body.removeAttribute('data-ds-skin')
+    }
+  })
+
+  it('never auto-opens under the default skin', () => {
+    const b = mount(conversationSnapshot())
+    expect(b.openDetails).not.toHaveBeenCalled()
+    b.rerender()
+    expect(b.openDetails).not.toHaveBeenCalled()
   })
 })

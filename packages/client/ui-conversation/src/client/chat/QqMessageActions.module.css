@@ -1,0 +1,52 @@
+/* QQ2006 message hover action row (复制/引用/转发): a small translucent
+   gray-blue bar like the classic client's message menu, revealed while the
+   owning message row is hovered or a row button is focused. `visibility`
+   keeps the hidden row from intercepting clicks (opacity alone would leave
+   it hit-testable). Only rendered under the active skin, so every rule is
+   unreachable in the default skin. */
+
+.row {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  box-sizing: border-box;
+  border: 1px solid rgb(160, 196, 228);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, rgba(244, 250, 255, 0.96), rgba(216, 236, 252, 0.96));
+  box-shadow: 0 1px 2px rgba(40, 90, 140, 0.25);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+
+[data-qq-msg-hover-root]:hover .row,
+[data-qq-msg-hover-root]:focus-within .row {
+  visibility: visible;
+  opacity: 1;
+}
+
+.action {
+  padding: 1px 9px;
+  border: none;
+  background: transparent;
+  color: rgb(30, 60, 100);
+  font-family: Tahoma, 'SimSun', '宋体', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.action + .action {
+  border-left: 1px solid rgb(178, 206, 232);
+}
+
+.action:hover {
+  background: linear-gradient(to bottom, #ffffff, #bcdcf8);
+  color: rgb(10, 40, 80);
+}
+
+/* 引用成功反馈（✓ 1s）。 */
+.action[data-quoted] {
+  color: rgb(18, 118, 62);
+  font-weight: 700;
+}
