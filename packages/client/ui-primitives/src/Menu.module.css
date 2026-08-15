@@ -240,3 +240,19 @@
   left: -10px;
   width: 10px;
 }
+
+/* ═══ Weixin skin: WeChat menu — white card, tight radius, grey hover rows
+   (WeChat's right-click list look). Skin-scoped only. ═══════════════════ */
+body[data-ds-skin='wexin'] .list,
+body[data-ds-skin='wexin'] .submenu {
+  border-radius: 6px;
+  background: #fff;
+}
+
+body[data-ds-skin='wexin'] .item:hover:not(:disabled) {
+  background: rgb(235, 235, 235);
+}
+
+body[data-ds-skin='wexin'] .separator {
+  background: var(--dsw-alias-border-l2);
+}

@@ -36,3 +36,17 @@
 .input::placeholder {
   color: var(--dsw-alias-label-dimmed);
 }
+
+/* ═══ Weixin skin: WeChat search-style field — grey fill, tight 4px radius,
+   no hairline; focus flips to a white fill with the WeChat green ring.
+   Skin-scoped only. ═════════════════════════════════════════════════════ */
+body[data-ds-skin='wexin'] .wrap {
+  border: 0;
+  border-radius: 4px;
+  background: rgb(231, 231, 231);
+}
+
+body[data-ds-skin='wexin'] .wrap:focus-within {
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--dsw-alias-brand-primary);
+}

@@ -12,13 +12,14 @@
 // ChatNodeSeat subscribes to one Node key, so Assistant deltas and Tool
 // lifecycle updates replace only their own row without remounting it.
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ConversationTimelineSnapshot } from '@deepseek-ai/dsh-client-runtime/client'
 import { IconChevronDownOutline14 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { ChatViewSlotProps } from '../contract/slots.ts'
+import { useWexinSkin } from '../wechat/wechat-skin.ts'
 import { PendingSteeringBubble } from './MessageItem.tsx'
 import { ChatNodeSeat } from './ChatNodeSeat.tsx'
-import { formatRunDuration } from './message-chrome.ts'
+import { formatRunDuration, startOfLocalDay } from './message-chrome.ts'
 import css from './ChatView.module.css'
 
 const FOLLOW_THRESHOLD = 24
@@ -103,6 +104,51 @@ function runningTurnStartTime(timeline: ConversationTimelineSnapshot): number | 
   return latest
 }
 
+/** Node timestamp for date-bar grouping (assistant/user/tail nodes carry one). */
+function nodeTimeOf(node: { data: unknown } | undefined): number | undefined {
+  const data = node?.data as { time?: unknown } | undefined
+  return typeof data?.time === 'number' ? data.time : undefined
+}
+
+function sameLocalDay(left: number, right: number): boolean {
+  return startOfLocalDay(left) === startOfLocalDay(right)
+}
+
+function pad2(value: number): string {
+  return String(value).padStart(2, '0')
+}
+
+/** Full `YYYY-MM-DD HH:MM` string for the date-bar hover title. */
+function fullDateTime(ms: number): string {
+  const d = new Date(ms)
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())} `
+    + `${pad2(d.getHours())}:${pad2(d.getMinutes())}`
+}
+
+/** `M月D日` label for the WeChat date separator (skin-forced Chinese). */
+function monthDayLabel(ms: number): string {
+  const d = new Date(ms)
+  return `${d.getMonth() + 1}月${d.getDate()}日`
+}
+
+/**
+ * The WeChat date separator row (今天 / 昨天 / M月D日) shown between message
+ * groups whose local day changes. Skin-gated by the caller.
+ */
+function DateBar({ time, t }: { time: number; t: ChatViewSlotProps['t'] }) {
+  const now = Date.now()
+  const label = sameLocalDay(time, now)
+    ? t('wechat.date.today')
+    : sameLocalDay(time, now - 86_400_000)
+      ? t('wechat.date.yesterday')
+      : monthDayLabel(time)
+  return (
+    <div className={css.dateBar} title={fullDateTime(time)} data-wechat-date-bar>
+      <span className={css.dateBarText}>{label}</span>
+    </div>
+  )
+}
+
 /** Turn-level model activity label retained across first-token, tool, and streaming phases. */
 function TurnStatus({ startTime, t }: {
   /** The running turn's logged `turn/start` time; null falls back to mount
@@ -159,6 +205,9 @@ export function ChatView({
   const hasMore = useSession(s => s.hasMore)
   const loadingOlder = useSession(s => s.loadingOlder)
   const selectedCallId = useStore(s => s.selection?.callId)
+  // WeChat skin: date separators between day groups; only under the active
+  // skin (the default skin keeps its exact flow).
+  const wexinSkin = useWexinSkin()
 
   const pendingSteering = useMemo(
     () => inbox.filter(item => item.placement === 'steering'),
@@ -379,22 +428,33 @@ export function ChatView({
               </button>
             </div>
           )}
-          {order.map(nodeKey => (
-            <ChatNodeSeat
-              key={nodeKey}
-              nodeKey={nodeKey}
-              useSession={useSession}
-              selectedCallId={selectedCallId}
-              cwd={cwd}
-              openFile={openFile}
-              inspectCall={inspectCall}
-              forkAt={forkAt}
-              loadImage={loadImage}
-              fileMentions={fileMentions}
-              renderSlot={renderSlot}
-              t={t}
-            />
-          ))}
+          {order.map((nodeKey, index) => {
+            const node = nodeStore.get(nodeKey)
+            const prevKey = index > 0 ? order[index - 1] : undefined
+            const prevNode = prevKey === undefined ? undefined : nodeStore.get(prevKey)
+            const time = nodeTimeOf(node)
+            const prevTime = nodeTimeOf(prevNode)
+            const showDate = wexinSkin && time !== undefined
+              && (prevTime === undefined || !sameLocalDay(prevTime, time))
+            return (
+              <Fragment key={nodeKey}>
+                {showDate && <DateBar time={time} t={t} />}
+                <ChatNodeSeat
+                  nodeKey={nodeKey}
+                  useSession={useSession}
+                  selectedCallId={selectedCallId}
+                  cwd={cwd}
+                  openFile={openFile}
+                  inspectCall={inspectCall}
+                  forkAt={forkAt}
+                  loadImage={loadImage}
+                  fileMentions={fileMentions}
+                  renderSlot={renderSlot}
+                  t={t}
+                />
+              </Fragment>
+            )
+          })}
           {/* No pending placeholders: questions (ui-user-questions) and approvals
               (ApprovalPanel) both take over the composer, so a flow card would
               double-render the same wait. */}
@@ -402,7 +462,7 @@ export function ChatView({
               wait, tool execution, streaming) so it never flickers per step. */}
           {running && <TurnStatus startTime={runningTurnStart} t={t} />}
           {pendingSteering.map(item => (
-            <PendingSteeringBubble key={item.id} content={item.content} loadImage={loadImage} t={t} />
+            <PendingSteeringBubble key={item.id} content={item.content} loadImage={loadImage} sessionId={sessionId} t={t} />
           ))}
         </div>
         {!atBottom && (

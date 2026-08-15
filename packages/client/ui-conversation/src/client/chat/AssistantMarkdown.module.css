@@ -34,3 +34,22 @@
   /* Optical align with 28px icon hit targets that pad 6px past the glyph. */
   margin-left: -6px;
 }
+
+/* ── 微信皮肤：对方（助手）气泡 ─────────────────────────────────────────────
+   白底黑字、圆角 6px（左上角小圆角指向头像侧）、max-width 60%；markdown
+   文本仍完整渲染在气泡内（正文 14px/22px，块间距收紧为 8px）。 */
+body[data-ds-skin='wexin'] .root {
+  box-sizing: border-box;
+  max-width: 60%;
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: 2px 6px 6px 6px;
+  background: #ffffff;
+  color: rgb(55, 59, 62);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+body[data-ds-skin='wexin'] .body {
+  gap: 8px;
+}

@@ -64,3 +64,219 @@
   line-height: 18px;
   color: var(--dsw-alias-label-secondary, #61666b);
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   WeChat login window — zero-pollution contract.
+   Every window piece is `display:none` by default: the default boot card
+   renders exactly as before (loading page stays a centered grid). Only the
+   `body[data-ds-skin='wexin']` scope below turns the pieces on. The
+   three-state green button rides the global skin kit (.wexin-btn) in
+   ui-skin-wexin's stylesheet; these rules only place and size the window
+   and its form. ════════════════════════════════════════════════════════ */
+
+.wxWindow,
+.wxHead,
+.wxLogo,
+.wxTitle,
+.wxClose,
+.wxBody,
+.wxForm,
+.wxField,
+.wxFieldLabel,
+.wxInput,
+.wxCheckRow,
+.wxCheck,
+.wxLoginBtn,
+.wxConnecting {
+  display: none;
+}
+
+/* ── WeChat login window (skin scope only) ─────────────────────────────── */
+body[data-ds-skin='wexin'] .boot {
+  background: rgb(235, 235, 235);
+}
+
+body[data-ds-skin='wexin'] .wxWindow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
+}
+
+/* Head: green logo square + 微信登录 title, centered (WeChat desktop login
+   layout). The close × is a CSS-drawn cross, pinned top-right. */
+body[data-ds-skin='wexin'] .wxHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 24px 4px;
+}
+
+body[data-ds-skin='wexin'] .wxLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgb(7, 193, 96);
+}
+
+body[data-ds-skin='wexin'] .wxTitle {
+  display: block;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 500;
+  color: rgb(55, 59, 62);
+}
+
+body[data-ds-skin='wexin'] .wxClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 4px;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+body[data-ds-skin='wexin'] .wxClose::before,
+body[data-ds-skin='wexin'] .wxClose::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .wxClose::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+body[data-ds-skin='wexin'] .wxClose::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+body[data-ds-skin='wexin'] .wxClose:hover::before,
+body[data-ds-skin='wexin'] .wxClose:hover::after {
+  background: rgb(55, 59, 62);
+}
+
+/* Body: white form surface. */
+body[data-ds-skin='wexin'] .wxBody {
+  display: block;
+  padding: 16px 24px 28px;
+}
+
+body[data-ds-skin='wexin'] .wxForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Field: 12px grey label over a white input with a light-grey hairline;
+   focus draws the WeChat green ring. */
+body[data-ds-skin='wexin'] .wxField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body[data-ds-skin='wexin'] .wxFieldLabel {
+  display: block;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .wxInput {
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 4px;
+  outline: none;
+  background: #fff;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgb(55, 59, 62);
+}
+
+body[data-ds-skin='wexin'] .wxInput:focus {
+  border-color: rgb(7, 193, 96);
+  box-shadow: 0 0 0 1px rgb(7, 193, 96);
+}
+
+body[data-ds-skin='wexin'] .wxInput::placeholder {
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .wxCheckRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 2px;
+}
+
+body[data-ds-skin='wexin'] .wxCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(55, 59, 62);
+  cursor: pointer;
+}
+
+body[data-ds-skin='wexin'] .wxCheck input {
+  margin: 0;
+  accent-color: rgb(7, 193, 96);
+}
+
+/* Login button: kit .wexin-btn green + sizing; disabled = kit pale green. */
+body[data-ds-skin='wexin'] .wxLoginBtn {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  margin-top: 4px;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+/* Connecting: pressed look — darker green + inset shadow (button sinks). */
+body[data-ds-skin='wexin'] .wxConnecting,
+body[data-ds-skin='wexin'] .wxConnecting:hover,
+body[data-ds-skin='wexin'] .wxConnecting:active {
+  background: rgb(5, 162, 81);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+/* The default boot card content is replaced by the window under skin. */
+body[data-ds-skin='wexin'] .wordmark,
+body[data-ds-skin='wexin'] .spinner,
+body[data-ds-skin='wexin'] .hint {
+  display: none;
+}
+
+/* Failure report: WeChat-red panel beneath the window. */
+body[data-ds-skin='wexin'] .failed {
+  max-width: 340px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--dsw-alias-state-error-primary, rgb(250, 81, 81));
+  border-radius: 4px;
+  background: var(--dsw-alias-state-error-secondary, rgb(253, 226, 226));
+}

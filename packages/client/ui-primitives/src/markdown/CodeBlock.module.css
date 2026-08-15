@@ -94,3 +94,11 @@
 .plain {
   color: var(--dsw-alias-label-primary);
 }
+
+/* ═══ Weixin skin: WeChat code card — light grey block, tight 6px radius
+   (the markdown-code-block alias token is already the WeChat light grey).
+   Skin-scoped only. ═════════════════════════════════════════════════════ */
+body[data-ds-skin='wexin'] .block {
+  --dsl-code-block-border-radius: 6px;
+  background: var(--dsw-alias-markdown-code-block);
+}

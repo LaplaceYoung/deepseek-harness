@@ -7,6 +7,8 @@ import type {
   ConversationSessionHeaderSlotProps, ConversationSessionSlotProps,
 } from '../contract/slots.ts'
 import type { ViewTab } from '../contract/views.ts'
+import { useWexinSkin } from '../wechat/wechat-skin.ts'
+import { WechatWindowChrome } from './WechatWindowChrome.tsx'
 import css from './ConversationRoot.module.css'
 
 /** Full props composed from the strict session body contract. */
@@ -22,11 +24,23 @@ interface Breadcrumb {
 
 const DEFAULT_VIEW_ID = 'chat'
 
+/** WeChat window: the view tabs are forced to Chinese (微信语义) regardless of
+    the app locale. Unknown view ids keep their registered label. */
+const WECHAT_VIEW_TAB_LABELS: Record<string, string> = {
+  chat: '对话',
+  trajectory: '轨迹',
+}
+
 /** Resolve by id and keep stale persisted selections on the stable Chat fallback. */
 function resolveActiveView(tabs: readonly ViewTab[], selectedId: string | null): ViewTab | undefined {
   const requestedId = selectedId ?? DEFAULT_VIEW_ID
   return tabs.find(view => view.id === requestedId)
     ?? tabs.find(view => view.id === DEFAULT_VIEW_ID)
+}
+
+/** Label seat: the WeChat title area renders the Chinese view names. */
+function viewTabLabel(view: ViewTab, wexinSkin: boolean): string {
+  return wexinSkin ? (WECHAT_VIEW_TAB_LABELS[view.id] ?? view.label) : view.label
 }
 
 function deriveAncestry(list: SessionListState, id: SessionId): readonly Breadcrumb[] {
@@ -60,8 +74,8 @@ function equalBreadcrumbs(left: readonly Breadcrumb[], right: readonly Breadcrum
  */
 export function ConversationSessionHeader({
   sessionId, useSession, useSessions, useStore, actions,
-  renderSlot, views, open, t,
-}: ConversationSessionHeaderProps) {
+  renderSlot, views, open, t, wechatActions,
+}: ConversationSessionHeaderSlotProps) {
   useSyncExternalStore(views.subscribe, views.version)
   const tabs = views.list()
   const selectedId = useStore(s => s.view)
@@ -69,7 +83,11 @@ export function ConversationSessionHeader({
   const ancestry = useSessions(s => deriveAncestry(s, sessionId), equalBreadcrumbs)
   const composerPhase = useSession(s => s.composerPhase)
   const blank = useSession(s => s.blank)
-  const hideChrome = blank && composerPhase === 'blank'
+  // The WeChat skin restores the full window title bar even for blank
+  // sessions (a WeChat window always has its chrome); the default skin
+  // keeps hiding the blank-session header.
+  const wexinSkin = useWexinSkin()
+  const hideChrome = blank && composerPhase === 'blank' && !wexinSkin
 
   return (
     <header
@@ -78,35 +96,46 @@ export function ConversationSessionHeader({
     >
       {!hideChrome && (
         <>
-          <div className={css.titleRow}>
-            <div className={css.titleCluster}>
-              <nav className={css.crumbs} aria-label={t('session.hierarchy')}>
-                {ancestry.map((summary, index) => {
-                  const last = index === ancestry.length - 1
-                  return (
-                    <span key={summary.id} className={css.crumbSeg}>
-                      {index > 0 && <span className={css.crumbSep}>/</span>}
-                      <button
-                        type="button"
-                        className={clsx(css.crumb, last && css.crumbCurrent)}
-                        disabled={last}
-                        onClick={() => { open(summary.id) }}
-                      >
-                        {summary.displayTitle}
-                      </button>
-                    </span>
-                  )
-                })}
-                {ancestry.length === 0 && <span className={css.crumbCurrent}>{sessionId}</span>}
-              </nav>
-              <div className={css.headerActions}>
-                {renderSlot('conversation.session.header.actions', {})}
+          {wexinSkin && wechatActions !== undefined
+            ? (
+              <WechatWindowChrome
+                sessionId={sessionId}
+                useSessions={useSessions}
+                t={t}
+                wechat={wechatActions}
+              />
+            )
+            : (
+              <div className={css.titleRow}>
+                <div className={css.titleCluster}>
+                  <nav className={css.crumbs} aria-label={t('session.hierarchy')}>
+                    {ancestry.map((summary, index) => {
+                      const last = index === ancestry.length - 1
+                      return (
+                        <span key={summary.id} className={css.crumbSeg}>
+                          {index > 0 && <span className={css.crumbSep}>/</span>}
+                          <button
+                            type="button"
+                            className={clsx(css.crumb, last && css.crumbCurrent)}
+                            disabled={last}
+                            onClick={() => { open(summary.id) }}
+                          >
+                            {summary.displayTitle}
+                          </button>
+                        </span>
+                      )
+                    })}
+                    {ancestry.length === 0 && <span className={css.crumbCurrent}>{sessionId}</span>}
+                  </nav>
+                  <div className={css.headerActions}>
+                    {renderSlot('conversation.session.header.actions', {})}
+                  </div>
+                </div>
+                <div className={css.headerUtilities}>
+                  {renderSlot('conversation.session.header.utilities', {})}
+                </div>
               </div>
-            </div>
-            <div className={css.headerUtilities}>
-              {renderSlot('conversation.session.header.utilities', {})}
-            </div>
-          </div>
+            )}
           {tabs.length > 1 && (
             <div className={css.tabs} role="tablist">
               {tabs.map(viewTab => (
@@ -118,7 +147,7 @@ export function ConversationSessionHeader({
                   className={clsx(css.tab, viewTab.id === active?.id && css.tabActive)}
                   onClick={() => { actions.setView(viewTab.id) }}
                 >
-                  {viewTab.label}
+                  {viewTabLabel(viewTab, wexinSkin)}
                 </button>
               ))}
             </div>

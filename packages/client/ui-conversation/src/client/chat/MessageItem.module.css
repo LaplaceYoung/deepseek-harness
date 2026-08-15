@@ -282,3 +282,25 @@
   white-space: nowrap;
   vertical-align: baseline;
 }
+
+/* ── 微信皮肤：自己（用户）气泡 ─────────────────────────────────────────────
+   微信绿底白字、圆角 6px（右上角小圆角指向头像侧）、max-width 60%；引用
+   chip 半透明白底。 */
+body[data-ds-skin='wexin'] .userStack {
+  max-width: 60%;
+}
+
+body[data-ds-skin='wexin'] .bubble {
+  max-width: 100%;
+  background: rgb(7, 193, 96);
+  border-radius: 6px 2px 6px 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+body[data-ds-skin='wexin'] .refChip {
+  background: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}

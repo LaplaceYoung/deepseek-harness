@@ -16,6 +16,7 @@ import type { StateDotState } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { WorkspaceBrowserProps } from '../contract/slots.ts'
 import type { GroupNode, SearchResultNode, SessionNode } from '../tree.ts'
 import { relativeTime } from '../tree.ts'
+import { useWexinSkin } from '../wexin-skin.ts'
 import css from './Rows.module.css'
 
 /** The standard locale seat, prop-passed from the browser root. */
@@ -24,6 +25,82 @@ type RowTranslate = WorkspaceBrowserProps['t']
 /** Row display title: blank rows show the localized New Session label. */
 function displayTitle(node: SessionNode, t: RowTranslate): string {
   return node.blank ? t('session.new') : node.title
+}
+
+/** WeChat avatar gradients, one deterministic stop pair per palette index. */
+const WEXIN_AVATAR_STOPS: readonly (readonly [string, string])[] = [
+  ['rgb(7, 193, 96)', 'rgb(5, 162, 81)'],
+  ['rgb(86, 140, 224)', 'rgb(52, 100, 196)'],
+  ['rgb(240, 150, 62)', 'rgb(222, 108, 26)'],
+  ['rgb(148, 118, 226)', 'rgb(104, 70, 192)'],
+  ['rgb(66, 170, 178)', 'rgb(34, 128, 138)'],
+  ['rgb(226, 106, 106)', 'rgb(194, 60, 60)'],
+]
+
+/** Deterministic avatar gradient for a row key (session id or search id). */
+function wexinAvatarGradient(key: string): readonly [string, string] {
+  let hash = 0
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) | 0
+  }
+  // The modulo keeps the index inside the palette by construction.
+  const FALLBACK: readonly [string, string] = ['#07c160', '#05a251']
+  return WEXIN_AVATAR_STOPS[Math.abs(hash) % WEXIN_AVATAR_STOPS.length] ?? FALLBACK
+}
+
+/**
+ * WeChat time cell: the classic absolute-style clock — HH:MM today, 昨天
+ * yesterday, 周X within the week, M月D日 this year, YYYY年M月D日 before that.
+ * Forced Chinese (WeChat semantics under any locale).
+ */
+function wexinTimeLabel(updatedAt: number, now: number): string {
+  const d = new Date(updatedAt)
+  const n = new Date(now)
+  const startOfDay = (x: Date): number => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime()
+  const dayDiff = Math.round((startOfDay(n) - startOfDay(d)) / 86_400_000)
+  const pad2 = (v: number): string => String(v).padStart(2, '0')
+  if (dayDiff <= 0) return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`
+  if (dayDiff === 1) return '昨天'
+  if (dayDiff < 7) return `周${'日一二三四五六'[d.getDay()]}`
+  if (d.getFullYear() === n.getFullYear()) return `${d.getMonth() + 1}月${d.getDate()}日`
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
+}
+
+/** WeChat summary line: the session's live state in forced-Chinese copy. */
+function wexinSummary(node: SessionNode): string {
+  if (node.blank) return '开始新的会话'
+  switch (node.pendingInteraction) {
+    case 'approval': return '等待你的批准'
+    case 'plan-review': return '等待你审阅计划'
+    case 'question': return '等待你的回答'
+    case undefined: break
+    /* v8 ignore next -- closed PendingInteractionStatus union */
+    default: return assertNever(node.pendingInteraction)
+  }
+  if (node.running) {
+    return node.runningSubagentCount > 0
+      ? `正在运行 ${node.runningSubagentCount} 个子任务…`
+      : '正在运行…'
+  }
+  if (node.completed) return '已完成'
+  return '暂无消息'
+}
+
+/**
+ * WeChat avatar: 40×40 rounded square tinted by the row key hash, centered
+ * first character of the display title (deterministic, no image assets).
+ */
+function WexinAvatar({ id, label }: { id: string; label: string }) {
+  const [from, to] = wexinAvatarGradient(id)
+  return (
+    <span
+      className={css.wexinAvatar}
+      style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}
+      aria-hidden="true"
+    >
+      {Array.from(label)[0] ?? '?'}
+    </span>
+  )
 }
 
 /** Localized compact relative time ("刚刚"/"5分钟" in zh, "now"/"5min" in en). */
@@ -118,8 +195,12 @@ export function ProjectRowItem({ group, onToggle, onCreate, actions, drag, t }: 
   t: RowTranslate
 }) {
   const row = group
+  const wexinSkin = useWexinSkin()
   // The ungrouped bucket has no workspace title: its label is dictionary copy.
-  const label = row.workspaceId === undefined ? t('group.ungrouped') : row.label
+  // WeChat copy is Chinese under any locale.
+  const label = row.workspaceId === undefined
+    ? (wexinSkin ? '未分组' : t('group.ungrouped'))
+    : row.label
   const active = group.expanded && group.containsCurrent
   const [menuOpen, setMenuOpen] = useState(false)
   const workspaceMenuItems = [
@@ -309,6 +390,7 @@ export function SearchResultItem({ result, currentId, onOpen, t }: {
   const selected = result.id === currentId
   const statuses = sessionStatuses(result, t)
   const primaryStatus = statuses[0]
+  const wexinSkin = useWexinSkin()
   return (
     <button
       type="button"
@@ -317,6 +399,7 @@ export function SearchResultItem({ result, currentId, onOpen, t }: {
       aria-selected={selected}
       onClick={() => { onOpen(result.id) }}
     >
+      {wexinSkin && <WexinAvatar id={result.id} label={result.title} />}
       <span className={css.searchResultHeading}>
         <span className={css.slot}>
           {(primaryStatus.state !== 'done' || result.completed) && (
@@ -373,6 +456,9 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
   const statuses = sessionStatuses(node, t)
   const primaryStatus = statuses[0]
   const showStatus = primaryStatus.state !== 'done' || row.completed
+  const wexinSkin = useWexinSkin()
+  // WeChat copy is Chinese under any locale (the blank row's provisional title).
+  const wexinTitle = wexinSkin && node.blank ? '新会话' : title
   const [menuOpen, setMenuOpen] = useState(false)
   // Archive hides the row through the registry-global archive set and never
   // touches the session log, so it is not styled as destructive and needs no
@@ -388,7 +474,7 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
     <div
       className={clsx(
         css.sessionRow, selected && css.selected, menuOpen && css.menuOpen,
-        flat && !showStatus && css.flatSessionRowWithoutStatus,
+        !wexinSkin && flat && !showStatus && css.flatSessionRowWithoutStatus,
         drag?.marker === 'before' && css.dropBefore, drag?.marker === 'after' && css.dropAfter,
       )}
       role="treeitem"
@@ -419,20 +505,38 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
           drag.drop(rowHalf(e))
         }}
     >
-      {/* Pending interaction and own or descendant activity outrank the
-          finished-but-unviewed reminder, which returns after activity stops
-          and is cleared by opening the session. */}
-      {(!flat || showStatus) && (
-        <span className={css.slot}>
-          {showStatus && <SessionStatusDots statuses={statuses} />}
-        </span>
+      {wexinSkin ? (
+        <>
+          {/* WeChat cell: 40×40 avatar + nickname/time over the summary line. */}
+          <WexinAvatar id={node.id} label={wexinTitle} />
+          <span className={css.wexinBody}>
+            <span className={css.wexinLine}>
+              <span className={css.title}>{wexinTitle}</span>
+              {/* A blank New Session row is a provisional placeholder: nothing has
+                  happened in it yet, so no timestamp or row verbs (see below). */}
+              {!row.blank && <span className={css.time}>{wexinTimeLabel(row.updatedAt, now)}</span>}
+            </span>
+            <span className={css.wexinSummary}>{wexinSummary(node)}</span>
+          </span>
+        </>
+      ) : (
+        <>
+          {/* Pending interaction and own or descendant activity outrank the
+              finished-but-unviewed reminder, which returns after activity stops
+              and is cleared by opening the session. */}
+          {(!flat || showStatus) && (
+            <span className={css.slot}>
+              {showStatus && <SessionStatusDots statuses={statuses} />}
+            </span>
+          )}
+          <span className={css.title}>{title}</span>
+          {/* A blank New Session row is a provisional placeholder: nothing has
+              happened in it yet, so a "now" timestamp and the row verbs
+              (rename/fork/archive) would all act on content that does not
+              exist — both trailing cells stay off until the first prompt. */}
+          {!row.blank && <span className={css.time}>{timeLabel(row.updatedAt, now, t)}</span>}
+        </>
       )}
-      <span className={css.title}>{title}</span>
-      {/* A blank New Session row is a provisional placeholder: nothing has
-          happened in it yet, so a "now" timestamp and the row verbs
-          (rename/fork/archive) would all act on content that does not
-          exist — both trailing cells stay off until the first prompt. */}
-      {!row.blank && <span className={css.time}>{timeLabel(row.updatedAt, now, t)}</span>}
       {!row.blank && (
         <span className={css.rowActions}>
           <Menu

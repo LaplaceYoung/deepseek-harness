@@ -29,6 +29,8 @@ import type { DraftDecorations } from '../input/decorations.ts'
 import {
   attachmentErrorText, attachmentRailLabels, dropOverlayLabels, imageSizeText, lightboxLabels,
 } from '../image-labels.ts'
+import { registerWechatComposerActions } from '../wechat/wechat-chrome-actions.ts'
+import { isWexinSkin, useWexinSkin } from '../wechat/wechat-skin.ts'
 import { ContextMeter } from './ContextMeter.tsx'
 import { PermissionSelect } from './PermissionSelect.tsx'
 import css from './InputBar.module.css'
@@ -75,6 +77,9 @@ export function InputBar({
   const empty = draft.trim() === '' && attachments.length === 0
   const [preview, setPreview] = useState<ComposerAttachment | null>(null)
   const [dragActive, setDragActive] = useState(false)
+  // WeChat skin: live flag (placeholders / Alt+S / send label). The skin is
+  // body-scoped, so this only flips the presentation of the same machine.
+  const wexinSkin = useWexinSkin()
   // Transient error banner (image-intake rejections and prompt failures): the
   // seq keys the Toast so an identical repeated message restarts the
   // hold-then-fade cycle instead of silently reusing the faded one.
@@ -219,6 +224,21 @@ export function InputBar({
     revealSelectionFocus(el)
   }, [locked, sessionId])
 
+  // WeChat hover-row 引用 inserter: registered while the machine is live so
+  // the message hover action can append a `> text` quote block through the
+  // machine (never the raw textarea).
+  useEffect(() => {
+    if (sessionId === undefined || !live) return
+    return registerWechatComposerActions(sessionId, {
+      focusComposer: () => { inputRef.current?.focus({ preventScroll: true }) },
+      quote: (text) => {
+        const draft = keyboard.snapshot.draft
+        keyboard.setDraft(draft === '' ? `> ${text}` : `${draft}\n> ${text}`)
+        inputRef.current?.focus({ preventScroll: true })
+      },
+    })
+  }, [sessionId, live, keyboard])
+
   // A persisted draft arrives AFTER the unlock effect: ConversationSession
   // adopts it in its own mount effect, and a parent's mount effect runs after
   // its children's. Reveal when the draft becomes non-empty so a restored long
@@ -308,6 +328,18 @@ export function InputBar({
     if (e.key === ' ') {
       if (composing) return
       if (keyboard.space()) e.preventDefault() // claim token already carries the trailing separator
+      return
+    }
+    // WeChat send shortcut: Alt+S ≡ Enter (label 发送 on the button).
+    // Skin-gated — the default skin keeps its exact key behavior. The IME
+    // composition guard matches Enter (a composing Alt+S picks a candidate).
+    if (isWexinSkin() && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey
+      && (e.key === 's' || e.key === 'S')) {
+      if (composing) return
+      e.preventDefault()
+      if (e.repeat) return
+      if (locked || machineBusy) return
+      keyboard.submit(resolveSubmitMode(running, 'enter', subagent === null))
       return
     }
     if (e.key !== 'Enter') return
@@ -543,7 +575,19 @@ export function InputBar({
   // pointer users can queue follow-ups while its current turn is running.
   const primaryStops = running && subagent === null
   const interruptible = running && continuable
-  const primaryLabel = primaryStops ? t('input.stop') : t('input.send')
+  // WeChat send label: 发送 / 停止 — forced to Chinese under the skin
+  // regardless of the app locale (微信语义); the CSS ::after shows the face
+  // text, this is the aria/tooltip seat.
+  const primaryLabel = primaryStops
+    ? (wexinSkin ? t('wechat.sendStop') : t('input.stop'))
+    : (wexinSkin ? t('wechat.sendLabel') : t('input.send'))
+  // WeChat input copy: hero 「想聊点什么？输入消息，Enter 发送」, composer
+  // 「输入消息，Enter 发送」. Blocked / inert / parent-offline / steer /
+  // plan states keep their product copy.
+  const wechatPlaceholder = !wexinSkin || blocked !== undefined || inert || parentOffline
+    || canSteerQueue || planActive
+    ? undefined
+    : variant === 'hero' ? t('wechat.placeholder.hero') : t('wechat.placeholder.default')
   const onPrimary = (): void => {
     if (primaryStops) {
       stop?.()
@@ -706,7 +750,7 @@ export function InputBar({
               aria-haspopup={workspaceTrigger ? 'menu' : undefined}
               aria-expanded={workspaceTrigger ? workspacePickerOpen : undefined}
               data-phase={input?.phase ?? 'inert'}
-              placeholder={placeholder ?? (parentOffline
+              placeholder={wechatPlaceholder ?? placeholder ?? (parentOffline
                 ? t('placeholder.parentOffline')
                 : disabled
                   ? t('placeholder.unavailable')
@@ -762,6 +806,7 @@ export function InputBar({
                   className={css.primary}
                   aria-label={t('input.stop')}
                   disabled={stop === undefined}
+                  data-wechat-send="stop"
                   onMouseDown={keepFocus}
                   onClick={stop}
                 >
@@ -777,6 +822,7 @@ export function InputBar({
                 className={css.primary}
                 aria-label={primaryLabel}
                 disabled={primaryStops ? stop === undefined : empty || disabled || machineBusy}
+                data-wechat-send={primaryStops ? 'stop' : 'send'}
                 onMouseDown={keepFocus}
                 onClick={onPrimary}
               >

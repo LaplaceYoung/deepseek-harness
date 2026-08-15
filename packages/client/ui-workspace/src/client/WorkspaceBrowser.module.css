@@ -504,3 +504,98 @@
     transition: none;
   }
 }
+
+/* ═══ WeChat skin (wexin): the browsing region becomes WeChat's layout —
+   the always-on grey search field (#e7e7e7, 4px radius) above the flat
+   white conversation list. The section title and the view-options control
+   are WeChat-less chrome and hide; the add-workspace control keeps its seat
+   in the caption grey. Every rule is scoped to the skin attribute. ═══ */
+body[data-ds-skin='wexin'] .root:not(.rail) .sectionHeader {
+  height: 46px;
+  padding: 8px 12px 6px;
+  margin: 0;
+  border-radius: 0;
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .sectionLabel {
+  display: none;
+}
+
+/* The view-options menu button (the only .wide icon in the header) hides;
+   the add-workspace control stays. */
+body[data-ds-skin='wexin'] .root:not(.rail) .sectionHeader .iconButton.wide {
+  display: none;
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .searchSlot {
+  max-width: 100%;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* Always-visible WeChat search capsule. */
+body[data-ds-skin='wexin'] .root:not(.rail) .search,
+body[data-ds-skin='wexin'] .root:not(.rail) .searchExpanded {
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  padding: 0 4px 0 8px;
+  border: none;
+  border-radius: 4px;
+  background: rgb(231, 231, 231);
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .searchButton {
+  width: 26px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .searchButton:hover,
+body[data-ds-skin='wexin'] .root:not(.rail) .searchExpanded .searchButton:hover {
+  background: transparent;
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .searchInput {
+  opacity: 1;
+  pointer-events: auto;
+  font-size: 13px;
+  line-height: 32px;
+  color: rgb(55, 59, 62);
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .searchInput::placeholder {
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .clearButton {
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .clearButton:hover {
+  background: transparent;
+}
+
+body[data-ds-skin='wexin'] .root:not(.rail) .headerActions .iconButton {
+  color: rgb(150, 154, 157);
+}
+
+/* The list sits on the WeChat grey column; rows paint their own white
+   cells (Rows.module.css). The bottom fade follows the white rows. */
+body[data-ds-skin='wexin'] .fade {
+  background: linear-gradient(to bottom, transparent, rgb(255, 255, 255));
+}
+
+body[data-ds-skin='wexin'] .empty {
+  padding: 20px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: rgb(150, 154, 157);
+}
+
+/* The rail keeps its modern icons, recolored to the WeChat ink. */
+body[data-ds-skin='wexin'] .rail .iconButton,
+body[data-ds-skin='wexin'] .rail .searchButton {
+  color: rgb(55, 59, 62);
+}

@@ -7,3 +7,8 @@
 .actions {
   margin-left: -6px;
 }
+
+/* ── 微信皮肤：轮尾操作行 ─────────────────────────────────────────────── */
+body[data-ds-skin='wexin'] .root {
+  gap: 8px;
+}

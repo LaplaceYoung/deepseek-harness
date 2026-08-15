@@ -95,6 +95,11 @@ export class AppWebEntry {
    * @returns resolves once the UI settled or the failure report rendered.
    */
   async run(): Promise<void> {
+    // Weixin skin restore: the loading page must render under the persisted
+    // skin before any plugin can mirror the theme (ui-skin-wexin's apply
+    // re-asserts the same localStorage key after activation, so the
+    // attribute only needs this pre-settle bootstrap; default skin no-ops).
+    this.restoreSkinAttribute()
     this.manifest = parseBootManifest((globalThis as DshWindow).__DSH_BOOT__)
 
     this.modules = new ClientModuleSystem({
@@ -145,6 +150,26 @@ export class AppWebEntry {
   /** Unmount the shell (loading page or settled UI). */
   dispose(): void {
     this.root?.unmount()
+  }
+
+  /**
+   * Apply the persisted Weixin skin attribute to body before the loading
+   * page renders. The ui-skin-wexin plugin mirrors the active theme onto
+   * body[data-ds-skin] once cordis is up; this is the shell-own pre-settle
+   * half (the loading page must look right while plugins still boot). The
+   * attribute value is spelled out because ui-theme is not a module-table
+   * entry (a value import would trip the client bundle purity gate) — the
+   * skin plugin reads the same 'dsh.theme' key.
+   */
+  private restoreSkinAttribute(): void {
+    if (typeof document === 'undefined' || typeof localStorage === 'undefined') return
+    try {
+      if (localStorage.getItem('dsh.theme') === 'wexin') {
+        document.body.setAttribute('data-ds-skin', 'wexin')
+      }
+    } catch {
+      // Privacy-mode storage failure: the loading page stays default-skinned.
+    }
   }
 
   /** Prefetch the immediately tier (factory registration only; failures defer to the import path). */

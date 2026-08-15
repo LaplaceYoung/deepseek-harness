@@ -25,3 +25,14 @@
   background: var(--dsw-alias-button-ghost-active-fill);
   box-shadow: inset 0 0 0 1px var(--dsw-alias-button-ghost-active-border);
 }
+
+/* ═══ Weixin skin: selected pill = solid WeChat green fill, white label. ══ */
+body[data-ds-skin='wexin'] .active {
+  background: var(--dsw-alias-brand-primary);
+  color: var(--dsw-alias-label-primary-foreground);
+  box-shadow: none;
+}
+
+body[data-ds-skin='wexin'] .interactive.active:hover {
+  background: rgb(6, 179, 89);
+}

@@ -35,6 +35,7 @@ import { queueDockEntry } from './queue/QueueDock.tsx'
 import { ConversationRoot } from './skeleton/ConversationRoot.tsx'
 import { ConversationSession, ConversationSessionHeader } from './skeleton/ConversationSession.tsx'
 import { DetailsPanel } from './skeleton/DetailsPanel.tsx'
+import { createWechatChromeActions } from './wechat/wechat-actions.ts'
 import { en, NS, zh, type ConversationKey } from './locales.ts'
 import { registerConversationNodes } from './conversation-nodes/register.ts'
 import { registerChatNodeRenderers } from './chat/register-node-renderers.ts'
@@ -265,6 +266,9 @@ export function apply(ctx: Context): void {
     inject: (): ConversationSessionHeaderInjected => ({
       views,
       open: (id) => { sessions.open(id) },
+      // The WeChat window-chrome verb bundle (title bar ⋯ menu). Only
+      // rendered when the skin is active; the header component gates on it.
+      wechatActions: createWechatChromeActions({ ctx, t }),
     }),
   }, ConversationSessionHeader)
 

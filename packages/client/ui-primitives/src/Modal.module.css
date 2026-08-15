@@ -101,3 +101,16 @@
   gap: 8px;
   padding: 0 24px;
 }
+
+/* ═══ Weixin skin: WeChat dialog — white card, tight 6px radius, soft grey
+   shadow; close hover picks the WeChat green. Skin-scoped only. ═════════ */
+body[data-ds-skin='wexin'] .dialog {
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.14);
+}
+
+body[data-ds-skin='wexin'] .close:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-brand-primary);
+}

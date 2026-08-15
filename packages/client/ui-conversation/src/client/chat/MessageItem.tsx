@@ -4,17 +4,21 @@
 // compaction marker, retry disclosure, and unknown-surface JSON rows.
 
 import { memo, useEffect, useMemo, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react'
 import type {
   ModelRetryNode, TurnErrorNode, UserMessageNode,
 } from '@deepseek-ai/dsh-client-runtime/client'
-import { JsonBlock, MessageText, StateDot } from '@deepseek-ai/dsh-client-ui-primitives'
+import type { SessionId } from '@deepseek-ai/dsh-client-runtime/client'
+import { JsonBlock, MessageText, StateDot, writeClipboard } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { ChatNodeViewProps, ChatViewSlotProps } from '../contract/slots.ts'
 import { ImageGallery, type ImageLoader } from '@deepseek-ai/dsh-client-ui-attachment'
 import { messageImageLabels } from '../image-labels.ts'
+import { isWexinSkin, useWexinSkin } from '../wechat/wechat-skin.ts'
+import { wechatTip } from '../wechat/wechat-feedback.ts'
 import { CompactionItem } from './CompactionItem.tsx'
 import { ContextInjectionRow } from './ContextInjectionRow.tsx'
 import { MessageIconActions } from './MessageIconActions.tsx'
+import { WechatMessageActions } from './WechatMessageActions.tsx'
 import css from './MessageItem.module.css'
 
 type UserImage = Extract<UserMessageNode['content'][number], { type: 'image' }>
@@ -177,7 +181,7 @@ function projectUserText(text: string): ReactNode {
 
 /** Right-aligned bubble shared by user and steering rows. */
 function UserStyleBubble({
-  content, imageLoader, actions, pending = false, t,
+  content, imageLoader, actions, pending = false, sessionId, t,
 }: {
   content: readonly unknown[]
   imageLoader: ImageLoader
@@ -185,21 +189,42 @@ function UserStyleBubble({
   actions?: (text: string) => ReactNode
   /** Whether this is the Host-authoritative pre-admission steering projection. */
   pending?: boolean
+  /** The owning session (drives the WeChat hover row's quote inserter). */
+  sessionId?: SessionId | undefined
   t: ChatViewSlotProps['t']
 }): ReactNode {
   const { text, images, rest } = contentParts(content)
   const truncated = (total: number): string => t('json.truncated', { total })
   const showBubble = text !== '' || rest.length > 0
+  // WeChat skin: the hover action row (复制/引用) replaces the default icon
+  // actions under the skin; the default skin keeps its IconActions row.
+  const wexinSkin = useWexinSkin()
+  const onContextMenu = (event: ReactMouseEvent<HTMLDivElement>): void => {
+    // 消息右键复制：皮肤下右键消息气泡直接复制全文并弹微信样式 toast；
+    // 默认皮肤保留浏览器原生菜单（handler 直接 return）。
+    if (!isWexinSkin()) return
+    event.preventDefault()
+    void writeClipboard(text).then((ok) => {
+      wechatTip(ok ? t('wechat.msg.copied') : t('wechat.copyFailed'))
+    })
+  }
   return (
-    <div className={css.userRow} data-pending-steering={pending || undefined} data-time-hover-root>
+    <div
+      className={css.userRow}
+      data-pending-steering={pending || undefined}
+      data-time-hover-root
+      data-wechat-msg-hover-root={wexinSkin || undefined}
+    >
       <div className={css.userStack}>
         <ImageGallery images={images} load={imageLoader} align="end" labels={messageImageLabels(t)} />
-        {showBubble && <div className={css.bubble}>
+        {showBubble && <div className={css.bubble} onContextMenu={onContextMenu}>
           {projectUserText(text)}
           {rest.map((block, i) => <JsonBlock key={i} label={t('message.extraBlock')} payload={block} truncatedLabel={truncated} />)}
         </div>}
       </div>
-      {actions?.(text)}
+      {wexinSkin
+        ? text !== '' && <WechatMessageActions text={text} sessionId={sessionId} t={t} />
+        : actions?.(text)}
     </div>
   )
 }
@@ -207,12 +232,13 @@ function UserStyleBubble({
 /**
  * Render one Host-authoritative pending steering item with the same visual
  * language as its eventual durable transcript node.
- * @param props - Pending message content and conversation translator.
+ * @param props - Pending message content, owning session, and conversation translator.
  * @returns the pending steering bubble.
  */
-export function PendingSteeringBubble({ content, loadImage, t }: {
+export function PendingSteeringBubble({ content, loadImage, sessionId, t }: {
   content: readonly unknown[]
   loadImage?: ImageLoader
+  sessionId?: SessionId | undefined
   t: ChatViewSlotProps['t']
 }): ReactNode {
   const imageLoader = loadImage ?? (() => Promise.reject(new Error(t('image.serviceUnavailable'))))
@@ -221,6 +247,7 @@ export function PendingSteeringBubble({ content, loadImage, t }: {
       content={content}
       imageLoader={imageLoader}
       pending
+      sessionId={sessionId}
       t={t}
       actions={text => (
         <MessageIconActions
@@ -236,13 +263,14 @@ export function PendingSteeringBubble({ content, loadImage, t }: {
 
 /** User and admitted-steering keyed Chat renderer. */
 export const UserMessageNodeView = memo(function UserMessageNodeView({
-  node, loadImage, t,
+  node, loadImage, sessionId, t,
 }: ChatNodeViewProps<'user' | 'steering'>) {
   const data = node.data
   return (
     <UserStyleBubble
       content={data.content}
       imageLoader={loadImage}
+      sessionId={sessionId}
       t={t}
       actions={text => (
         <MessageIconActions

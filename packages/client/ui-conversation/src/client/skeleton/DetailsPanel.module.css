@@ -92,3 +92,51 @@
 .code[data-error] {
   color: var(--dsw-alias-state-error-primary);
 }
+
+/* ── 微信皮肤：右侧详情栏 ─────────────────────────────────────────────────
+   微信没有右侧栏，弱化样式即可：浅灰底（#f5f5f5）、白卡片头、白底代码块、
+   灰分割线。 */
+body[data-ds-skin='wexin'] .root {
+  border-left: 1px solid rgb(220, 220, 220);
+  background: rgb(245, 245, 245);
+}
+
+body[data-ds-skin='wexin'] .header {
+  border-bottom: 1px solid rgb(220, 220, 220);
+  background: #ffffff;
+}
+
+body[data-ds-skin='wexin'] .title {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  color: rgb(55, 59, 62);
+}
+
+body[data-ds-skin='wexin'] .close {
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .close:hover {
+  background: rgb(240, 240, 240);
+}
+
+body[data-ds-skin='wexin'] .empty {
+  font-size: 13px;
+  line-height: 20px;
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .sectionLabel {
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .code {
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 20px;
+}

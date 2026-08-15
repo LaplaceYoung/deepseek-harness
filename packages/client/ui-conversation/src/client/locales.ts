@@ -172,6 +172,24 @@ export const zh = {
   'json.truncated': '… 已截断，共 {total} 字符',
   'clock.md': '{m}月{d}日',
   'clock.ymd': '{y}年{m}月{d}日',
+  // ── 微信皮肤：聊天窗口 chrome 文案 ────────────────────────────────────
+  'wechat.title.more': '更多操作',
+  'wechat.title.collapseSidebar': '折叠侧栏',
+  'wechat.title.clearSession': '清空会话',
+  'wechat.sidebarToggled': '已折叠/展开侧栏',
+  'wechat.sessionCleared': '已清空当前会话',
+  'wechat.placeholder.hero': '想聊点什么？输入消息，Enter 发送',
+  'wechat.placeholder.default': '输入消息，Enter 发送',
+  'wechat.sendLabel': '发送',
+  'wechat.sendStop': '停止',
+  'wechat.copyFailed': '复制失败，请重试',
+  'wechat.date.today': '今天',
+  'wechat.date.yesterday': '昨天',
+  'wechat.msg.copy': '复制',
+  'wechat.msg.quote': '引用',
+  'wechat.msg.quoteDone': '✓',
+  'wechat.msg.copied': '已复制消息全文',
+  'wechat.msg.quoteUnavailable': '输入框尚未就绪',
 } satisfies Record<string, string>
 
 /** The conversation namespace key union. */
@@ -341,4 +359,25 @@ export const en = {
   'json.truncated': '… truncated, {total} characters total',
   'clock.md': '{m}/{d}',
   'clock.ymd': '{y}-{m}-{d}',
+  // ── WeChat skin: chat window chrome copy ────────────────────────────────
+  // The WeChat window is a Chinese client; under the skin the chrome copy is
+  // forced to the original Chinese regardless of the app locale (the zh
+  // values are the canonical WeChat semantics).
+  'wechat.title.more': '更多操作',
+  'wechat.title.collapseSidebar': '折叠侧栏',
+  'wechat.title.clearSession': '清空会话',
+  'wechat.sidebarToggled': '已折叠/展开侧栏',
+  'wechat.sessionCleared': '已清空当前会话',
+  'wechat.placeholder.hero': '想聊点什么？输入消息，Enter 发送',
+  'wechat.placeholder.default': '输入消息，Enter 发送',
+  'wechat.sendLabel': '发送',
+  'wechat.sendStop': '停止',
+  'wechat.copyFailed': '复制失败，请重试',
+  'wechat.date.today': '今天',
+  'wechat.date.yesterday': '昨天',
+  'wechat.msg.copy': '复制',
+  'wechat.msg.quote': '引用',
+  'wechat.msg.quoteDone': '✓',
+  'wechat.msg.copied': '已复制消息全文',
+  'wechat.msg.quoteUnavailable': '输入框尚未就绪',
 } satisfies Record<ConversationKey, string>

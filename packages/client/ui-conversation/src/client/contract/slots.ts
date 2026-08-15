@@ -14,6 +14,7 @@ import type { MarkdownFileMentions } from '@deepseek-ai/dsh-client-ui-primitives
 import type { MessageId } from '@deepseek-ai/dsh-client-connection/client'
 import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
 import type { ComposerBlock } from '../input/blocks.ts'
+import type { WechatChromeActions } from '../wechat/wechat-actions.ts'
 import type {
   ComposerKeyboard, DraftAttachmentId, EditSelection, InputActions, InputNotice, InputState,
 } from '../input/contract.ts'
@@ -448,6 +449,13 @@ export interface ConversationSessionHeaderInjected {
   }
   /** Select a real Session through the runtime navigation owner. */
   open: (sessionId: SessionId) => void
+  /**
+   * WeChat window-chrome verb bundle (title bar ⋯ menu), provided by this
+   * package's apply. Optional so test harnesses that render the header
+   * directly without the plugin wiring still type-check; the title bar is
+   * only rendered when the bundle AND the skin are both present.
+   */
+  wechatActions?: WechatChromeActions
 }
 
 /**

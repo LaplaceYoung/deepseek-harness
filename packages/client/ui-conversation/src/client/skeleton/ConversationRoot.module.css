@@ -363,3 +363,51 @@
 .root[data-phase='settling'] .composerSeat {
   visibility: hidden;
 }
+
+/* ── 微信皮肤：聊天窗口体 ─────────────────────────────────────────────────
+   聊天区底 #ebebeb（微信会话背景）；标题栏白底由 WechatWindowChrome 提供，
+   header 收紧内边距；view 选项卡弱化为微信风（灰字、绿色激活下划线）。全部
+   锚定 body[data-ds-skin='wexin']，默认皮肤零影响。 */
+body[data-ds-skin='wexin'] .root {
+  background: rgb(235, 235, 235);
+}
+
+body[data-ds-skin='wexin'] .header {
+  padding: 0;
+  background: #ffffff;
+}
+
+body[data-ds-skin='wexin'] .header::after {
+  display: none;
+}
+
+/* 微信风 view 选项卡（保留对话 ↔ 轨迹切换功能）。 */
+body[data-ds-skin='wexin'] .tabs {
+  margin-top: 0;
+  padding: 0 12px;
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+body[data-ds-skin='wexin'] .tab {
+  font-size: 13px;
+  line-height: 16px;
+  color: rgb(150, 154, 157);
+}
+
+body[data-ds-skin='wexin'] .tabActive {
+  color: rgb(7, 193, 96);
+  font-weight: 600;
+}
+
+body[data-ds-skin='wexin'] .tabActive::after {
+  background: rgb(7, 193, 96);
+}
+
+/* 输入条上方的渐隐遮罩改用聊天区底色（默认皮肤的白色遮罩会压出白带）。 */
+body[data-ds-skin='wexin'] .root[data-phase='active'] .composerSeat {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, rgb(235, 235, 235) 0%, transparent) 0px,
+    rgb(235, 235, 235) 36px
+  );
+}

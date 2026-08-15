@@ -1,0 +1,51 @@
+/* WechatMessageActions: the WeChat message hover action row (复制/引用) — a
+   small white pill toolbar revealed while the owning message row is hovered
+   or a row button is focused. `visibility` keeps the hidden row from
+   intercepting clicks (opacity alone would leave it hit-testable). Only
+   rendered under the active skin, so every rule is additionally scoped to
+   `body[data-ds-skin='wexin']`. */
+
+body[data-ds-skin='wexin'] .row {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  box-sizing: border-box;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+
+body[data-ds-skin='wexin'] [data-wechat-msg-hover-root]:hover .row,
+body[data-ds-skin='wexin'] [data-wechat-msg-hover-root]:focus-within .row {
+  visibility: visible;
+  opacity: 1;
+}
+
+body[data-ds-skin='wexin'] .action {
+  padding: 3px 12px;
+  border: none;
+  background: transparent;
+  color: rgb(55, 59, 62);
+  font-family: Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+body[data-ds-skin='wexin'] .action + .action {
+  border-left: 1px solid rgb(220, 220, 220);
+}
+
+body[data-ds-skin='wexin'] .action:hover {
+  background: rgb(240, 240, 240);
+}
+
+/* 引用成功反馈（✓ 1s）。 */
+body[data-ds-skin='wexin'] .action[data-quoted] {
+  color: rgb(7, 193, 96);
+  font-weight: 700;
+}

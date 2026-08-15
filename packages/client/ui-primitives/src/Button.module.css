@@ -77,3 +77,33 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ═══ Weixin skin: flat WeChat button over the capsule geometry.
+   Capsule → 4px-radius flat button; primary goes WeChat green with the
+   three official states (default #07c160 / hover #06b359 / active #05a251
+   — the alias hover token is a lighter green, so the states are pinned
+   here). All skin-scoped. ═══════════════════════════════════════════════ */
+body[data-ds-skin='wexin'] .button {
+  border-radius: 4px;
+  padding-inline: 12px;
+}
+
+body[data-ds-skin='wexin'] .button:disabled {
+  opacity: 0.6;
+}
+
+body[data-ds-skin='wexin'] .primary {
+  background: rgb(7, 193, 96);
+}
+
+body[data-ds-skin='wexin'] .primary:hover:not(:disabled) {
+  background: rgb(6, 179, 89);
+}
+
+body[data-ds-skin='wexin'] .primary:active:not(:disabled) {
+  background: rgb(5, 162, 81);
+}
+
+body[data-ds-skin='wexin'] .outline {
+  border-radius: 4px;
+}

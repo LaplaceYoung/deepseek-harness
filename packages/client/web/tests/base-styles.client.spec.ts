@@ -9,6 +9,8 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
 const THEME_PACKAGE = '@deepseek-ai/dsh-client-ui-theme'
+/** Skin sheet import specifier: `@deepseek-ai/dsh-client-ui-skin-<name>/styles/<file>`. */
+const SKIN_SHEET_RE = /^@deepseek-ai\/dsh-client-ui-skin-([^/]+)\/styles\/(.+)$/
 const baseCss = readFileSync(fileURLToPath(new URL('../src/base.css', import.meta.url)), 'utf8')
 const themeManifest = JSON.parse(
   readFileSync(fileURLToPath(new URL('../../ui-theme/package.json', import.meta.url)), 'utf8'),
@@ -49,6 +51,15 @@ describe('web shell base.css', () => {
   it('imports every sheet from the theme package and each one exists', () => {
     expect(imports.length).toBeGreaterThan(0)
     for (const specifier of imports) {
+      // Skin sheets arrive from their own ui-skin-* package (the shell
+      // base.css is the sanctioned import site); verify them against that
+      // package's source stylesheet instead of the theme package.
+      const skin = specifier.match(SKIN_SHEET_RE)
+      if (skin !== null) {
+        const [, name = '', file = ''] = skin
+        expect(existsSync(fileURLToPath(new URL(`../../ui-skin-${name}/src/styles/${file}`, import.meta.url))), specifier).toBe(true)
+        continue
+      }
       expect(specifier.startsWith(`${THEME_PACKAGE}/styles/`), specifier).toBe(true)
       expect(existsSync(resolveThemeSheet(specifier)), specifier).toBe(true)
     }

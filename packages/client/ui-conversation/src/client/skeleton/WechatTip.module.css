@@ -1,0 +1,28 @@
+/* WechatTip host + toast: the transient WeChat-style feedback pill appended
+   under document.body by wechat/wechat-feedback.ts. Only created from
+   skin-gated UI actions; the classes are applied directly (hashed), so no
+   skin-scope ancestor is needed — the same belt-and-suspenders rule as the
+   component patches: the toast only ever exists because a wexin action ran. */
+
+.host {
+  position: fixed;
+  left: 50%;
+  bottom: 72px;
+  z-index: 1000;
+  transform: translateX(-50%);
+  pointer-events: none;
+  font-family: Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+.tip {
+  max-width: 480px;
+  padding: 7px 18px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.72);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  white-space: nowrap;
+}

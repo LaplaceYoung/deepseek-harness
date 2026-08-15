@@ -190,3 +190,45 @@
 .toBottom:hover {
   background: var(--dsw-alias-button-floating-hover);
 }
+
+/* ── 微信皮肤：消息区 + 日期条 ─────────────────────────────────────────────
+   消息间距 12px（微信气泡间距）；日期条 = 居中灰字分隔条（今天/昨天/
+   M月D日，14px 灰 #969a9d，微信语义）。消息区左右留 12px（微信聊天区
+   内边距）。 */
+body[data-ds-skin='wexin'] .scroll {
+  padding: 16px 12px;
+}
+
+body[data-ds-skin='wexin'] .column {
+  gap: 12px;
+}
+
+body[data-ds-skin='wexin'] .dateBar {
+  display: flex;
+  justify-content: center;
+  flex: none;
+  margin: 4px 0 2px;
+  padding: 2px 0;
+}
+
+body[data-ds-skin='wexin'] .dateBarText {
+  padding: 0 8px;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: rgb(150, 154, 157);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* 回到底部钮微信化：白底灰边小圆钮。 */
+body[data-ds-skin='wexin'] .toBottom {
+  border-color: rgb(220, 220, 220);
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  color: rgb(55, 59, 62);
+}
+
+body[data-ds-skin='wexin'] .toBottom:hover {
+  background: rgb(240, 240, 240);
+}

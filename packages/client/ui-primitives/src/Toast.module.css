@@ -68,3 +68,16 @@
     animation: dsh-toast-fade 1000ms ease 3000ms forwards;
   }
 }
+
+/* ═══ Weixin skin: WeChat toast — dark translucent rounded plate with white
+   text (the WeChat top-center announcement look). Skin-scoped only. ═════ */
+body[data-ds-skin='wexin'] .toast {
+  border-radius: 8px;
+  background: rgb(0 0 0 / 0.7);
+  color: #fff;
+  box-shadow: none;
+}
+
+body[data-ds-skin='wexin'] .icon {
+  color: rgb(255 255 255 / 0.9);
+}

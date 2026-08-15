@@ -47,3 +47,12 @@
     animation: none;
   }
 }
+
+/* ═══ Weixin skin: WeChat tooltip — dark translucent plate with white text
+   (the alias tooltip-bg token is a warm yellow under this skin, so the
+   plate is pinned to the WeChat dark grey). Skin-scoped only. ═══════════ */
+body[data-ds-skin='wexin'] .bubble {
+  border-radius: 4px;
+  background: rgb(0 0 0 / 0.7);
+  color: #fff;
+}

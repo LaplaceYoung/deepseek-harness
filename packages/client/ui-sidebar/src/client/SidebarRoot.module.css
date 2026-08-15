@@ -282,3 +282,74 @@
     animation: none;
   }
 }
+
+/* ═══ WeChat skin (wexin): flat light-grey column (#ededed). The wordmark
+   hides (WeChat has no brand chrome); the New Session control becomes
+   WeChat's green rounded button — the modern outline glyph is replaced by a
+   CSS-drawn plus and the label is forced Chinese under any locale. The rail
+   keeps its icon controls (collapsed state is presentation-neutral). All
+   rules are scoped to the skin attribute. ═══ */
+body[data-ds-skin='wexin'] .root {
+  background: rgb(237, 237, 237);
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .brand {
+  display: none;
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .logoRow {
+  height: 44px;
+  margin-bottom: 4px;
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession {
+  height: 34px;
+  margin: 0 2px 10px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 4px;
+  background: rgb(7, 193, 96);
+  color: #ffffff;
+  gap: 6px;
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession:hover {
+  background: rgb(6, 179, 89);
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession:active {
+  background: rgb(5, 162, 81);
+}
+
+/* Hide the modern glyph and draw WeChat's plus with a CSS cross. */
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession > svg {
+  display: none;
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession::before {
+  content: '';
+  flex: none;
+  width: 14px;
+  height: 14px;
+  background:
+    linear-gradient(#ffffff, #ffffff) center / 2px 14px no-repeat,
+    linear-gradient(#ffffff, #ffffff) center / 14px 2px no-repeat;
+}
+
+/* WeChat copy is Chinese under any locale; the dictionary label hides. */
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession .newSessionLabel {
+  display: none;
+}
+
+body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession::after {
+  content: '新建会话';
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* The rail keeps its modern icons; only the ink shifts to the WeChat
+   primary grey. */
+body[data-ds-skin='wexin'] .collapsed .iconButton,
+body[data-ds-skin='wexin'] .collapsed .newSession {
+  color: rgb(55, 59, 62);
+}

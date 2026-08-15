@@ -23,6 +23,7 @@ import type { SessionNode, SessionOrderBy } from './tree.ts'
 import { deriveFlat, deriveGroups, deriveSearchResults, UNGROUPED_KEY } from './tree.ts'
 import { ProjectRowItem, SearchResultItem, SessionNodeItem } from './rows/Rows.tsx'
 import { FLAT_SESSION_ORDER_KEY } from './stores.ts'
+import { useWexinSkin } from './wexin-skin.ts'
 import { WorkspacePickFlow } from './WorkspacePicker.tsx'
 import css from './WorkspaceBrowser.module.css'
 
@@ -254,6 +255,7 @@ function SessionTree({
   sessionOrderByAccount, sessionUpdatedAtByAccount, syncSessionOrderAccount, setSessionOrder, t,
 }: SessionTreeProps) {
   const list = useSessions(s => s)
+  const wexinSkin = useWexinSkin()
   const current = list.current
   const [expandedSessionGroups, setExpandedSessionGroups] = useState<string[]>([])
   // Transient drag marker state; the selected mode owns the resulting order.
@@ -389,7 +391,7 @@ function SessionTree({
         aria-label={t('section.sessions')}
       >
         {groups.length === 0 && (
-          <div className={css.empty}>{t('empty.none')}</div>
+          <div className={css.empty}>{wexinSkin ? '暂无会话' : t('empty.none')}</div>
         )}
         {groups.map((group) => {
           const workspaceId = group.workspaceId
@@ -529,8 +531,10 @@ function SessionTree({
                   onClick={() => { setExpandedSessionGroups(keys => toggled(keys, group.key)) }}
                 >
                   {expandedSessionGroups.includes(group.key)
-                    ? t('sessions.collapse')
-                    : t('sessions.expand', { n: group.sessions.length - COLLAPSED_SESSION_LIMIT })}
+                    ? (wexinSkin ? '收起' : t('sessions.collapse'))
+                    : (wexinSkin
+                      ? `展开其余 ${group.sessions.length - COLLAPSED_SESSION_LIMIT} 个会话`
+                      : t('sessions.expand', { n: group.sessions.length - COLLAPSED_SESSION_LIMIT }))}
                 </button>
               )}
             </div>
@@ -562,6 +566,7 @@ function FlatList({
   | 't'
 >) {
   const list = useSessions(s => s)
+  const wexinSkin = useWexinSkin()
   const baseRows = useMemo(
     () => deriveFlat(list, archivedSessionIds),
     [list, archivedSessionIds],
@@ -618,7 +623,7 @@ function FlatList({
     <div className={clsx(css.treeBody, css.wide)}>
       <div className={clsx(css.list, css.flatList)} role="tree" aria-label={t('section.sessions')}>
         {rows.length === 0 && (
-          <div className={css.empty}>{t('empty.none')}</div>
+          <div className={css.empty}>{wexinSkin ? '暂无会话' : t('empty.none')}</div>
         )}
         {rows.map((node) => {
           const active = drag !== null
@@ -687,6 +692,7 @@ function SearchResults({
   resultLimit: number
 }) {
   const list = useSessions(s => s)
+  const wexinSkin = useWexinSkin()
   const currentRemote = remote.query === query
     ? remote
     : { query, status: 'loading' as const, items: [], hasMore: false }
@@ -712,19 +718,19 @@ function SearchResults({
           ))}
         </div>
         {pending && (
-          <div className={css.searchStatus} role="status">{t('search.pending')}</div>
+          <div className={css.searchStatus} role="status">{wexinSkin ? '正在搜索会话历史…' : t('search.pending')}</div>
         )}
         {failed && (
           <div className={css.searchWarning} role="status">
-            {t('search.unavailable')}
+            {wexinSkin ? '内容搜索暂不可用，仅显示名称匹配。' : t('search.unavailable')}
           </div>
         )}
         {!pending && results.items.length === 0 && (
-          <div className={css.empty}>{t('search.noMatches')}</div>
+          <div className={css.empty}>{wexinSkin ? '无匹配会话' : t('search.noMatches')}</div>
         )}
         {results.hasMore && (
           <div className={css.searchStatus}>
-            {t('search.hasMore', { n: resultLimit })}
+            {wexinSkin ? `仅显示前 ${resultLimit} 条结果，请缩小搜索范围。` : t('search.hasMore', { n: resultLimit })}
           </div>
         )}
       </div>
@@ -764,6 +770,7 @@ export function WorkspaceBrowser({
   const workspaces = useWorkspaces(state => state.items)
   const workspacePhase = useWorkspaces(state => state.phase)
   const archivedSessionIds = useWorkspaces(state => state.archivedSessionIds)
+  const wexinSkin = useWexinSkin()
   // Live occupancy of this surface's directory-flow hole (the same source the
   // flow reads): a composition without a picking affordance can add nothing.
   const directoryFlowAvailable = useDirectoryFlow(occupied => occupied)
@@ -1009,7 +1016,7 @@ export function WorkspaceBrowser({
                 ref={searchInput}
                 className={css.searchInput}
                 type="text"
-                placeholder={t('search.placeholder')}
+                placeholder={wexinSkin ? '搜索' : t('search.placeholder')}
                 maxLength={SEARCH_QUERY_MAX_CODE_UNITS}
                 value={query}
                 tabIndex={searchExpanded ? 0 : -1}
