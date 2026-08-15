@@ -224,3 +224,64 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ═══ WeChat skin (wexin): the settings panel reads as a WeUI settings
+   window — white surface, flat nav cells with a light hover, and the
+   active section wearing the WeChat green. Section content keeps its own
+   white cell lists (GeneralSection / rows); the shell only normalizes the
+   panel chrome. All rules are scoped to the skin attribute. ═══ */
+body[data-ds-skin='wexin'] .panel {
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+body[data-ds-skin='wexin'] .navTitle {
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+body[data-ds-skin='wexin'] .navCell {
+  height: 44px;
+  padding: 11px 16px 11px 12px;
+  border-radius: 6px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+body[data-ds-skin='wexin'] .navCell:hover {
+  background: rgb(247, 247, 247);
+}
+
+body[data-ds-skin='wexin'] .navCell.active {
+  background: rgb(247, 247, 247);
+  color: rgb(7, 193, 96);
+}
+
+body[data-ds-skin='wexin'] .navIcon {
+  color: inherit;
+}
+
+body[data-ds-skin='wexin'] .close:hover {
+  background: rgb(247, 247, 247);
+}
+
+/* The rail trigger is part of the WeChat nav bar: white gear on the dark
+   column, hover #3a3a3a, and the WeChat-green selected state while the
+   panel is open (aria-expanded). The wide trigger keeps the panel surface
+   ink. */
+body[data-ds-skin='wexin'] .trigger.rail {
+  color: rgb(255, 255, 255);
+}
+
+body[data-ds-skin='wexin'] .trigger.rail:hover {
+  background: rgb(58, 58, 58);
+}
+
+body[data-ds-skin='wexin'] .trigger.rail[aria-expanded='true'] {
+  color: rgb(7, 193, 96);
+}
+
+body[data-ds-skin='wexin'] .trigger.rail[aria-expanded='true']:hover {
+  background: rgb(58, 58, 58);
+}

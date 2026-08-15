@@ -10,3 +10,24 @@
 .section > :global([data-slot='settings.general.item']) > :last-child {
   border-bottom: none;
 }
+
+/* ═══ WeChat skin (wexin): the General column reads as a WeUI cell list —
+   every contributed row is a 48px white cell with a light hover and a
+   hairline separator (the rows' own `--dsw-alias-border-l2` hairlines
+   already equal WeUI's rgba(0,0,0,.1) in the light scheme the skin forces;
+   the skin only normalizes the cell body). Row internals stay untouched.
+   All rules are scoped to the skin attribute. ═══ */
+body[data-ds-skin='wexin'] .section :global([data-slot='settings.general.item']) {
+  transition: background-color 150ms var(--ds-ease-in-out);
+}
+
+body[data-ds-skin='wexin'] .section :global([data-slot='settings.general.item']):hover {
+  background: rgb(247, 247, 247);
+}
+
+body[data-ds-skin='wexin'] .section :global([data-slot='settings.general.item']) > :global(div):first-child {
+  box-sizing: border-box;
+  min-height: 48px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}

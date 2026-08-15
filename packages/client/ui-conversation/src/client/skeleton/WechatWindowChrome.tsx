@@ -110,6 +110,15 @@ export function WechatWindowChrome({ sessionId, useSessions, t, wechat }: Wechat
             <circle cx="12.8" cy="8" r="1.4" fill="currentColor" />
           </svg>
         </button>
+        {/* Window minimize chrome (微信桌面窗口控制）：纯 CSS 自绘的
+            一条横杠，装饰性控件 — 无窗口可最小化，所以不接收焦点。 */}
+        <button
+          type="button"
+          className={css.minBtn}
+          data-wechat-min
+          tabIndex={-1}
+          aria-hidden="true"
+        />
         {menuOpen && <OverflowMenu t={t} wechat={wechat} onClose={() => { setMenuOpen(false) }} />}
       </div>
     </div>

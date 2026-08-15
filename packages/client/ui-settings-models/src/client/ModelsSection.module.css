@@ -673,3 +673,20 @@ select.input {
   font-size: 13px;
   overflow-wrap: anywhere;
 }
+
+/* ═══ WeChat skin (wexin): the section title reads as a WeUI group label —
+   13px FG-2 above the white cell cards; the intro drops one step to match.
+   All rules are scoped to the skin attribute. ═══ */
+body[data-ds-skin='wexin'] .title {
+  margin: 0;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+body[data-ds-skin='wexin'] .intro {
+  font-size: 12px;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.55);
+}

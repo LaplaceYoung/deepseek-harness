@@ -459,6 +459,12 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
   const wexinSkin = useWexinSkin()
   // WeChat copy is Chinese under any locale (the blank row's provisional title).
   const wexinTitle = wexinSkin && node.blank ? '新会话' : title
+  // The WeChat unread dot: any live activity on a conversation that is not
+  // the one being read (pending interaction, running, or the finished-but-
+  // unopened completion reminder) paints the classic green badge next to the
+  // nickname. The selected row is being read, so it never carries one.
+  const wexinUnread = wexinSkin && !selected
+    && (node.pendingInteraction !== undefined || node.running || node.completed)
   const [menuOpen, setMenuOpen] = useState(false)
   // Archive hides the row through the registry-global archive set and never
   // touches the session log, so it is not styled as destructive and needs no
@@ -511,7 +517,11 @@ export function SessionNodeItem({ node, currentId, now, onOpen, onRename, onFork
           <WexinAvatar id={node.id} label={wexinTitle} />
           <span className={css.wexinBody}>
             <span className={css.wexinLine}>
-              <span className={css.title}>{wexinTitle}</span>
+              <span className={css.wexinTitleWrap}>
+                <span className={css.title}>{wexinTitle}</span>
+                {/* Unread conversations wear the green dot beside the name. */}
+                {wexinUnread && <span className={css.wexinUnread} aria-hidden="true" />}
+              </span>
               {/* A blank New Session row is a provisional placeholder: nothing has
                   happened in it yet, so no timestamp or row verbs (see below). */}
               {!row.blank && <span className={css.time}>{wexinTimeLabel(row.updatedAt, now)}</span>}

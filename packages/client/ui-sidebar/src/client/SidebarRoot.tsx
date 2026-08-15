@@ -23,6 +23,7 @@ import {
   Tooltip,
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { SidebarRootComponentProps } from './contract/slots.ts'
+import { useWexinSkin } from './wexin-skin.ts'
 import css from './SidebarRoot.module.css'
 
 /** Wide-content unmount delay; matches the 150ms wide-content fade-out. */
@@ -49,6 +50,9 @@ export function SidebarRoot({
   t,
   renderSlot,
 }: SidebarRootComponentProps) {
+  // The WeChat nav bar only exists while the skin is live: the rail's top
+  // control swaps its whale mark for the nav avatar (default skin untouched).
+  const wexinSkin = useWexinSkin()
   // Wide content stays mounted while the collapse animates (fading via
   // .collapsed .wide), unmounts at settle, and remounts right away on expand.
   const [settled, setSettled] = useState(collapsed)
@@ -149,7 +153,11 @@ export function SidebarRoot({
             aria-label={collapsed ? t('toggle.open') : t('toggle.collapse')}
             onClick={() => { toggleSidebar() }}
           >
-            {!wide && <FishLogo className={css.railFish} size={24} />}
+            {/* WeChat nav: the rail's top control is the user avatar (CSS
+                person glyph on a deterministic gradient; still the expand
+                toggle). The default rail keeps the whale mark. */}
+            {!wide && wexinSkin && <span className={css.wexinAvatar} aria-hidden="true" />}
+            {!wide && !wexinSkin && <FishLogo className={css.railFish} size={24} />}
             {/* Rail icons render at 18 (figma rail spec); expanded keeps the glyph-native sizes. */}
             <IconPanelLeftOutline16 className={css.panelIcon} size={wide ? 16 : 18} />
           </button>

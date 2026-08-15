@@ -181,7 +181,7 @@ function projectUserText(text: string): ReactNode {
 
 /** Right-aligned bubble shared by user and steering rows. */
 function UserStyleBubble({
-  content, imageLoader, actions, pending = false, sessionId, t,
+  content, imageLoader, actions, pending = false, sessionId, time, t,
 }: {
   content: readonly unknown[]
   imageLoader: ImageLoader
@@ -191,6 +191,8 @@ function UserStyleBubble({
   pending?: boolean
   /** The owning session (drives the WeChat hover row's quote inserter). */
   sessionId?: SessionId | undefined
+  /** Event time; the WeChat skin renders it inside the bubble bottom-right. */
+  time?: number | undefined
   t: ChatViewSlotProps['t']
 }): ReactNode {
   const { text, images, rest } = contentParts(content)
@@ -199,6 +201,12 @@ function UserStyleBubble({
   // WeChat skin: the hover action row (复制/引用) replaces the default icon
   // actions under the skin; the default skin keeps its IconActions row.
   const wexinSkin = useWexinSkin()
+  // WeChat in-bubble clock: bare `HH:MM` — the day is already communicated by
+  // the date separator bar, so the bubble keeps only the minute time.
+  const timeDate = time === undefined ? null : new Date(time)
+  const bubbleTime = timeDate === null ? null : (
+    `${String(timeDate.getHours()).padStart(2, '0')}:${String(timeDate.getMinutes()).padStart(2, '0')}`
+  )
   const onContextMenu = (event: ReactMouseEvent<HTMLDivElement>): void => {
     // 消息右键复制：皮肤下右键消息气泡直接复制全文并弹微信样式 toast；
     // 默认皮肤保留浏览器原生菜单（handler 直接 return）。
@@ -220,6 +228,12 @@ function UserStyleBubble({
         {showBubble && <div className={css.bubble} onContextMenu={onContextMenu}>
           {projectUserText(text)}
           {rest.map((block, i) => <JsonBlock key={i} label={t('message.extraBlock')} payload={block} truncatedLabel={truncated} />)}
+          {/* WeChat desktop puts the message clock inside the bubble's
+              bottom-right corner (11px FG-2); the default skin keeps its
+              below-bubble IconActions clock. */}
+          {wexinSkin && bubbleTime !== null && (
+            <span className={css.bubbleTime} data-wechat-bubble-time>{bubbleTime}</span>
+          )}
         </div>}
       </div>
       {wexinSkin
@@ -271,6 +285,7 @@ export const UserMessageNodeView = memo(function UserMessageNodeView({
       content={data.content}
       imageLoader={loadImage}
       sessionId={sessionId}
+      time={data.time}
       t={t}
       actions={text => (
         <MessageIconActions

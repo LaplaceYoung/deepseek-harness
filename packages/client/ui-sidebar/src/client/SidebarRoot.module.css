@@ -283,14 +283,20 @@
   }
 }
 
-/* ═══ WeChat skin (wexin): flat light-grey column (#ededed). The wordmark
-   hides (WeChat has no brand chrome); the New Session control becomes
-   WeChat's green rounded button — the modern outline glyph is replaced by a
-   CSS-drawn plus and the label is forced Chinese under any locale. The rail
-   keeps its icon controls (collapsed state is presentation-neutral). All
-   rules are scoped to the skin attribute. ═══ */
-body[data-ds-skin='wexin'] .root {
-  background: rgb(237, 237, 237);
+/* ═══ WeChat skin (wexin): the wide column is the white conversation
+   list (the wordmark hides — WeChat has no brand chrome; the New Session
+   control becomes WeChat's green rounded button — the modern outline glyph
+   is replaced by a CSS-drawn plus and the label is forced Chinese under any
+   locale). The collapsed rail becomes the WeChat desktop nav bar (see the
+   rail block below). All rules are scoped to the skin attribute. ═══ */
+/* The wide column is the WeChat conversation list (white); the collapsed
+   rail is the WeChat desktop nav bar (deep grey #2e2e2e). */
+body[data-ds-skin='wexin'] .root:not(.collapsed) {
+  background: rgb(255, 255, 255);
+}
+
+body[data-ds-skin='wexin'] .root.collapsed {
+  background: rgb(46, 46, 46);
 }
 
 body[data-ds-skin='wexin'] .root:not(.collapsed) .brand {
@@ -347,9 +353,125 @@ body[data-ds-skin='wexin'] .root:not(.collapsed) .newSession::after {
   line-height: 1;
 }
 
-/* The rail keeps its modern icons; only the ink shifts to the WeChat
-   primary grey. */
+/* The rail becomes the WeChat desktop nav bar (deep grey #2e2e2e):
+   avatar at the top, a white-outline icon column (聊天 bubble, 通讯录
+   person, 设置 gear), hover #3a3a3a, selected icon WeChat green. The
+   rail's modern glyphs are hidden and replaced with CSS-drawn strokes;
+   every control keeps its DSH action. */
+
+/* Nav-bar geometry: tighter top rhythm than the default rail, centered
+   controls. */
+body[data-ds-skin='wexin'] .root.collapsed {
+  padding: 14px 10px 10px;
+}
+
+body[data-ds-skin='wexin'] .root.collapsed .logoRow {
+  height: 28px;
+  padding: 0;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+/* Top avatar: 24x24 rounded square on a deterministic WeChat-green
+   gradient, white person silhouette (CSS-drawn). Still the expand toggle:
+   hover shows a soft white ring instead of the rail circle. */
+body[data-ds-skin='wexin'] .collapsed .toggle {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 4px;
+  background: transparent;
+}
+
+body[data-ds-skin='wexin'] .collapsed .toggle:hover {
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+body[data-ds-skin='wexin'] .collapsed .toggle .panelIcon,
+body[data-ds-skin='wexin'] .collapsed .toggle .railFish {
+  display: none;
+}
+
+body[data-ds-skin='wexin'] .collapsed .wexinAvatar {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgb(7, 193, 96), rgb(5, 162, 81));
+}
+
+body[data-ds-skin='wexin'] .collapsed .wexinAvatar::before {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  margin-top: 1px;
+}
+
+body[data-ds-skin='wexin'] .collapsed .wexinAvatar::after {
+  content: '';
+  flex: none;
+  width: 15px;
+  height: 8px;
+  border-radius: 7px 7px 4px 4px;
+  background: rgba(255, 255, 255, 0.95);
+  margin-top: 1px;
+}
+
+/* 聊天: the New Session rail control becomes the chat-bubble nav icon
+   (rounded square + small tail). It is the app's active tab — the
+   conversation is always the current surface — so it wears the WeChat
+   green selected ink while 通讯录/设置 stay white; hover #3a3a3a. */
+body[data-ds-skin='wexin'] .collapsed .newSession {
+  position: relative;
+  margin-bottom: 14px;
+  border-color: transparent;
+  background: transparent;
+  color: rgb(255, 255, 255);
+}
+
+body[data-ds-skin='wexin'] .collapsed .newSession > svg {
+  display: none;
+}
+
+body[data-ds-skin='wexin'] .collapsed .newSession::before {
+  content: '';
+  flex: none;
+  width: 21px;
+  height: 16px;
+  border: 2px solid rgb(7, 193, 96);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+body[data-ds-skin='wexin'] .collapsed .newSession::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: 6px 0 0 -8px;
+  border-right: 2px solid rgb(7, 193, 96);
+  border-bottom: 2px solid rgb(7, 193, 96);
+  transform: rotate(45deg);
+  box-sizing: border-box;
+}
+
+body[data-ds-skin='wexin'] .collapsed .newSession:hover,
+body[data-ds-skin='wexin'] .collapsed .newSession:active {
+  background: rgb(58, 58, 58);
+}
+
+/* Rail icons ride white strokes on the dark nav (the glyph SVGs render
+   through currentColor). */
 body[data-ds-skin='wexin'] .collapsed .iconButton,
 body[data-ds-skin='wexin'] .collapsed .newSession {
-  color: rgb(55, 59, 62);
+  color: rgb(255, 255, 255);
 }

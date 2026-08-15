@@ -107,6 +107,24 @@ describe('WeChat message action row', () => {
     expect(document.querySelector('[data-wechat-msg-actions]')).toBeNull()
   })
 
+  it('default skin renders no in-bubble clock (time stays in IconActions)', () => {
+    render(<UserMessageNodeView {...userProps()} />)
+    expect(document.querySelector('[data-wechat-bubble-time]')).toBeNull()
+  })
+
+  it('skin: user bubble renders the HH:MM clock in its bottom-right corner', () => {
+    document.body.setAttribute('data-ds-skin', 'wexin')
+    render(<UserMessageNodeView {...userProps()} />)
+    const clock = document.querySelector('[data-wechat-bubble-time]')
+    expect(clock).not.toBeNull()
+    const d = new Date(1_000)
+    const pad = (n: number): string => String(n).padStart(2, '0')
+    expect(clock!.textContent).toBe(`${pad(d.getHours())}:${pad(d.getMinutes())}`)
+    // The clock sits INSIDE the bubble (class lookup from the bubble element).
+    const bubble = clock!.closest('[class*="bubble"]')
+    expect(bubble).not.toBeNull()
+  })
+
   it('skin: user bubble swaps the icon row for 复制/引用', () => {
     document.body.setAttribute('data-ds-skin', 'wexin')
     render(<UserMessageNodeView {...userProps()} />)
@@ -254,6 +272,8 @@ describe('WeChat title bar (⋯ menu)', () => {
     const bar = view.container.querySelector('[data-wechat-titlebar]') as HTMLElement
     expect(bar).not.toBeNull()
     expect(bar.textContent).toContain('测试会话')
+    // Window minimize chrome: decorative CSS-drawn bar next to the ⋯ button.
+    expect(bar.querySelector('[data-wechat-min]')).not.toBeNull()
     const more = screen.getByRole('button', { name: '更多操作' })
     fireEvent.click(more)
     const menu = document.querySelector('[data-wechat-menu]')

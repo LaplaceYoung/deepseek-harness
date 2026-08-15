@@ -54,6 +54,33 @@ body[data-ds-skin='wexin'] .moreBtn:hover {
   color: rgb(55, 59, 62);
 }
 
+/* 最小化图标：CSS 自绘一条横杠（微信桌面窗口控制），与 ⋯ 同尺寸同 hover。 */
+body[data-ds-skin='wexin'] .minBtn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgb(150, 154, 157);
+  cursor: pointer;
+}
+
+body[data-ds-skin='wexin'] .minBtn::before {
+  content: '';
+  width: 10px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentcolor;
+}
+
+body[data-ds-skin='wexin'] .minBtn:hover {
+  background: rgb(240, 240, 240);
+  color: rgb(55, 59, 62);
+}
+
 body[data-ds-skin='wexin'] .menu {
   position: absolute;
   top: calc(100% - 6px);

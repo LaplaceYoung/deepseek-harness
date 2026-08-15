@@ -375,7 +375,7 @@ body[data-ds-skin='wexin'] .sessionRow {
   gap: 10px;
   border-radius: 0;
   background: #ffffff;
-  border-bottom: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
 
@@ -383,13 +383,14 @@ body[data-ds-skin='wexin'] .sessionRow:hover {
   background: rgb(240, 240, 240);
 }
 
+/* WeChat desktop selects a conversation with light grey (#ebebeb). */
 body[data-ds-skin='wexin'] .sessionRow.selected {
-  background: rgb(221, 240, 230);
+  background: rgb(235, 235, 235);
 }
 
 body[data-ds-skin='wexin'] .sessionRow.selected:hover,
 body[data-ds-skin='wexin'] .sessionRow.menuOpen {
-  background: rgb(221, 240, 230);
+  background: rgb(235, 235, 235);
 }
 
 /* Deterministic avatar: 40×40 rounded square, gradient fill, centered first
@@ -426,18 +427,41 @@ body[data-ds-skin='wexin'] .wexinLine {
   min-width: 0;
 }
 
-body[data-ds-skin='wexin'] .sessionRow .wexinLine .title {
+/* Nickname wrap flexes so the unread dot hugs the name while the time stays
+   pinned to the row's right edge. */
+body[data-ds-skin='wexin'] .wexinTitleWrap {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body[data-ds-skin='wexin'] .sessionRow .wexinLine .title {
+  flex: 0 1 auto;
+  min-width: 0;
   margin: 0;
   font-size: 15px;
   line-height: 20px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* The WeChat unread dot: 8px WeChat-green circle beside the nickname
+   (WeChat desktop paints a green dot, not a red count). */
+body[data-ds-skin='wexin'] .wexinUnread {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(7, 193, 96);
+  box-shadow: 0 0 0 2px #ffffff;
 }
 
 body[data-ds-skin='wexin'] .sessionRow .wexinLine .time {
   flex: none;
   font-size: 12px;
   line-height: 20px;
-  color: rgb(150, 154, 157);
+  color: rgba(0, 0, 0, 0.3);
 }
 
 body[data-ds-skin='wexin'] .wexinSummary {
@@ -447,7 +471,7 @@ body[data-ds-skin='wexin'] .wexinSummary {
   white-space: nowrap;
   font-size: 13px;
   line-height: 18px;
-  color: rgb(150, 154, 157);
+  color: rgba(0, 0, 0, 0.55);
 }
 
 /* Workspace groups as separator bars: small grey label, no folder/chevron,
@@ -459,7 +483,7 @@ body[data-ds-skin='wexin'] .projectRow {
   gap: 4px;
   border-radius: 0;
   background: transparent;
-  border-top: 1px solid rgb(220, 220, 220);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 body[data-ds-skin='wexin'] .projectRow:hover,
@@ -499,7 +523,7 @@ body[data-ds-skin='wexin'] .searchResultRow {
   min-height: 64px;
   padding: 0 12px;
   background: #ffffff;
-  border-bottom: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0;
 }
 
@@ -508,7 +532,7 @@ body[data-ds-skin='wexin'] .searchResultRow:hover {
 }
 
 body[data-ds-skin='wexin'] .searchResultRow.selected {
-  background: rgb(221, 240, 230);
+  background: rgb(235, 235, 235);
 }
 
 body[data-ds-skin='wexin'] .searchResultRow .wexinAvatar {

@@ -284,23 +284,42 @@
 }
 
 /* ── 微信皮肤：自己（用户）气泡 ─────────────────────────────────────────────
-   微信绿底白字、圆角 6px（右上角小圆角指向头像侧）、max-width 60%；引用
-   chip 半透明白底。 */
+   微信桌面版浅绿气泡 #95ec69（WeUI --weui-LIGHTGREEN）黑字 FG-0、圆角
+   6px（右上角小圆角指向头像侧）、max-width 60%（userStack 封顶）；
+   时间戳钉在气泡内右下角（11px FG-2）。引用 chip 半透明黑底。 */
 body[data-ds-skin='wexin'] .userStack {
   max-width: 60%;
 }
 
 body[data-ds-skin='wexin'] .bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   max-width: 100%;
-  background: rgb(7, 193, 96);
+  background: rgb(149, 236, 105);
   border-radius: 6px 2px 6px 6px;
   padding: 8px 12px;
   font-size: 14px;
   line-height: 20px;
-  color: #ffffff;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+body[data-ds-skin='wexin'] .bubble > :not(.bubbleTime) {
+  min-width: 0;
+}
+
+body[data-ds-skin='wexin'] .bubbleTime {
+  align-self: flex-end;
+  flex: none;
+  margin: 2px -4px -4px 8px;
+  font-size: 11px;
+  line-height: 14px;
+  color: rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
 }
 
 body[data-ds-skin='wexin'] .refChip {
-  background: rgba(255, 255, 255, 0.28);
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.9);
 }
